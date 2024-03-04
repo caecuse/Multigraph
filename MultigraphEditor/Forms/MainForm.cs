@@ -1,3 +1,4 @@
+using MultigraphEditor.Forms;
 using MultigraphEditor.src.graph;
 using MultigraphEditor.src.layers;
 using MultigraphEditor.Src.graph;
@@ -182,16 +183,28 @@ namespace MultigraphEditor
                                 else
                                 {
                                     IMGraphEditorEdge edge = (IMGraphEditorEdge)Activator.CreateInstance(edgeType);
-                                    edge.SourceDrawable = selectedNodeForConnection;
-                                    edge.TargetDrawable = selectedNode;
-                                    edgeList.Add(edge);
 
-                                    foreach (IEdgeLayer elayer in edgeLayers)
+                                    using (EdgeForm edgeForm = new EdgeForm(edge))
                                     {
-                                        if (elayer.Active)
+                                        edgeForm.OnOk += (s, e) =>
                                         {
-                                            elayer.edges.Add(edge);
-                                        }
+                                            edgeForm.Close();
+                                            edge.SourceDrawable = selectedNodeForConnection;
+                                            edge.TargetDrawable = selectedNode;
+                                            edgeList.Add(edge);
+                                            selectedNode.Neighbours.Add(selectedNodeForConnection);
+                                            selectedNodeForConnection.Neighbours.Add(selectedNode);
+                                            selectedNode.Edges.Add(edge);
+                                            selectedNodeForConnection.Edges.Add(edge);
+                                            foreach (IEdgeLayer elayer in edgeLayers)
+                                            {
+                                                if (elayer.Active)
+                                                {
+                                                    elayer.edges.Add(edge);
+                                                }
+                                            }
+                                        };
+                                        edgeForm.ShowDialog();
                                     }
                                     selectedNode = null;
                                     canvas.Invalidate();

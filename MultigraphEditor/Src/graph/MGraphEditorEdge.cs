@@ -1,4 +1,5 @@
-﻿using MultigraphEditor.src.layers;
+﻿using MultigraphEditor.Forms;
+using MultigraphEditor.src.layers;
 using MultigraphEditor.Src.graph;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,22 @@ namespace MultigraphEditor.src.graph
 {
     public class MGraphEditorEdge: IMGraphEditorEdge
     {
+        [ExcludeFromForm]
         public int Identifier { get; set; }
         public string Label { get; set; }
+        [ExcludeFromForm]
         public INode Source { get; set; }
+        [ExcludeFromForm]
         public INode Target { get; set; }
-        public bool Directed { get; set; }
         public bool Bidirectional { get; set; }
         public int Weight { get; set; }
+        [ExcludeFromForm]
         public PointF SourcePoint { get; set; }
+        [ExcludeFromForm]
         public PointF TargetPoint { get; set; }
+        [ExcludeFromForm]
         public required INodeDrawable SourceDrawable { get; set; }
+        [ExcludeFromForm]
         public required INodeDrawable TargetDrawable { get; set; }
 
         public static int EdgeCounter = 0;
@@ -53,10 +60,7 @@ namespace MultigraphEditor.src.graph
 
                 // Draw the edge
                 e.Graphics.DrawLine(pen, sourceX, sourceY, targetX, targetY);
-                if (!Directed)
-                {
-                    DrawArrow(sender, e, l);
-                }
+                DrawArrow(sender, e, l);
             }
             else
             {
