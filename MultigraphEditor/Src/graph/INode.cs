@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MultigraphEditor.src.graph
 {
-    public class Node
+    public interface INode
     {
-        public string? Label;
-        public List<Edge>? Edges;
-        public List<Node>? Neighbours;
+        public string? Label { get; set; }
+        public List<IEdge> Edges { get; set; }
+        public List<INode> Neighbours { get; set; }
     }
 }

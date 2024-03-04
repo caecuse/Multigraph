@@ -1,5 +1,6 @@
 using MultigraphEditor.src.graph;
 using MultigraphEditor.src.layers;
+using MultigraphEditor.Src.graph;
 using System.Net.NetworkInformation;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 
@@ -8,8 +9,8 @@ namespace MultigraphEditor
     public partial class MainForm : Form
     {
         private ApplicationMode amode = ApplicationMode.None;
-        public List<INodeDrawable> nodeList = new List<INodeDrawable>();
-        public List<IEdgeDrawable> edgeList = new List<IEdgeDrawable>();
+        public List<IMGraphEditorNode> nodeList = new List<IMGraphEditorNode>();
+        public List<IMGraphEditorEdge> edgeList = new List<IMGraphEditorEdge>();
         public List<INodeLayer> nodeLayers = new List<INodeLayer>();
         public List<IEdgeLayer> edgeLayers = new List<IEdgeLayer>();
         Type nodeType;
@@ -19,8 +20,8 @@ namespace MultigraphEditor
 
         bool isPanning = false;
         private Point lastMouseLocation = Point.Empty;
-        private INodeDrawable? selectedNode = null;
-        private INodeDrawable? selectedNodeForConnection = null;
+        private IMGraphEditorNode? selectedNode = null;
+        private IMGraphEditorNode? selectedNodeForConnection = null;
 
         private enum ApplicationMode
         {
@@ -63,13 +64,13 @@ namespace MultigraphEditor
             if (nodeLayers.Count == 0)
             {
                 MGraphEditorNodeLayer layer = new MGraphEditorNodeLayer();
-                layer.nodes = [(INodeDrawable)Activator.CreateInstance(nodeType)];
+                layer.nodes = [(IMGraphEditorNode)Activator.CreateInstance(nodeType)];
                 nodeLayers.Add(layer);
             }
             if (edgeLayers.Count == 0)
             {
                 MGraphEditorEdgeLayer layer = new MGraphEditorEdgeLayer();
-                layer.edges = [(IEdgeDrawable)Activator.CreateInstance(edgeType)];
+                layer.edges = [(IMGraphEditorEdge)Activator.CreateInstance(edgeType)];
                 edgeLayers.Add(layer);
             }
         }
@@ -96,7 +97,7 @@ namespace MultigraphEditor
 
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
-            foreach (INodeDrawable node in nodeList)
+            foreach (IMGraphEditorNode node in nodeList)
             {
                 foreach (MGraphEditorNodeLayer layer in nodeLayers)
                 {
@@ -122,7 +123,7 @@ namespace MultigraphEditor
         {
             if (amode == ApplicationMode.AddVertex)
             {
-                INodeDrawable node = (INodeDrawable)Activator.CreateInstance(nodeType);
+                IMGraphEditorNode node = (IMGraphEditorNode)Activator.CreateInstance(nodeType);
                 node.X = e.X;
                 node.Y = e.Y;
                 nodeList.Add(node);
@@ -145,9 +146,9 @@ namespace MultigraphEditor
 
             if (amode == ApplicationMode.Default)
             {
-                foreach (INodeDrawable node in nodeList)
+                foreach (IMGraphEditorNode node in nodeList)
                 {
-                    foreach (MGraphEditorNodeLayer layer in nodeLayers)
+                    foreach (INodeLayer layer in nodeLayers)
                     {
                         if (layer.Active)
                         {
@@ -164,9 +165,9 @@ namespace MultigraphEditor
 
             if (amode == ApplicationMode.Connect)
             {
-                foreach (INodeDrawable node in nodeList)
+                foreach (IMGraphEditorNode node in nodeList)
                 {
-                    foreach (MGraphEditorNodeLayer layer in nodeLayers)
+                    foreach (INodeLayer layer in nodeLayers)
                     {
                         if (layer.Active)
                         {
@@ -180,7 +181,7 @@ namespace MultigraphEditor
                                 }
                                 else
                                 {
-                                    IEdgeDrawable edge = (IEdgeDrawable)Activator.CreateInstance(edgeType);
+                                    IMGraphEditorEdge edge = (IMGraphEditorEdge)Activator.CreateInstance(edgeType);
                                     edge.SourceDrawable = selectedNodeForConnection;
                                     edge.TargetDrawable = selectedNode;
                                     edgeList.Add(edge);
@@ -224,7 +225,7 @@ namespace MultigraphEditor
                     int dx = e.X - lastMouseLocation.X;
                     int dy = e.Y - lastMouseLocation.Y;
 
-                    foreach (INodeDrawable node in nodeList)
+                    foreach (IMGraphEditorNode node in nodeList)
                     {
                         node.X += dx;
                         node.Y += dy;

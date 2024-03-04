@@ -1,4 +1,5 @@
 ﻿using MultigraphEditor.src.layers;
+using MultigraphEditor.Src.graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,16 @@ using System.Threading.Tasks;
 
 namespace MultigraphEditor.src.graph
 {
-    public class MGraphEditorNode : Node, INodeDrawable
+    public class MGraphEditorNode : IMGraphEditorNode
     {
+        public int Identifier { get; set; }
+        public string? Label { get; set; }
+        public List<IEdge> Edges { get; set; } = new List<IEdge>();
+        public List<INode> Neighbours { get; set; } = new List<INode>();
         public float X { get; set; }
         public float Y { get; set; }
         public float Diameter { get; set; } = 20;
         public static int NodeCounter = 0;
-        public int Identifier { get; set; }
 
         public MGraphEditorNode()
         {
