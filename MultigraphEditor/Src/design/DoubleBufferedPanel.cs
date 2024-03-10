@@ -14,6 +14,7 @@ namespace MultigraphEditor.Src.design
         public DoubleBufferedPanel()
         {
             DoubleBuffered = true;
+            ResizeRedraw = true;
         }
     }
 }

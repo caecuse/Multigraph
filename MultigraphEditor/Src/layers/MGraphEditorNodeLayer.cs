@@ -9,7 +9,7 @@ namespace MultigraphEditor.src.layers
 {
     public class MGraphEditorNodeLayer : INodeLayer
     {
-        public Font Font { get; set; } = new Font("Arial", 12);
+        public Font Font { get; set; } = new Font("Lato", 8);
         public Color Color { get; set; } = Color.Black;
         public int Width { get; set; } = 4;
         public List<INodeDrawable> nodes { get; set; }

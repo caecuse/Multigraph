@@ -23,6 +23,7 @@ namespace MultigraphEditor
         private Point lastMouseLocation = Point.Empty;
         private IMGraphEditorNode? selectedNode = null;
         private IMGraphEditorNode? selectedNodeForConnection = null;
+        private IMGraphEditorEdge? selectedEdge = null;
 
         private enum ApplicationMode
         {
@@ -50,12 +51,10 @@ namespace MultigraphEditor
         {
             if (e.Button == MouseButtons.Left)
             {
-                // Handle left mouse button down
                 LeftMouseDown(sender, e);
             }
             else if (e.Button == MouseButtons.Right)
             {
-                // Handle right mouse button down
                 RightMouseDown(sender, e);
             }
         }
@@ -78,21 +77,33 @@ namespace MultigraphEditor
 
         private void AddBtn_Click(object sender, EventArgs e)
         {
+            selectedEdge = null;
+            selectedNode = null;
+            selectedNodeForConnection = null;
             amode = ApplicationMode.AddVertex;
         }
 
         private void ViewBtn_Click(object sender, EventArgs e)
         {
+            selectedEdge = null;
+            selectedNode = null;
+            selectedNodeForConnection = null;
             amode = ApplicationMode.View;
         }
 
         private void MoveBtn_Click(object sender, EventArgs e)
         {
+            selectedEdge = null;
+            selectedNode = null;
+            selectedNodeForConnection = null;
             amode = ApplicationMode.Default;
         }
 
         private void ConnectBtn_Click(object sender, EventArgs e)
         {
+            selectedEdge = null;
+            selectedNode = null;
+            selectedNodeForConnection = null;
             amode = ApplicationMode.Connect;
         }
 
@@ -125,9 +136,27 @@ namespace MultigraphEditor
             if (amode == ApplicationMode.AddVertex)
             {
                 IMGraphEditorNode node = (IMGraphEditorNode)Activator.CreateInstance(nodeType);
-                node.X = e.X;
-                node.Y = e.Y;
-                nodeList.Add(node);
+
+                using (EditForm editform = new EditForm(node))
+                {
+                    editform.OnOk += (s, n) =>
+                    {
+                        editform.Close();
+                        node.X = e.X;
+                        node.Y = e.Y;
+                        nodeList.Add(node);
+
+                        foreach (MGraphEditorNodeLayer layer in nodeLayers)
+                        {
+                            if (layer.Active)
+                            {
+                                layer.nodes.Add(node);
+                            }
+                        }
+                        canvas.Invalidate();
+                    };
+                    editform.ShowDialog();
+                }
 
                 foreach (MGraphEditorNodeLayer layer in nodeLayers)
                 {
@@ -162,6 +191,22 @@ namespace MultigraphEditor
                         }
                     }
                 }
+
+                foreach (IMGraphEditorEdge edge in edgeList)
+                {
+                    foreach (IEdgeLayer layer in edgeLayers)
+                    {
+                        if (layer.Active)
+                        {
+                            if (edge.IsInsideControlPoint(e.X, e.Y))
+                            {
+                                selectedEdge = edge;
+                                lastMouseLocation = e.Location;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
             if (amode == ApplicationMode.Connect)
@@ -184,11 +229,14 @@ namespace MultigraphEditor
                                 {
                                     IMGraphEditorEdge edge = (IMGraphEditorEdge)Activator.CreateInstance(edgeType);
 
-                                    using (EdgeForm edgeForm = new EdgeForm(edge))
+                                    using (EditForm editform = new EditForm(edge))
                                     {
-                                        edgeForm.OnOk += (s, e) =>
+                                        editform.OnOk += (s, e) =>
                                         {
-                                            edgeForm.Close();
+                                            editform.Close();
+                                            edge.PopulateNode(selectedNodeForConnection, selectedNode, edge.Bidirectional, edge.Weight);
+                                            edge.PopulateDrawing(selectedNodeForConnection, selectedNode);
+
                                             edge.SourceDrawable = selectedNodeForConnection;
                                             edge.TargetDrawable = selectedNode;
                                             edgeList.Add(edge);
@@ -204,7 +252,7 @@ namespace MultigraphEditor
                                                 }
                                             }
                                         };
-                                        edgeForm.ShowDialog();
+                                        editform.ShowDialog();
                                     }
                                     selectedNode = null;
                                     canvas.Invalidate();
@@ -226,6 +274,28 @@ namespace MultigraphEditor
                     float dy = e.Y - lastMouseLocation.Y;
                     selectedNode.X += dx;
                     selectedNode.Y += dy;
+                    lastMouseLocation = e.Location;
+                    canvas.Invalidate();
+                }
+
+                if (selectedEdge != null)
+                {
+                    float dx = e.X - lastMouseLocation.X;
+                    float dy = e.Y - lastMouseLocation.Y;
+                    foreach (IMGraphEditorNode node in nodeList)
+                    {
+                       foreach (ILayer layer in nodeLayers)
+                       {
+                           if (layer.Active)
+                           {
+                                if (selectedEdge.SourceDrawable == node || selectedEdge.TargetDrawable == node)
+                                {
+                                    node.X += dx;
+                                    node.Y += dy;
+                                }
+                           }
+                       }
+                    }
                     lastMouseLocation = e.Location;
                     canvas.Invalidate();
                 }
@@ -253,6 +323,7 @@ namespace MultigraphEditor
         private void HandleMouseUp(object sender, MouseEventArgs e)
         {
             selectedNode = null;
+            selectedEdge = null;
             if (amode == ApplicationMode.View)
             {
                 isPanning = false;
@@ -261,14 +332,55 @@ namespace MultigraphEditor
 
         private void RightMouseDown(object sender, MouseEventArgs e)
         {
+            foreach (IMGraphEditorEdge edge in edgeList)
+            {
+                foreach (IEdgeLayer layer in edgeLayers)
+                {
+                    if (layer.Active)
+                    {
+                        if (edge.IsInside(e.X, e.Y))
+                        {
+                            using (EditForm editform = new EditForm(edge))
+                            {
+                                editform.OnOk += (s, e) =>
+                                {
+                                    editform.Close();
+                                    canvas.Invalidate();
+                                };
+                                editform.ShowDialog();
+                            }
+                        }
+                    }
+                }
+            }
 
+            foreach (IMGraphEditorNode node in nodeList)
+            {
+                foreach (INodeLayer layer in nodeLayers)
+                {
+                    if (layer.Active)
+                    {
+                        if (node.IsInside(e.X, e.Y))
+                        {
+                            using (EditForm editform = new EditForm(node))
+                            {
+                                editform.OnOk += (s, e) =>
+                                {
+                                    editform.Close();
+                                    canvas.Invalidate();
+                                };
+                                editform.ShowDialog();
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Settings button clicked");
         }
-
 
     }
 }

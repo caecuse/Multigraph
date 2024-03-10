@@ -1,7 +1,9 @@
-﻿using MultigraphEditor.src.layers;
+﻿using MultigraphEditor.Forms;
+using MultigraphEditor.src.layers;
 using MultigraphEditor.Src.graph;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,22 +12,50 @@ namespace MultigraphEditor.src.graph
 {
     public class MGraphEditorNode : IMGraphEditorNode
     {
+        [ExcludeFromForm]
         public int Identifier { get; set; }
         public string? Label { get; set; }
+        [ExcludeFromForm]
         public List<IEdge> Edges { get; set; } = new List<IEdge>();
+        [ExcludeFromForm]
         public List<INode> Neighbours { get; set; } = new List<INode>();
+        [ExcludeFromForm]
         public float X { get; set; }
+        [ExcludeFromForm]
         public float Y { get; set; }
         public float Diameter { get; set; } = 20;
+        [ExcludeFromForm]
         public static int NodeCounter = 0;
 
         public MGraphEditorNode()
         {
             Identifier = GetIdentifier();
+            Label = Identifier.ToString();
         }
+
         public int GetIdentifier()
         {
             return NodeCounter++;
+        }
+
+        public void AddEdge(IEdge e)
+        {
+            Edges.Add(e);
+        }
+
+        public void RemoveEdge(IEdge e)
+        {
+            Edges.Remove(e);
+        }
+
+        public void AddNeighbour(INode n)
+        {
+            Neighbours.Add(n);
+        }
+
+        public void RemoveNeighbour(INode n)
+        {
+            Neighbours.Remove(n);
         }
 
         public (float, float) GetCoordinates()
@@ -40,6 +70,9 @@ namespace MultigraphEditor.src.graph
 
         public void Draw(object sender, PaintEventArgs e, MGraphEditorNodeLayer l)
         {
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
             Pen p = new Pen(l.Color, l.Width);
             using (p)
             {

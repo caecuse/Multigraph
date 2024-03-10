@@ -11,5 +11,10 @@ namespace MultigraphEditor.src.graph
         public string? Label { get; set; }
         public List<IEdge> Edges { get; set; }
         public List<INode> Neighbours { get; set; }
+
+        public void AddEdge(IEdge e);
+        public void RemoveEdge(IEdge e);
+        public void AddNeighbour(INode n);
+        public void RemoveNeighbour(INode n);
     }
 }

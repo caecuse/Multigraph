@@ -11,12 +11,12 @@ using System.Windows.Forms;
 
 namespace MultigraphEditor.Forms
 {
-    public partial class EdgeForm : Form
+    public partial class EditForm : Form
     {
         internal event EventHandler OnOk;
         public object DataObject { get; }
 
-        public EdgeForm(object obj)
+        public EditForm(object obj)
         {
             InitializeComponent();
 
@@ -29,7 +29,7 @@ namespace MultigraphEditor.Forms
                 {
                     continue;
                 }
-                BtnLayoutPanel.RowCount++;
+                DataInput.RowCount++;
 
                 Label label = new Label();
                 label.Text = property.Name;
@@ -37,41 +37,40 @@ namespace MultigraphEditor.Forms
                 {
                     CheckBox checkBox = new CheckBox();
                     checkBox.Name = property.Name;
-                    BtnLayoutPanel.Controls.Add(checkBox, 1, BtnLayoutPanel.RowCount - 1);
+                    checkBox.Checked = (bool)property.GetValue(DataObject);
+                    DataInput.Controls.Add(checkBox, 1, DataInput.RowCount - 1);
                 }
                 else
                 {
                     TextBox textBox = new TextBox();
                     textBox.Name = property.Name;
+                    textBox.Text = property.GetValue(DataObject)?.ToString();
 
-                    BtnLayoutPanel.Controls.Add(textBox, 1, BtnLayoutPanel.RowCount - 1);
+                    DataInput.Controls.Add(textBox, 1, DataInput.RowCount - 1);
                 }
 
-                BtnLayoutPanel.Controls.Add(label, 0, BtnLayoutPanel.RowCount - 1);
+                DataInput.Controls.Add(label, 0, DataInput.RowCount - 1);
             }
 
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false; 
+            MaximizeBox = false;
             MinimizeBox = false;
         }
 
-        private void EdgeForm_Load(object sender, EventArgs e)
+        private void EditForm_Load(object sender, EventArgs e)
         {
 
         }
 
         private void OkBtn_Click(object sender, EventArgs e)
         {
-            foreach (Control control in BtnLayoutPanel.Controls)
+            foreach (Control control in DataInput.Controls)
             {
                 if (control is TextBox tbox)
                 {
-                    if (!string.IsNullOrEmpty(tbox.Text))
-                    {
-                        PropertyInfo propertyInfo = DataObject.GetType().GetProperty(tbox.Name);
-                        object value = Convert.ChangeType(tbox.Text, propertyInfo.PropertyType);
-                        propertyInfo.SetValue(DataObject, value);
-                    }
+                    PropertyInfo propertyInfo = DataObject.GetType().GetProperty(tbox.Name);
+                    object value = Convert.ChangeType(tbox.Text, propertyInfo.PropertyType);
+                    propertyInfo.SetValue(DataObject, value);
                 }
                 else if (control is CheckBox cbox)
                 {

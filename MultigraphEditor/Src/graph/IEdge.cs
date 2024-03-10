@@ -13,5 +13,7 @@ namespace MultigraphEditor.src.graph
         public INode Target { get; set; }
         public bool Bidirectional { get; set; }
         public int Weight { get; set; }
+
+        public void PopulateNode(INode src, INode tgt, bool bidir, int w);
     }
 }

@@ -9,7 +9,7 @@ namespace MultigraphEditor.src.layers
 {
     public class MGraphEditorEdgeLayer : IEdgeLayer
     {
-        public Font Font { get; set; } = new Font("Arial", 12);
+        public Font Font { get; set; } = new Font("Lato", 8);
         public Color Color { get; set; } = Color.Black;
         public int arrowSize { get; set; } = 12;
         public int Width { get; set; } = 3;
