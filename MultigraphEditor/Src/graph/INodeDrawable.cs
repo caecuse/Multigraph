@@ -14,8 +14,8 @@ namespace MultigraphEditor.src.graph
         public float Diameter { get; set; }
         public (float, float) GetCoordinates();
         public (float, float) GetDrawingCoordinates();
-        public void Draw(object sender, PaintEventArgs e, MGraphEditorNodeLayer l);
-        public void DrawLabel(object sender, PaintEventArgs e, MGraphEditorNodeLayer l);
+        public void Draw(object sender, PaintEventArgs e, INodeLayer l);
+        public void DrawLabel(object sender, PaintEventArgs e, INodeLayer l);
 
     }
 }

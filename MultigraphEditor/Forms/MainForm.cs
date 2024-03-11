@@ -1,7 +1,10 @@
 using MultigraphEditor.Forms;
 using MultigraphEditor.src.graph;
 using MultigraphEditor.src.layers;
+using MultigraphEditor.Src.design;
 using MultigraphEditor.Src.graph;
+using MultigraphEditor.Src.layers;
+using System.Drawing.Printing;
 using System.Net.NetworkInformation;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 
@@ -12,12 +15,10 @@ namespace MultigraphEditor
         private ApplicationMode amode = ApplicationMode.None;
         public List<IMGraphEditorNode> nodeList = new List<IMGraphEditorNode>();
         public List<IMGraphEditorEdge> edgeList = new List<IMGraphEditorEdge>();
-        public List<INodeLayer> nodeLayers = new List<INodeLayer>();
-        public List<IEdgeLayer> edgeLayers = new List<IEdgeLayer>();
+        public List<IMGraphLayer> Layers = new List<IMGraphLayer>();
         Type nodeType;
         Type edgeType;
-        Type nodeLayerType;
-        Type edgeLayerType;
+        Type layerType;
 
         bool isPanning = false;
         private Point lastMouseLocation = Point.Empty;
@@ -34,13 +35,12 @@ namespace MultigraphEditor
             View, // Serves for moving canvas
             Delete,
         }
-        public MainForm(Type nodet, Type edget, Type nlayert, Type elayert)
+        public MainForm(Type nodet, Type edget, Type layert)
         {
             InitializeComponent();
             nodeType = nodet;
             edgeType = edget;
-            nodeLayerType = nlayert;
-            edgeLayerType = elayert;
+            layerType = layert;
 
             canvas.MouseDown += HandleMouseDown;
             canvas.MouseMove += HandleMouseMove;
@@ -61,18 +61,33 @@ namespace MultigraphEditor
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            if (nodeLayers.Count == 0)
+            if (Layers.Count == 0)
             {
-                MGraphEditorNodeLayer layer = new MGraphEditorNodeLayer();
+                IMGraphLayer layer = (IMGraphLayer)Activator.CreateInstance(layerType);
                 layer.nodes = [(IMGraphEditorNode)Activator.CreateInstance(nodeType)];
-                nodeLayers.Add(layer);
-            }
-            if (edgeLayers.Count == 0)
-            {
-                MGraphEditorEdgeLayer layer = new MGraphEditorEdgeLayer();
                 layer.edges = [(IMGraphEditorEdge)Activator.CreateInstance(edgeType)];
-                edgeLayers.Add(layer);
+                Layers.Add(layer);
             }
+
+            Label layName = new Label();
+            layName.Text = "Layer 1";
+            layName.AutoSize = true;
+
+            Layout0Panel.Controls.Add(layName);
+            LayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 70));
+            Button newLayer = new Button();
+            newLayer.Text = "New Layer";
+            newLayer.AutoSize = true;
+            newLayer.Anchor = AnchorStyles.Left;
+            newLayer.Anchor = AnchorStyles.Right;
+            newLayer.Anchor = AnchorStyles.Top;
+
+
+            //newLayer.Click += NewLayer_Click;
+            //FlowLayoutPanel flowLayoutPanel = new FlowLayoutPanel();
+            //flowLayoutPanel.Controls.Add(newLayer);
+            LayoutPanel.Controls.Add(newLayer, 0, LayoutPanel.RowCount - 1);
+            //Layout0Panel.BackgroundImage = 
         }
 
         private void AddBtn_Click(object sender, EventArgs e)
@@ -111,7 +126,7 @@ namespace MultigraphEditor
         {
             foreach (IMGraphEditorNode node in nodeList)
             {
-                foreach (MGraphEditorNodeLayer layer in nodeLayers)
+                foreach (IMGraphLayer layer in Layers)
                 {
                     if (layer.Active)
                     {
@@ -121,7 +136,7 @@ namespace MultigraphEditor
             }
             foreach (IEdgeDrawable edge in edgeList)
             {
-                foreach (MGraphEditorEdgeLayer layer in edgeLayers)
+                foreach (IMGraphLayer layer in Layers)
                 {
                     if (layer.Active)
                     {
@@ -129,6 +144,8 @@ namespace MultigraphEditor
                     }
                 }
             }
+
+
         }
 
         private void LeftMouseDown(object sender, MouseEventArgs e)
@@ -146,7 +163,7 @@ namespace MultigraphEditor
                         node.Y = e.Y;
                         nodeList.Add(node);
 
-                        foreach (MGraphEditorNodeLayer layer in nodeLayers)
+                        foreach (IMGraphLayer layer in Layers)
                         {
                             if (layer.Active)
                             {
@@ -158,7 +175,7 @@ namespace MultigraphEditor
                     editform.ShowDialog();
                 }
 
-                foreach (MGraphEditorNodeLayer layer in nodeLayers)
+                foreach (IMGraphLayer layer in Layers)
                 {
                     if (layer.Active)
                     {
@@ -178,7 +195,7 @@ namespace MultigraphEditor
             {
                 foreach (IMGraphEditorNode node in nodeList)
                 {
-                    foreach (INodeLayer layer in nodeLayers)
+                    foreach (IMGraphLayer layer in Layers)
                     {
                         if (layer.Active)
                         {
@@ -194,7 +211,7 @@ namespace MultigraphEditor
 
                 foreach (IMGraphEditorEdge edge in edgeList)
                 {
-                    foreach (IEdgeLayer layer in edgeLayers)
+                    foreach (IMGraphLayer layer in Layers)
                     {
                         if (layer.Active)
                         {
@@ -213,7 +230,7 @@ namespace MultigraphEditor
             {
                 foreach (IMGraphEditorNode node in nodeList)
                 {
-                    foreach (INodeLayer layer in nodeLayers)
+                    foreach (IMGraphLayer layer in Layers)
                     {
                         if (layer.Active)
                         {
@@ -244,7 +261,7 @@ namespace MultigraphEditor
                                             selectedNodeForConnection.Neighbours.Add(selectedNode);
                                             selectedNode.Edges.Add(edge);
                                             selectedNodeForConnection.Edges.Add(edge);
-                                            foreach (IEdgeLayer elayer in edgeLayers)
+                                            foreach (IMGraphLayer elayer in Layers)
                                             {
                                                 if (elayer.Active)
                                                 {
@@ -254,6 +271,7 @@ namespace MultigraphEditor
                                         };
                                         editform.ShowDialog();
                                     }
+                                    selectedNodeForConnection = null;
                                     selectedNode = null;
                                     canvas.Invalidate();
                                 }
@@ -284,17 +302,17 @@ namespace MultigraphEditor
                     float dy = e.Y - lastMouseLocation.Y;
                     foreach (IMGraphEditorNode node in nodeList)
                     {
-                       foreach (ILayer layer in nodeLayers)
-                       {
-                           if (layer.Active)
-                           {
+                        foreach (IMGraphLayer layer in Layers)
+                        {
+                            if (layer.Active)
+                            {
                                 if (selectedEdge.SourceDrawable == node || selectedEdge.TargetDrawable == node)
                                 {
                                     node.X += dx;
                                     node.Y += dy;
                                 }
-                           }
-                       }
+                            }
+                        }
                     }
                     lastMouseLocation = e.Location;
                     canvas.Invalidate();
@@ -328,13 +346,22 @@ namespace MultigraphEditor
             {
                 isPanning = false;
             }
+            // Create a bitmap to capture the content of the canvas control
+            Bitmap canvasBitmap = new Bitmap(canvas.Width, canvas.Height);
+            canvas.DrawToBitmap(canvasBitmap, new Rectangle(0, 0, canvas.Width, canvas.Height));
+            Bitmap scaledBitmap = new Bitmap(canvasBitmap, new Size(Layout0Panel.Width, Layout0Panel.Height));
+            // Draw the captured bitmap onto the Layout0Panel
+            using (Graphics g = Layout0Panel.CreateGraphics())
+            {
+                g.DrawImage(scaledBitmap, 0, 0);
+            }
         }
 
         private void RightMouseDown(object sender, MouseEventArgs e)
         {
             foreach (IMGraphEditorEdge edge in edgeList)
             {
-                foreach (IEdgeLayer layer in edgeLayers)
+                foreach (IMGraphLayer layer in Layers)
                 {
                     if (layer.Active)
                     {
@@ -356,7 +383,7 @@ namespace MultigraphEditor
 
             foreach (IMGraphEditorNode node in nodeList)
             {
-                foreach (INodeLayer layer in nodeLayers)
+                foreach (IMGraphLayer layer in Layers)
                 {
                     if (layer.Active)
                     {
@@ -381,6 +408,5 @@ namespace MultigraphEditor
         {
             Console.WriteLine("Settings button clicked");
         }
-
     }
 }

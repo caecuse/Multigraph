@@ -68,7 +68,7 @@ namespace MultigraphEditor.src.graph
             return (X - Diameter / 2, Y - Diameter / 2);
         }
 
-        public void Draw(object sender, PaintEventArgs e, MGraphEditorNodeLayer l)
+        public void Draw(object sender, PaintEventArgs e, INodeLayer l)
         {
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -87,7 +87,7 @@ namespace MultigraphEditor.src.graph
             }
         }
 
-        public void DrawLabel(object sender, PaintEventArgs e, MGraphEditorNodeLayer l)
+        public void DrawLabel(object sender, PaintEventArgs e, INodeLayer l)
         {
             // Calculate label position and size
             SizeF textSize = e.Graphics.MeasureString(Label, l.Font);

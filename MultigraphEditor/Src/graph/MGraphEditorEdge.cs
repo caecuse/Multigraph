@@ -57,7 +57,7 @@ namespace MultigraphEditor.src.graph
             Weight = w;
         }
 
-        public void Draw(object sender, PaintEventArgs e, MGraphEditorEdgeLayer l)
+        public void Draw(object sender, PaintEventArgs e, IEdgeLayer l)
         {
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -96,7 +96,7 @@ namespace MultigraphEditor.src.graph
             DrawLabel(sender, e, l);
         }
 
-        public void DrawArrow(object sender, PaintEventArgs e, MGraphEditorEdgeLayer l)
+        public void DrawArrow(object sender, PaintEventArgs e, IEdgeLayer l)
         {
             float dx = TargetDrawable.X - SourceDrawable.X;
             float dy = TargetDrawable.Y - SourceDrawable.Y;
@@ -139,7 +139,7 @@ namespace MultigraphEditor.src.graph
             }
         }
 
-        public void DrawLabel(object sender, PaintEventArgs e, MGraphEditorEdgeLayer l)
+        public void DrawLabel(object sender, PaintEventArgs e, IEdgeLayer l)
         {
             float dx = TargetDrawable.X - SourceDrawable.X;
             float dy = TargetDrawable.Y - SourceDrawable.Y;

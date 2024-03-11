@@ -39,17 +39,25 @@
             SettingsBtn = new Button();
             GraphBtn = new Button();
             canvas = new Src.design.DoubleBufferedPanel();
+            LayoutPanel = new TableLayoutPanel();
+            flowLayoutPanel2 = new FlowLayoutPanel();
+            Layout0Panel = new Panel();
+            button2 = new Button();
             MainLayout.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
+            LayoutPanel.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // MainLayout
             // 
+            MainLayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble;
             MainLayout.ColumnCount = 2;
             MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 0F));
+            MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 189F));
             MainLayout.Controls.Add(flowLayoutPanel1, 0, 1);
             MainLayout.Controls.Add(canvas, 0, 0);
+            MainLayout.Controls.Add(LayoutPanel, 1, 0);
             MainLayout.Dock = DockStyle.Fill;
             MainLayout.Location = new Point(0, 0);
             MainLayout.Name = "MainLayout";
@@ -71,9 +79,10 @@
             flowLayoutPanel1.Controls.Add(AlgorithmsBtn);
             flowLayoutPanel1.Controls.Add(SettingsBtn);
             flowLayoutPanel1.Controls.Add(GraphBtn);
-            flowLayoutPanel1.Location = new Point(164, 413);
+            flowLayoutPanel1.Location = new Point(136, 407);
+            flowLayoutPanel1.Margin = new Padding(0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(471, 34);
+            flowLayoutPanel1.Size = new Size(528, 40);
             flowLayoutPanel1.TabIndex = 0;
             // 
             // button1
@@ -87,6 +96,7 @@
             // 
             // ViewBtn
             // 
+            ViewBtn.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             ViewBtn.Image = Properties.Resources.view;
             ViewBtn.ImageAlign = ContentAlignment.MiddleLeft;
             ViewBtn.Location = new Point(9, 3);
@@ -171,7 +181,7 @@
             // 
             GraphBtn.Image = Properties.Resources.graph;
             GraphBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            GraphBtn.Location = new Point(3, 32);
+            GraphBtn.Location = new Point(465, 3);
             GraphBtn.Name = "GraphBtn";
             GraphBtn.Size = new Size(60, 23);
             GraphBtn.TabIndex = 6;
@@ -182,11 +192,55 @@
             // canvas
             // 
             canvas.Dock = DockStyle.Fill;
-            canvas.Location = new Point(3, 3);
+            canvas.Location = new Point(6, 6);
             canvas.Name = "canvas";
-            canvas.Size = new Size(794, 404);
+            canvas.Size = new Size(596, 395);
             canvas.TabIndex = 1;
             canvas.Paint += canvas_Paint;
+            // 
+            // LayoutPanel
+            // 
+            LayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            LayoutPanel.ColumnCount = 1;
+            LayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            LayoutPanel.Controls.Add(flowLayoutPanel2, 0, 0);
+            LayoutPanel.Dock = DockStyle.Fill;
+            LayoutPanel.Location = new Point(611, 6);
+            LayoutPanel.Name = "LayoutPanel";
+            LayoutPanel.RowCount = 2;
+            LayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
+            LayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            LayoutPanel.Size = new Size(183, 395);
+            LayoutPanel.TabIndex = 2;
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.Controls.Add(Layout0Panel);
+            flowLayoutPanel2.Controls.Add(button2);
+            flowLayoutPanel2.Dock = DockStyle.Fill;
+            flowLayoutPanel2.Location = new Point(4, 4);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Size = new Size(175, 74);
+            flowLayoutPanel2.TabIndex = 0;
+            // 
+            // Layout0Panel
+            // 
+            Layout0Panel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            Layout0Panel.BorderStyle = BorderStyle.FixedSingle;
+            Layout0Panel.Location = new Point(3, 3);
+            Layout0Panel.Name = "Layout0Panel";
+            Layout0Panel.Size = new Size(118, 71);
+            Layout0Panel.TabIndex = 2;
+            // 
+            // button2
+            // 
+            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            button2.Image = Properties.Resources.view;
+            button2.Location = new Point(127, 3);
+            button2.Name = "button2";
+            button2.Size = new Size(43, 71);
+            button2.TabIndex = 1;
+            button2.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -199,12 +253,15 @@
             Load += MainForm_Load;
             MainLayout.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
+            LayoutPanel.ResumeLayout(false);
+            flowLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private TableLayoutPanel MainLayout;
+        private Src.design.DoubleBufferedPanel canvas;
         private FlowLayoutPanel flowLayoutPanel1;
         private Button button1;
         private Button ViewBtn;
@@ -212,8 +269,11 @@
         private Button AddBtn;
         private Button ConnectBtn;
         private Button AlgorithmsBtn;
-        private Button GraphBtn;
         private Button SettingsBtn;
-        private Src.design.DoubleBufferedPanel canvas;
+        private Button GraphBtn;
+        private TableLayoutPanel LayoutPanel;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private Panel Layout0Panel;
+        private Button button2;
     }
 }

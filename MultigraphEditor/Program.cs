@@ -1,5 +1,6 @@
 using MultigraphEditor.src.graph;
 using MultigraphEditor.src.layers;
+using MultigraphEditor.Src.layers;
 
 namespace MultigraphEditor
 {
@@ -13,13 +14,12 @@ namespace MultigraphEditor
         {
             Type NodeType = typeof(MGraphEditorNode);
             Type EdgeType = typeof(MGraphEditorEdge);
-            Type NodeLayerType = typeof(MGraphEditorNodeLayer);
-            Type EdgeLayerType = typeof(MGraphEditorEdgeLayer);
+            Type LayerType = typeof(MGraphLayer);
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm(NodeType, EdgeType, NodeLayerType, EdgeLayerType));
+            Application.Run(new MainForm(NodeType, EdgeType, LayerType));
         }
     }
 }
