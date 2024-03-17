@@ -12,5 +12,8 @@ namespace MultigraphEditor.src.layers
         Color Color { get; set; }
         int Width { get; set; }
         bool Active { get; set; }
+        int Identifier { get; set; }
+        String Name { get; set; }
+        void changeActive();
     }
 }

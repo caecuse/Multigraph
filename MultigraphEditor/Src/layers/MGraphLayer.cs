@@ -17,5 +17,17 @@ namespace MultigraphEditor.Src.layers
         public List<IEdgeDrawable> edges { get; set; }
         public bool Active { get; set; } = true;
         public int arrowSize { get; set; } = 10;
+        public int Identifier { get; set; }
+        public String Name { get; set; }
+        public void changeActive()
+        {
+            Active = !Active;
+        }
+        static int id = 0;
+        public MGraphLayer()
+        {
+            Identifier = id++;
+            Name = "Layer " + Identifier;
+        }
     }
 }

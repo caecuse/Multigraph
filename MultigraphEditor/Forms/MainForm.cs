@@ -68,13 +68,8 @@ namespace MultigraphEditor
                 layer.edges = [(IMGraphEditorEdge)Activator.CreateInstance(edgeType)];
                 Layers.Add(layer);
             }
+            
 
-            Label layName = new Label();
-            layName.Text = "Layer 1";
-            layName.AutoSize = true;
-
-            Layout0Panel.Controls.Add(layName);
-            LayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 70));
             Button newLayer = new Button();
             newLayer.Text = "New Layer";
             newLayer.AutoSize = true;
@@ -82,12 +77,7 @@ namespace MultigraphEditor
             newLayer.Anchor = AnchorStyles.Right;
             newLayer.Anchor = AnchorStyles.Top;
 
-
-            //newLayer.Click += NewLayer_Click;
-            //FlowLayoutPanel flowLayoutPanel = new FlowLayoutPanel();
-            //flowLayoutPanel.Controls.Add(newLayer);
             LayoutPanel.Controls.Add(newLayer, 0, LayoutPanel.RowCount - 1);
-            //Layout0Panel.BackgroundImage = 
         }
 
         private void AddBtn_Click(object sender, EventArgs e)
@@ -144,8 +134,6 @@ namespace MultigraphEditor
                     }
                 }
             }
-
-
         }
 
         private void LeftMouseDown(object sender, MouseEventArgs e)
@@ -345,15 +333,6 @@ namespace MultigraphEditor
             if (amode == ApplicationMode.View)
             {
                 isPanning = false;
-            }
-            // Create a bitmap to capture the content of the canvas control
-            Bitmap canvasBitmap = new Bitmap(canvas.Width, canvas.Height);
-            canvas.DrawToBitmap(canvasBitmap, new Rectangle(0, 0, canvas.Width, canvas.Height));
-            Bitmap scaledBitmap = new Bitmap(canvasBitmap, new Size(Layout0Panel.Width, Layout0Panel.Height));
-            // Draw the captured bitmap onto the Layout0Panel
-            using (Graphics g = Layout0Panel.CreateGraphics())
-            {
-                g.DrawImage(scaledBitmap, 0, 0);
             }
         }
 
