@@ -68,9 +68,8 @@ namespace MultigraphEditor.src.graph
             return (X - Diameter / 2, Y - Diameter / 2);
         }
 
-        public void Draw(object sender, PaintEventArgs e, INodeLayer l)
+        public void Draw(Graphics g, INodeLayer l)
         {
-            Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             Pen p = new Pen(l.Color, l.Width);
@@ -79,24 +78,24 @@ namespace MultigraphEditor.src.graph
                 float x = GetDrawingCoordinates().Item1;
                 float y = GetDrawingCoordinates().Item2;
 
-                e.Graphics.DrawEllipse(p, x, y, Diameter, Diameter);
+                g.DrawEllipse(p, x, y, Diameter, Diameter);
                 if (Label != null)
                 {
-                    DrawLabel(sender, e, l);
+                    DrawLabel(g, l);
                 }
             }
         }
 
-        public void DrawLabel(object sender, PaintEventArgs e, INodeLayer l)
+        public void DrawLabel(Graphics g, INodeLayer l)
         {
             // Calculate label position and size
-            SizeF textSize = e.Graphics.MeasureString(Label, l.Font);
+            SizeF textSize = g.MeasureString(Label, l.Font);
             float labelX = GetDrawingCoordinates().Item1 + (Diameter - textSize.Width) / 2;     // Center horizontally
             float labelY = GetDrawingCoordinates().Item2 + (Diameter - textSize.Height) / 2;    // Center vertically
 
             // Draw label
             Color textColor = l.Color;
-            e.Graphics.DrawString(Label, l.Font, new SolidBrush(textColor), labelX, labelY);
+            g.DrawString(Label, l.Font, new SolidBrush(textColor), labelX, labelY);
         }
 
         public bool IsInside(float x, float y)

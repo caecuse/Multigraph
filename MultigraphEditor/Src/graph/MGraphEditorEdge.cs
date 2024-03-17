@@ -57,46 +57,47 @@ namespace MultigraphEditor.src.graph
             Weight = w;
         }
 
-        public void Draw(object sender, PaintEventArgs e, IEdgeLayer l)
+        public void Draw(Graphics g, IEdgeLayer l)
         {
-            Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             Pen pen = new Pen(l.Color, l.Width);
             Brush brush = new SolidBrush(l.Color);
-
-            if (SourceDrawable != TargetDrawable)
+            if (SourceDrawable != null && TargetDrawable != null)
             {
-                float dx = TargetDrawable.X - SourceDrawable.X;
-                float dy = TargetDrawable.Y - SourceDrawable.Y;
-                float length = (float)Math.Sqrt(dx * dx + dy * dy);
-                float unitDx = dx / length;
-                float unitDy = dy / length;
-                float sourceRadius = SourceDrawable.Diameter / 2;
-                float targetRadius = TargetDrawable.Diameter / 2;
-                float sourceX = SourceDrawable.X + sourceRadius * unitDx;
-                float sourceY = SourceDrawable.Y + sourceRadius * unitDy;
-                float targetX = TargetDrawable.X - targetRadius * unitDx;
-                float targetY = TargetDrawable.Y - targetRadius * unitDy;
+                if (SourceDrawable != TargetDrawable)
+                {
+                    float dx = TargetDrawable.X - SourceDrawable.X;
+                    float dy = TargetDrawable.Y - SourceDrawable.Y;
+                    float length = (float)Math.Sqrt(dx * dx + dy * dy);
+                    float unitDx = dx / length;
+                    float unitDy = dy / length;
+                    float sourceRadius = SourceDrawable.Diameter / 2;
+                    float targetRadius = TargetDrawable.Diameter / 2;
+                    float sourceX = SourceDrawable.X + sourceRadius * unitDx;
+                    float sourceY = SourceDrawable.Y + sourceRadius * unitDy;
+                    float targetX = TargetDrawable.X - targetRadius * unitDx;
+                    float targetY = TargetDrawable.Y - targetRadius * unitDy;
 
-                controlPointX = (sourceX + targetX) / 2;
-                controlPointY = (sourceY + targetY) / 2;
+                    controlPointX = (sourceX + targetX) / 2;
+                    controlPointY = (sourceY + targetY) / 2;
 
-                // Draw control point
-                e.Graphics.FillEllipse(brush, controlPointX - 5, controlPointY - 5, 10, 10);
+                    // Draw control point
+                    g.FillEllipse(brush, controlPointX - 5, controlPointY - 5, 10, 10);
 
-                // Draw the edge
-                e.Graphics.DrawLine(pen, sourceX, sourceY, targetX, targetY);
+                    // Draw the edge
+                    g.DrawLine(pen, sourceX, sourceY, targetX, targetY);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+                DrawArrow(g, l);
+                DrawLabel(g, l);
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
-            DrawArrow(sender, e, l);
-            DrawLabel(sender, e, l);
         }
 
-        public void DrawArrow(object sender, PaintEventArgs e, IEdgeLayer l)
+        public void DrawArrow(Graphics g, IEdgeLayer l)
         {
             float dx = TargetDrawable.X - SourceDrawable.X;
             float dy = TargetDrawable.Y - SourceDrawable.Y;
@@ -119,7 +120,7 @@ namespace MultigraphEditor.src.graph
                 points[0] = new PointF(arrowHeadX, arrowHeadY);
                 points[1] = new PointF(arrowHeadX - (arrowSize * (float)Math.Cos(arrowHeadAngle - (Math.PI / 6))), arrowHeadY - (arrowSize * (float)Math.Sin(arrowHeadAngle - (Math.PI / 6))));
                 points[2] = new PointF(arrowHeadX - (arrowSize * (float)Math.Cos(arrowHeadAngle + (Math.PI / 6))), arrowHeadY - (arrowSize * (float)Math.Sin(arrowHeadAngle + (Math.PI / 6))));
-                e.Graphics.FillPolygon(brush, points);
+                g.FillPolygon(brush, points);
             }
 
             if (Bidirectional)
@@ -134,12 +135,12 @@ namespace MultigraphEditor.src.graph
                     points[0] = new PointF(arrowHeadX2, arrowHeadY2);
                     points[1] = new PointF(arrowHeadX2 - (arrowSize * (float)Math.Cos(arrowHeadAngle2 - (Math.PI / 6))), arrowHeadY2 - (arrowSize * (float)Math.Sin(arrowHeadAngle2 - (Math.PI / 6))));
                     points[2] = new PointF(arrowHeadX2 - (arrowSize * (float)Math.Cos(arrowHeadAngle2 + (Math.PI / 6))), arrowHeadY2 - (arrowSize * (float)Math.Sin(arrowHeadAngle2 + (Math.PI / 6))));
-                    e.Graphics.FillPolygon(brush, points);
+                    g.FillPolygon(brush, points);
                 }
             }
         }
 
-        public void DrawLabel(object sender, PaintEventArgs e, IEdgeLayer l)
+        public void DrawLabel(Graphics g, IEdgeLayer l)
         {
             float dx = TargetDrawable.X - SourceDrawable.X;
             float dy = TargetDrawable.Y - SourceDrawable.Y;
@@ -162,10 +163,10 @@ namespace MultigraphEditor.src.graph
 
             using (SolidBrush brush = new SolidBrush(l.Color))
             {
-                SizeF textSize = e.Graphics.MeasureString(Label + "\n" + Weight.ToString(), l.Font);
+                SizeF textSize = g.MeasureString(Label + "\n" + Weight.ToString(), l.Font);
                 PointF labelPosition = new PointF(labelX - textSize.Width / 2, labelY - textSize.Height / 2);
 
-                e.Graphics.DrawString(Weight.ToString() + "\n" + Label, l.Font, brush, labelPosition);
+                g.DrawString(Weight.ToString() + "\n" + Label, l.Font, brush, labelPosition);
             }
         }
 

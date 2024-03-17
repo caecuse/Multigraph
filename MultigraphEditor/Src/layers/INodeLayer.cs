@@ -1,4 +1,5 @@
 ﻿using MultigraphEditor.src.graph;
+using MultigraphEditor.Src.graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace MultigraphEditor.src.layers
 {
     public interface INodeLayer : ILayer
     {
-        public List<INodeDrawable> nodes { get; set; }
+        public List<IMGraphEditorNode> nodes { get; set; }
     }
 }

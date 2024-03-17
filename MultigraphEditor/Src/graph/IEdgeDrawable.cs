@@ -12,9 +12,9 @@ namespace MultigraphEditor.src.graph
         internal INodeDrawable SourceDrawable { get; set; }
         internal INodeDrawable TargetDrawable { get; set; }
         public void PopulateDrawing(INodeDrawable srcDrw, INodeDrawable tgtDrw);
-        public void Draw(object sender, PaintEventArgs e, IEdgeLayer l);
-        public void DrawLabel(object sender, PaintEventArgs e, IEdgeLayer l);
-        public void DrawArrow(object sender, PaintEventArgs e, IEdgeLayer l);
+        public void Draw(Graphics g, IEdgeLayer l);
+        public void DrawLabel(Graphics g, IEdgeLayer l);
+        public void DrawArrow(Graphics g, IEdgeLayer l);
         public bool IsInsideControlPoint(float x, float y);
     }
 }

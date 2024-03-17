@@ -45,7 +45,11 @@ namespace MultigraphEditor
             canvas.MouseDown += HandleMouseDown;
             canvas.MouseMove += HandleMouseMove;
             canvas.MouseUp += HandleMouseUp;
+            LayoutPanel.Scroll += LayoutPanel_Scroll;
+            LayoutPanel.MouseWheel += LayoutPanel_Scroll;
         }
+
+
 
         private void HandleMouseDown(object sender, MouseEventArgs e)
         {
@@ -64,11 +68,23 @@ namespace MultigraphEditor
             if (Layers.Count == 0)
             {
                 IMGraphLayer layer = (IMGraphLayer)Activator.CreateInstance(layerType);
-                layer.nodes = [(IMGraphEditorNode)Activator.CreateInstance(nodeType)];
-                layer.edges = [(IMGraphEditorEdge)Activator.CreateInstance(edgeType)];
+                layer.nodes = new List<IMGraphEditorNode>();
+                layer.edges = new List<IMGraphEditorEdge>();
                 Layers.Add(layer);
             }
-            
+            Bitmap canvasBitmap = new Bitmap(canvas.Width, canvas.Height);
+            canvas.DrawToBitmap(canvasBitmap, new Rectangle(0, 0, canvas.Width, canvas.Height));
+            LayoutPreviewControl prev = new LayoutPreviewControl(Layers[0], canvasBitmap);
+            prev.CanvasInvalidated += (sender, e) =>
+            {
+                canvas.Invalidate(); // Invalidate the canvas on the main form
+            };
+            LayoutPanel.RowStyles.Clear();
+            LayoutPanel.Controls.Clear();
+
+            LayoutPanel.RowStyles.Add(new RowStyle() { Height = 80, SizeType = SizeType.Absolute });
+            LayoutPanel.RowCount++;
+            LayoutPanel.Controls.Add(prev, 0, 0);
 
             Button newLayer = new Button();
             newLayer.Text = "New Layer";
@@ -76,9 +92,12 @@ namespace MultigraphEditor
             newLayer.Anchor = AnchorStyles.Left;
             newLayer.Anchor = AnchorStyles.Right;
             newLayer.Anchor = AnchorStyles.Top;
+            newLayer.Click += AddLayer;
 
             LayoutPanel.Controls.Add(newLayer, 0, LayoutPanel.RowCount - 1);
         }
+
+
 
         private void AddBtn_Click(object sender, EventArgs e)
         {
@@ -114,23 +133,23 @@ namespace MultigraphEditor
 
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
-            foreach (IMGraphEditorNode node in nodeList)
+            Graphics g = e.Graphics;
+
+            foreach (IMGraphLayer layer in Layers)
             {
-                foreach (IMGraphLayer layer in Layers)
+                if (layer.Active)
                 {
-                    if (layer.Active)
+                    foreach (IMGraphEditorNode node in layer.nodes)
                     {
-                        node.Draw(sender, e, layer);
+                        node.Draw(g, layer);
                     }
-                }
-            }
-            foreach (IEdgeDrawable edge in edgeList)
-            {
-                foreach (IMGraphLayer layer in Layers)
-                {
-                    if (layer.Active)
+                    // Draw the edge if source and target are in the same layer
+                    foreach (IMGraphEditorEdge edge in layer.edges)
                     {
-                        edge.Draw(sender, e, layer);
+                        if (layer.nodes.Contains(edge.SourceDrawable) && layer.nodes.Contains(edge.TargetDrawable))
+                        {
+                            edge.Draw(g, layer);
+                        }
                     }
                 }
             }
@@ -162,15 +181,6 @@ namespace MultigraphEditor
                     };
                     editform.ShowDialog();
                 }
-
-                foreach (IMGraphLayer layer in Layers)
-                {
-                    if (layer.Active)
-                    {
-                        layer.nodes.Add(node);
-                    }
-                }
-                canvas.Invalidate();
             }
 
             if (amode == ApplicationMode.View)
@@ -229,11 +239,34 @@ namespace MultigraphEditor
                                 {
                                     selectedNodeForConnection = node;
                                     selectedNode = null;
+                                    break;
                                 }
                                 else
                                 {
+                                    // Check if nodes are at least in one same layer
+                                    if (selectedNodeForConnection != null && selectedNode != null)
+                                    {
+                                        bool areInSameLayer = false;
+                                        foreach (IMGraphLayer elayer in Layers)
+                                        {
+                                            if (elayer.Active)
+                                            {
+                                                if (elayer.nodes.Contains(selectedNode) && elayer.nodes.Contains(selectedNodeForConnection))
+                                                {
+                                                    areInSameLayer = true;
+                                                }
+                                            }
+                                        }
+                                        if (!areInSameLayer)
+                                        {
+                                            MessageBox.Show("Nodes are not in the same layer");
+                                            selectedNodeForConnection = null;
+                                            selectedNode = null;
+                                            break;
+                                        }
+                                    }
                                     IMGraphEditorEdge edge = (IMGraphEditorEdge)Activator.CreateInstance(edgeType);
-
+                                    
                                     using (EditForm editform = new EditForm(edge))
                                     {
                                         editform.OnOk += (s, e) =>
@@ -334,6 +367,7 @@ namespace MultigraphEditor
             {
                 isPanning = false;
             }
+            UpdatePreviewPanels();
         }
 
         private void RightMouseDown(object sender, MouseEventArgs e)
@@ -383,9 +417,85 @@ namespace MultigraphEditor
             }
         }
 
+        private void AddLayer(object? sender, EventArgs e)
+        {
+            IMGraphLayer layer = (IMGraphLayer)Activator.CreateInstance(layerType);
+            layer.nodes = new List<IMGraphEditorNode>();
+            layer.edges = new List<IMGraphEditorEdge>();
+            Layers.Add(layer);
+
+            Bitmap canvasBitmap = new Bitmap(canvas.Width, canvas.Height);
+            canvas.DrawToBitmap(canvasBitmap, new Rectangle(0, 0, canvas.Width, canvas.Height));
+            LayoutPreviewControl prev = new LayoutPreviewControl(Layers[layer.Identifier], canvasBitmap);
+            prev.CanvasInvalidated += (sender, e) =>
+            {
+                canvas.Invalidate(); // Invalidate the canvas on the main form
+            };
+
+            LayoutPanel.RowCount--;
+            LayoutPanel.RowCount++;
+            LayoutPanel.RowStyles.Add(new RowStyle() { Height = 80, SizeType = SizeType.Absolute });
+            LayoutPanel.Controls.Add(prev, LayoutPanel.RowCount-1, 0);
+
+            LayoutPanel.RowCount++;
+        }
+
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Settings button clicked");
+        }
+
+        private Control? GetControlByTag(string tag)
+        {
+            foreach (Control control in Controls)
+            {
+                if (control.Tag != null && control.Tag.ToString() == tag)
+                {
+                    return control;
+                }
+            }
+            return null;
+        }
+
+        private void LayoutPanel_Scroll(object sender, ScrollEventArgs e)
+        {
+            UpdatePreviewPanels();
+        }
+
+        private void LayoutPanel_Scroll(object? sender, MouseEventArgs e)
+        {
+           UpdatePreviewPanels();
+        }
+
+        private void UpdatePreviewPanels()
+        {
+            foreach (IMGraphLayer l in Layers)
+            {
+                foreach (Control c in LayoutPanel.Controls)
+                {
+                    if (c is LayoutPreviewControl)
+                    {
+                        if (c.Tag.ToString() == l.Identifier.ToString())
+                        {
+                            LayoutPreviewControl lp = (LayoutPreviewControl)c;
+                            Bitmap bitmap = new Bitmap(canvas.Width, canvas.Height);
+                            using (Graphics g = Graphics.FromImage(bitmap))
+                            {
+                                foreach (IMGraphEditorNode node in l.nodes)
+                                {
+                                    node.Draw(g, l);
+                                }
+                                foreach (IEdgeDrawable edge in l.edges)
+                                {
+                                    edge.Draw(g, l);
+                                }
+                            }
+
+                            lp.PaintPreviewPanel(bitmap);
+                        }
+                    }
+                }
+            }
         }
     }
 }

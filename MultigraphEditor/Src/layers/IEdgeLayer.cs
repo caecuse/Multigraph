@@ -1,4 +1,5 @@
 ﻿using MultigraphEditor.src.graph;
+using MultigraphEditor.Src.graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace MultigraphEditor.src.layers
     public interface IEdgeLayer : ILayer
     {
         public int arrowSize { get; set; }
-        public List<IEdgeDrawable> edges { get; set; }
+        public List<IMGraphEditorEdge> edges { get; set; }
     }
 }
