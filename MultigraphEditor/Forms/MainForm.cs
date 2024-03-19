@@ -79,6 +79,10 @@ namespace MultigraphEditor
             {
                 canvas.Invalidate(); // Invalidate the canvas on the main form
             };
+            prev.LayerDeleted += (sender, e) =>
+            {
+                LayerDeletedHandler(sender, e);
+            };
             LayoutPanel.RowStyles.Clear();
             LayoutPanel.Controls.Clear();
 
@@ -426,7 +430,11 @@ namespace MultigraphEditor
 
             Bitmap canvasBitmap = new Bitmap(canvas.Width, canvas.Height);
             canvas.DrawToBitmap(canvasBitmap, new Rectangle(0, 0, canvas.Width, canvas.Height));
-            LayoutPreviewControl prev = new LayoutPreviewControl(Layers[layer.Identifier], canvasBitmap);
+            LayoutPreviewControl prev = new LayoutPreviewControl(Layers[Layers.IndexOf(layer)], canvasBitmap);
+            prev.LayerDeleted += (sender, e) =>
+            {
+                LayerDeletedHandler(sender, e);
+            };
             prev.CanvasInvalidated += (sender, e) =>
             {
                 canvas.Invalidate(); // Invalidate the canvas on the main form
@@ -490,12 +498,23 @@ namespace MultigraphEditor
                                     edge.Draw(g, l);
                                 }
                             }
-
                             lp.PaintPreviewPanel(bitmap);
                         }
                     }
                 }
             }
+        }
+
+        private void LayerDeletedHandler(object sender, IMGraphLayer e)
+        {
+            if (Layers.Count == 1)
+            {
+                MessageBox.Show("Cannot delete the last layer");
+                return;
+            }
+            Layers.Remove(Layers[Layers.IndexOf(e)]);
+            LayoutPanel.Controls.Remove((Control)sender);
+            LayoutPanel.RowCount--;
         }
     }
 }

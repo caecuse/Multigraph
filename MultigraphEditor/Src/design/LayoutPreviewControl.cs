@@ -19,13 +19,35 @@ namespace MultigraphEditor.Src.design
     {
         Panel previewPanel = new Panel();
         public event EventHandler CanvasInvalidated;
+        public event EventHandler<IMGraphLayer> LayerDeleted;
 
         public LayoutPreviewControl(IMGraphLayer layer, Bitmap bmp)
         {
             InitializeComponent();
             bmp = new Bitmap(bmp);
 
-            //PaintPreviewPanel(bmp);
+            TableLayoutPanel optionsPanel = new TableLayoutPanel();
+            //optionsPanel.AutoSize = true;
+            optionsPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            optionsPanel.ColumnCount = 1;
+            optionsPanel.ColumnStyles.Add(new ColumnStyle() { Width = 100, SizeType = SizeType.Percent });
+            optionsPanel.RowCount = 2;
+            optionsPanel.RowStyles.Add(new RowStyle() { Height = 50, SizeType = SizeType.Percent });
+            optionsPanel.RowStyles.Add(new RowStyle() { Height = 50, SizeType = SizeType.Percent });
+
+            // Create a button for delete
+            Button deleteButton = new Button();
+            deleteButton.Image = Resources.trash;
+            deleteButton.AutoSize = true;
+            deleteButton.Dock = DockStyle.Fill;
+            ToolTip tipBtnDelete = new ToolTip();
+            tipBtnDelete.SetToolTip(deleteButton, "Delete layer");
+            deleteButton.Click += (sender, e) =>
+            {
+                LayerDeleted?.Invoke(this, layer);
+                CanvasInvalidated?.Invoke(this, EventArgs.Empty);
+            };
+
             // Create a Button for preview
             Button previewButton = new Button();
             previewButton.Image = Resources.view;
@@ -68,7 +90,9 @@ namespace MultigraphEditor.Src.design
 
             // Add controls to the TableLayoutPanel
             previewTable.Controls.Add(previewPanel, 0, 0);
-            previewTable.Controls.Add(previewButton, 1, 0);
+            optionsPanel.Controls.Add(deleteButton, 0, 0);
+            optionsPanel.Controls.Add(previewButton, 0, 1);
+            previewTable.Controls.Add(optionsPanel, 1, 0);
             previewPanel.Controls.Add(layName);
             previewTable.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
             previewTable.Dock = DockStyle.Fill;

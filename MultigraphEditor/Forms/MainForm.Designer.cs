@@ -48,8 +48,8 @@
             // 
             MainLayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble;
             MainLayout.ColumnCount = 2;
-            MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
-            MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 200F));
             MainLayout.Controls.Add(flowLayoutPanel1, 0, 1);
             MainLayout.Controls.Add(canvas, 0, 0);
             MainLayout.Controls.Add(LayoutPanel, 1, 0);
@@ -74,10 +74,10 @@
             flowLayoutPanel1.Controls.Add(AlgorithmsBtn);
             flowLayoutPanel1.Controls.Add(SettingsBtn);
             flowLayoutPanel1.Controls.Add(GraphBtn);
-            flowLayoutPanel1.Location = new Point(136, 407);
+            flowLayoutPanel1.Location = new Point(131, 407);
             flowLayoutPanel1.Margin = new Padding(0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(528, 40);
+            flowLayoutPanel1.Size = new Size(537, 40);
             flowLayoutPanel1.TabIndex = 0;
             // 
             // button1
@@ -178,10 +178,11 @@
             GraphBtn.ImageAlign = ContentAlignment.MiddleLeft;
             GraphBtn.Location = new Point(465, 3);
             GraphBtn.Name = "GraphBtn";
-            GraphBtn.Size = new Size(60, 23);
+            GraphBtn.Size = new Size(66, 23);
             GraphBtn.TabIndex = 6;
             GraphBtn.Text = "Graph";
             GraphBtn.TextAlign = ContentAlignment.MiddleRight;
+            GraphBtn.TextImageRelation = TextImageRelation.TextBeforeImage;
             GraphBtn.UseVisualStyleBackColor = true;
             // 
             // canvas
@@ -189,7 +190,7 @@
             canvas.Dock = DockStyle.Fill;
             canvas.Location = new Point(6, 6);
             canvas.Name = "canvas";
-            canvas.Size = new Size(626, 395);
+            canvas.Size = new Size(585, 395);
             canvas.TabIndex = 1;
             canvas.Paint += canvas_Paint;
             // 
@@ -200,11 +201,11 @@
             LayoutPanel.ColumnCount = 1;
             LayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             LayoutPanel.Dock = DockStyle.Fill;
-            LayoutPanel.Location = new Point(641, 6);
+            LayoutPanel.Location = new Point(600, 6);
             LayoutPanel.Name = "LayoutPanel";
             LayoutPanel.RowCount = 1;
             LayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
-            LayoutPanel.Size = new Size(153, 395);
+            LayoutPanel.Size = new Size(194, 395);
             LayoutPanel.TabIndex = 2;
             // 
             // MainForm
