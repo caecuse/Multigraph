@@ -24,7 +24,7 @@ namespace MultigraphEditor
         private Point lastMouseLocation = Point.Empty;
         private IMGraphEditorNode? selectedNode = null;
         private IMGraphEditorNode? selectedNodeForConnection = null;
-        private IMGraphEditorEdge? selectedEdge = null;
+        private List<IMGraphEditorEdge> selectedEdges = new List<IMGraphEditorEdge>();
 
         private enum ApplicationMode
         {
@@ -105,7 +105,7 @@ namespace MultigraphEditor
 
         private void AddBtn_Click(object sender, EventArgs e)
         {
-            selectedEdge = null;
+            selectedEdges.Clear();
             selectedNode = null;
             selectedNodeForConnection = null;
             amode = ApplicationMode.AddVertex;
@@ -113,7 +113,7 @@ namespace MultigraphEditor
 
         private void ViewBtn_Click(object sender, EventArgs e)
         {
-            selectedEdge = null;
+            selectedEdges.Clear();
             selectedNode = null;
             selectedNodeForConnection = null;
             amode = ApplicationMode.View;
@@ -121,7 +121,7 @@ namespace MultigraphEditor
 
         private void MoveBtn_Click(object sender, EventArgs e)
         {
-            selectedEdge = null;
+            selectedEdges.Clear();
             selectedNode = null;
             selectedNodeForConnection = null;
             amode = ApplicationMode.Default;
@@ -129,7 +129,7 @@ namespace MultigraphEditor
 
         private void ConnectBtn_Click(object sender, EventArgs e)
         {
-            selectedEdge = null;
+            selectedEdges.Clear();
             selectedNode = null;
             selectedNodeForConnection = null;
             amode = ApplicationMode.Connect;
@@ -219,7 +219,7 @@ namespace MultigraphEditor
                         {
                             if (edge.IsInsideControlPoint(e.X, e.Y))
                             {
-                                selectedEdge = edge;
+                                selectedEdges.Add(edge);
                                 lastMouseLocation = e.Location;
                                 break;
                             }
@@ -324,26 +324,33 @@ namespace MultigraphEditor
                     canvas.Invalidate();
                 }
 
-                if (selectedEdge != null)
+                if (selectedEdges != null && selectedEdges.Count > 0)
                 {
                     float dx = e.X - lastMouseLocation.X;
                     float dy = e.Y - lastMouseLocation.Y;
-                    foreach (IMGraphEditorNode node in nodeList)
+
+                    // Use a HashSet to track nodes that have already been moved, to avoid moving the same node multiple times
+                    HashSet<IMGraphEditorNode> movedNodes = new HashSet<IMGraphEditorNode>();
+
+                    foreach (var edge in selectedEdges)
                     {
-                        foreach (IMGraphLayer layer in Layers)
+                        foreach (IMGraphEditorNode node in nodeList)
                         {
-                            if (layer.Active)
+                            if (edge.SourceDrawable == node || edge.TargetDrawable == node)
                             {
-                                if (selectedEdge.SourceDrawable == node || selectedEdge.TargetDrawable == node)
+                                // Check if the node has not been moved already
+                                if (!movedNodes.Contains(node))
                                 {
                                     node.X += dx;
                                     node.Y += dy;
+                                    movedNodes.Add(node); // Mark this node as moved
                                 }
                             }
                         }
                     }
-                    lastMouseLocation = e.Location;
-                    canvas.Invalidate();
+
+                    lastMouseLocation = e.Location; // Update the last mouse location
+                    canvas.Invalidate(); // Invalidate the canvas to trigger a redraw
                 }
             }
 
@@ -369,7 +376,7 @@ namespace MultigraphEditor
         private void HandleMouseUp(object sender, MouseEventArgs e)
         {
             selectedNode = null;
-            selectedEdge = null;
+            selectedEdges.Clear();
             if (amode == ApplicationMode.View)
             {
                 isPanning = false;
