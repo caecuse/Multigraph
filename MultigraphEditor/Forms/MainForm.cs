@@ -286,11 +286,14 @@ namespace MultigraphEditor
                                             selectedNodeForConnection.Neighbours.Add(selectedNode);
                                             selectedNode.Edges.Add(edge);
                                             selectedNodeForConnection.Edges.Add(edge);
-                                            foreach (IMGraphLayer elayer in Layers)
+
+                                            foreach (IMGraphLayer layer in Layers)
                                             {
-                                                if (elayer.Active)
+                                                // Check if the layer is active and contains both nodes
+                                                if (layer.Active && layer.nodes.Contains(selectedNode) && layer.nodes.Contains(selectedNodeForConnection))
                                                 {
-                                                    elayer.edges.Add(edge);
+                                                    // This layer is active and contains both nodes, so we add the edge to it
+                                                    layer.edges.Add(edge);
                                                 }
                                             }
                                         };
