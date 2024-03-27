@@ -57,6 +57,10 @@ namespace MultigraphEditor.Forms
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             CreateMatrix(layerComboBox, EventArgs.Empty);
+
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
         }
 
         private void CreateMatrix(object? sender, EventArgs e)
@@ -101,6 +105,10 @@ namespace MultigraphEditor.Forms
                 int startIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Source);
                 int endIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Target);
                 adjacencyMatrix[startIndex, endIndex] = 1;
+                if (edge.Bidirectional)
+                {
+                    adjacencyMatrix[endIndex, startIndex] = 1;
+                }
             }
 
             TextBox matrixDisplay = new TextBox
