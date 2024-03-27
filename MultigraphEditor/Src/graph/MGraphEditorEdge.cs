@@ -20,7 +20,7 @@ namespace MultigraphEditor.src.graph
         [ExcludeFromForm]
         public INode Target { get; set; }
         public bool Bidirectional { get; set; }
-        public int Weight { get; set; }
+        public int Weight { get; set; } = 1;
         [ExcludeFromForm]
         public required INodeDrawable SourceDrawable { get; set; }
         [ExcludeFromForm]
@@ -107,7 +107,6 @@ namespace MultigraphEditor.src.graph
             float sourceRadius = SourceDrawable.Diameter / 2;
             float targetRadius = TargetDrawable.Diameter / 2;
 
-            // Calculate the coords of arrow tip
             int arrowSize = l.arrowSize;
 
             float arrowHeadX = TargetDrawable.X - (unitDx * targetRadius);
@@ -178,10 +177,10 @@ namespace MultigraphEditor.src.graph
 
             if (lineDistance <= tolerance || isInsideEllipse)
             {
-                return true; // Point is inside the line connecting two nodes
+                return true;
             }
 
-            return false; // Point is not inside any line
+            return false;
         }
 
         public bool IsInsideControlPoint(float x, float y)
@@ -191,11 +190,9 @@ namespace MultigraphEditor.src.graph
 
         public bool IsPointInsideEllipse(float x, float y, float centerX, float centerY, float width, float height)
         {
-            // Calculate normalized coordinates
             float normalizedX = (x - centerX) / (width / 2);
             float normalizedY = (y - centerY) / (height / 2);
 
-            // Check if the point is inside the ellipse equation (x^2 / a^2) + (y^2 / b^2) <= 1
             return (normalizedX * normalizedX) + (normalizedY * normalizedY) <= 1;
         }
 

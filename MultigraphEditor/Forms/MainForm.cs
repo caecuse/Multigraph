@@ -19,6 +19,7 @@ namespace MultigraphEditor
         Type nodeType;
         Type edgeType;
         Type layerType;
+        List<Type> algoList;
 
         bool isPanning = false;
         private Point lastMouseLocation = Point.Empty;
@@ -35,12 +36,13 @@ namespace MultigraphEditor
             View, // Serves for moving canvas
             Delete,
         }
-        public MainForm(Type nodet, Type edget, Type layert)
+        public MainForm(Type nodet, Type edget, Type layert, List<Type> alist)
         {
             InitializeComponent();
             nodeType = nodet;
             edgeType = edget;
             layerType = layert;
+            algoList = alist;
 
             canvas.MouseDown += HandleMouseDown;
             canvas.MouseMove += HandleMouseMove;
@@ -106,7 +108,6 @@ namespace MultigraphEditor
             toolTip.SetToolTip(ViewBtn, "Move canvas around");
             toolTip.SetToolTip(MoveBtn, "Move vertices");
             toolTip.SetToolTip(ConnectBtn, "Connect vertices");
-            toolTip.SetToolTip(SettingsBtn, "Settings");
             toolTip.SetToolTip(GraphBtn, "Graph options");
         }
 
@@ -148,14 +149,13 @@ namespace MultigraphEditor
             UpdateLastClickedButton(sender);
         }
 
-        private void SettingsBtn_Click(object sender, EventArgs e)
-        {
-            UpdateLastClickedButton(sender);
-            Console.WriteLine("Settings button clicked");
-        }
-
         private void GraphBtn_Click(object sender, EventArgs e)
         {
+            UpdateLastClickedButton(sender);
+            selectedEdges.Clear();
+            selectedNode = null;
+            selectedNodeForConnection = null;
+
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
 
             ToolStripMenuItem save = new ToolStripMenuItem("Save");
@@ -172,14 +172,33 @@ namespace MultigraphEditor
             contextMenuStrip.Items.Add(incidence);
             contextMenuStrip.Items.Add(distance);
 
-            // Add event handlers for menu items
-            adjacency.Click += (sender, e) => CreateMatrix(Layers, "adj");
+            adjacency.Click += (sender, e) => CreateMatrixForm(Layers, "adj");
+            incidence.Click += (sender, e) => CreateMatrixForm(Layers, "inc");
+            distance.Click += (sender, e) => CreateMatrixForm(Layers, "dis");
 
-            // Show the context menu strip at the location of the button
             contextMenuStrip.Show(GraphBtn, new System.Drawing.Point(0, GraphBtn.Height));
         }
 
-        private void CreateMatrix(List<IMGraphLayer> layerList, string type)
+        private void AlgorithmsBtn_Click(object sender, EventArgs e)
+        {
+            selectedEdges.Clear();
+            selectedNode = null;
+            selectedNodeForConnection = null;
+            UpdateLastClickedButton(sender);
+            AlghoritmForm alghorimtForm = new AlghoritmForm(Layers, algoList);
+            alghorimtForm.Show();
+        }
+
+        private void RemoveBtn_Click(object sender, EventArgs e)
+        {
+            selectedEdges.Clear();
+            selectedNode = null;
+            selectedNodeForConnection = null;
+            amode = ApplicationMode.Delete;
+            UpdateLastClickedButton(sender);
+        }
+
+        private void CreateMatrixForm(List<IMGraphLayer> layerList, string type)
         {
             MatrixForm matrixForm = new MatrixForm(layerList, type);
             matrixForm.Show();
@@ -197,7 +216,6 @@ namespace MultigraphEditor
                     {
                         node.Draw(g, layer);
                     }
-                    // Draw the edge if source and target are in the same layer
                     foreach (IMGraphEditorEdge edge in layer.edges)
                     {
                         if (layer.nodes.Contains(edge.SourceDrawable) && layer.nodes.Contains(edge.TargetDrawable))
@@ -278,6 +296,71 @@ namespace MultigraphEditor
                 }
             }
 
+            if (amode == ApplicationMode.Delete)
+            {
+                List<IMGraphEditorNode> nodesToDelete = new List<IMGraphEditorNode>();
+                List<IMGraphEditorEdge> edgesToDelete = new List<IMGraphEditorEdge>();
+
+                foreach (IMGraphEditorNode node in nodeList)
+                {
+                    foreach (IMGraphLayer layer in Layers)
+                    {
+                        if (layer.Active)
+                        {
+                            if (node.IsInside(e.X, e.Y))
+                            {
+                                nodesToDelete.Add(node);
+                                foreach (IMGraphEditorEdge edge in edgeList)
+                                {
+                                    if (edge.SourceDrawable == node || edge.TargetDrawable == node)
+                                    {
+                                        edgeList.Remove(edge);
+                                    }
+                                }
+                                foreach (IMGraphLayer l in Layers)
+                                {
+                                    if (l.Active)
+                                    {
+                                        l.nodes.Remove(node);
+                                    }
+                                }
+                                canvas.Invalidate();
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                foreach (IMGraphEditorEdge edge in edgeList)
+                {
+                    foreach (IMGraphLayer layer in Layers)
+                    {
+                        if (layer.Active)
+                        {
+                            if (edge.IsInsideControlPoint(e.X, e.Y))
+                            {
+                                edgesToDelete.Add(edge);
+                                foreach (IMGraphEditorNode node in nodeList)
+                                {
+                                    node.Edges.Remove(edge);
+                                }
+                                foreach (IMGraphLayer l in Layers)
+                                {
+                                    if (l.Active)
+                                    {
+                                        l.edges.Remove(edge);
+                                    }
+                                }
+                                canvas.Invalidate();
+                                break;
+                            }
+                        }
+                    }
+                }
+                nodeList.RemoveAll(n => nodesToDelete.Contains(n));
+                edgeList.RemoveAll(n => edgesToDelete.Contains(n));
+            }
+
             if (amode == ApplicationMode.Connect)
             {
                 foreach (IMGraphEditorNode node in nodeList)
@@ -332,31 +415,32 @@ namespace MultigraphEditor
                                             edge.SourceDrawable = selectedNodeForConnection;
                                             edge.TargetDrawable = selectedNode;
                                             edgeList.Add(edge);
-                                            selectedNode.Neighbours.Add(selectedNodeForConnection);
-                                            selectedNodeForConnection.Neighbours.Add(selectedNode);
+                                            
                                             selectedNode.Edges.Add(edge);
                                             selectedNodeForConnection.Edges.Add(edge);
 
                                             foreach (IMGraphLayer layer in Layers)
                                             {
-                                                // Check if the layer is active and contains both nodes
                                                 if (layer.Active && layer.nodes.Contains(selectedNode) && layer.nodes.Contains(selectedNodeForConnection))
                                                 {
-                                                    // This layer is active and contains both nodes, so we add the edge to it
                                                     layer.edges.Add(edge);
                                                 }
                                             }
                                         };
                                         editform.ShowDialog();
                                     }
-                                    selectedNodeForConnection = null;
-                                    selectedNode = null;
-                                    canvas.Invalidate();
                                 }
+                                selectedNodeForConnection = null;
+                                selectedNode = null;
+                                canvas.Invalidate();
                             }
+
                         }
+
                     }
+
                 }
+
             }
         }
 
@@ -379,7 +463,6 @@ namespace MultigraphEditor
                     float dx = e.X - lastMouseLocation.X;
                     float dy = e.Y - lastMouseLocation.Y;
 
-                    // Use a HashSet to track nodes that have already been moved, to avoid moving the same node multiple times
                     HashSet<IMGraphEditorNode> movedNodes = new HashSet<IMGraphEditorNode>();
 
                     foreach (var edge in selectedEdges)
@@ -388,19 +471,18 @@ namespace MultigraphEditor
                         {
                             if (edge.SourceDrawable == node || edge.TargetDrawable == node)
                             {
-                                // Check if the node has not been moved already
                                 if (!movedNodes.Contains(node))
                                 {
                                     node.X += dx;
                                     node.Y += dy;
-                                    movedNodes.Add(node); // Mark this node as moved
+                                    movedNodes.Add(node);
                                 }
                             }
                         }
                     }
 
-                    lastMouseLocation = e.Location; // Update the last mouse location
-                    canvas.Invalidate(); // Invalidate the canvas to trigger a redraw
+                    lastMouseLocation = e.Location;
+                    canvas.Invalidate();
                 }
             }
 
@@ -497,7 +579,7 @@ namespace MultigraphEditor
             };
             prev.CanvasInvalidated += (sender, e) =>
             {
-                canvas.Invalidate(); // Invalidate the canvas on the main form
+                canvas.Invalidate();
             };
 
             LayoutPanel.RowCount--;
@@ -573,8 +655,6 @@ namespace MultigraphEditor
             previewControls.Remove((LayoutPreviewControl)sender);
             LayoutPanel.RowCount--;
         }
-
-
 
         private void UpdateLastClickedButton(object sender)
         {

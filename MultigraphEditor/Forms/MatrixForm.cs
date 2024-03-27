@@ -71,12 +71,15 @@ namespace MultigraphEditor.Forms
                 switch (matrixType)
                 {
                     case "adj":
+                        Text = "Adjacency Matrix";
                         GenerateAdjacencyMatrix(layer);
                         break;
                     case "inc":
+                        Text = "Incidence Matrix";
                         GenerateIncidenceMatrix(layer);
                         break;
-                    case "dist":
+                    case "dis":
+                        Text = "Distance Matrix";
                         GenerateDistanceMatrix(layer);
                         break;
                 }
@@ -124,7 +127,7 @@ namespace MultigraphEditor.Forms
             {
                 for (int j = 0; j < nodes.Count; j++)
                 {
-                    matrixDisplay.Text += adjacencyMatrix[i, j] + " ";
+                    matrixDisplay.Text += adjacencyMatrix[i, j] + ", ";
                 }
                 matrixDisplay.Text += Environment.NewLine;
             }
@@ -134,14 +137,137 @@ namespace MultigraphEditor.Forms
             orginized.Controls.Add(matrixDisplay, 1, 1);
         }
 
-        public void GenerateIncidenceMatrix(IMGraphLayer l)
+        public void GenerateIncidenceMatrix(IMGraphLayer layer)
         {
             ClearControlsExceptComboBox();
+
+            var nodes = layer.nodes;
+            var edges = layer.edges;
+
+            int[,] incidenceMatrix = new int[nodes.Count, edges.Count];
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                for (int j = 0; j < edges.Count; j++)
+                {
+                    incidenceMatrix[i, j] = 0;
+                }
+            }
+
+            for (int j = 0; j < edges.Count; j++)
+            {
+                var edge = edges[j];
+                int nodeUIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Source);
+                int nodeVIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Target);
+                int weight = edge.Weight;
+
+                if (edge.Bidirectional)
+                {
+                    incidenceMatrix[nodeUIndex, j] = weight;
+                    incidenceMatrix[nodeVIndex, j] = weight;
+                }
+                else
+                {
+                    incidenceMatrix[nodeUIndex, j] = weight;
+                    incidenceMatrix[nodeVIndex, j] = -weight;
+                }
+            }
+
+            TextBox matrixDisplay = new TextBox
+            {
+                Multiline = true,
+                Width = 400,
+                Height = 300,
+                ScrollBars = ScrollBars.Both,
+                ReadOnly = true
+            };
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                for (int j = 0; j < edges.Count; j++)
+                {
+                    sb.Append(" " + incidenceMatrix[i, j] + ", ");
+                }
+                sb.AppendLine();
+            }
+            matrixDisplay.Text = sb.ToString();
+
+            orginized.RowCount = 2;
+            orginized.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            orginized.Controls.Add(matrixDisplay, 1, 1);
         }
 
-        public void GenerateDistanceMatrix(IMGraphLayer l)
+        public void GenerateDistanceMatrix(IMGraphLayer layer)
         {
             ClearControlsExceptComboBox();
+
+            var nodes = layer.nodes;
+            var edges = layer.edges;
+
+            double[,] distanceMatrix = new double[nodes.Count, nodes.Count];
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                for (int j = 0; j < nodes.Count; j++)
+                {
+                    if (i == j)
+                        distanceMatrix[i, j] = 0;
+                    else
+                        distanceMatrix[i, j] = double.PositiveInfinity;
+                }
+            }
+
+            foreach (var edge in edges)
+            {
+                int nodeUIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Source);
+                int nodeVIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Target);
+                double weight = edge.Weight;
+
+                distanceMatrix[nodeUIndex, nodeVIndex] = weight;
+                if (edge.Bidirectional)
+                {
+                    distanceMatrix[nodeVIndex, nodeUIndex] = weight;
+                }
+            }
+
+            for (int k = 0; k < nodes.Count; k++)
+            {
+                for (int i = 0; i < nodes.Count; i++)
+                {
+                    for (int j = 0; j < nodes.Count; j++)
+                    {
+                        if (distanceMatrix[i, k] + distanceMatrix[k, j] < distanceMatrix[i, j])
+                        {
+                            distanceMatrix[i, j] = distanceMatrix[i, k] + distanceMatrix[k, j];
+                        }
+                    }
+                }
+            }
+
+            TextBox matrixDisplay = new TextBox
+            {
+                Multiline = true,
+                Width = 400,
+                Height = 300,
+                ScrollBars = ScrollBars.Both,
+                ReadOnly = true
+            };
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                for (int j = 0; j < nodes.Count; j++)
+                {
+                    string distance = distanceMatrix[i, j] == double.PositiveInfinity ? "∞" : distanceMatrix[i, j].ToString();
+                    sb.Append(distance.PadLeft(4) + ", ");
+                }
+                sb.AppendLine();
+            }
+            matrixDisplay.Text = sb.ToString();
+
+            orginized.RowCount = 2;
+            orginized.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            orginized.Controls.Add(matrixDisplay, 0, 1);
         }
 
         private void ClearControlsExceptComboBox()

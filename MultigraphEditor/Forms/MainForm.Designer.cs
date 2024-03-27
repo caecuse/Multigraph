@@ -36,7 +36,7 @@
             AddBtn = new Button();
             ConnectBtn = new Button();
             AlgorithmsBtn = new Button();
-            SettingsBtn = new Button();
+            RemoveBtn = new Button();
             GraphBtn = new Button();
             canvas = new Src.design.DoubleBufferedPanel();
             LayoutPanel = new TableLayoutPanel();
@@ -72,12 +72,12 @@
             ButtonPanel.Controls.Add(AddBtn);
             ButtonPanel.Controls.Add(ConnectBtn);
             ButtonPanel.Controls.Add(AlgorithmsBtn);
-            ButtonPanel.Controls.Add(SettingsBtn);
+            ButtonPanel.Controls.Add(RemoveBtn);
             ButtonPanel.Controls.Add(GraphBtn);
-            ButtonPanel.Location = new Point(131, 407);
+            ButtonPanel.Location = new Point(111, 407);
             ButtonPanel.Margin = new Padding(0);
             ButtonPanel.Name = "ButtonPanel";
-            ButtonPanel.Size = new Size(537, 40);
+            ButtonPanel.Size = new Size(577, 40);
             ButtonPanel.TabIndex = 0;
             // 
             // button1
@@ -157,26 +157,26 @@
             AlgorithmsBtn.TextAlign = ContentAlignment.MiddleRight;
             AlgorithmsBtn.TextImageRelation = TextImageRelation.TextBeforeImage;
             AlgorithmsBtn.UseVisualStyleBackColor = true;
+            AlgorithmsBtn.Click += AlgorithmsBtn_Click;
             // 
-            // SettingsBtn
+            // RemoveBtn
             // 
-            SettingsBtn.Image = Properties.Resources.setting;
-            SettingsBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            SettingsBtn.Location = new Point(384, 3);
-            SettingsBtn.Name = "SettingsBtn";
-            SettingsBtn.Size = new Size(75, 23);
-            SettingsBtn.TabIndex = 7;
-            SettingsBtn.Text = "Settings";
-            SettingsBtn.TextAlign = ContentAlignment.MiddleRight;
-            SettingsBtn.TextImageRelation = TextImageRelation.TextBeforeImage;
-            SettingsBtn.UseVisualStyleBackColor = true;
-            SettingsBtn.Click += SettingsBtn_Click;
+            RemoveBtn.Image = Properties.Resources.remove;
+            RemoveBtn.ImageAlign = ContentAlignment.MiddleRight;
+            RemoveBtn.Location = new Point(384, 3);
+            RemoveBtn.Name = "RemoveBtn";
+            RemoveBtn.Size = new Size(111, 23);
+            RemoveBtn.TabIndex = 7;
+            RemoveBtn.Text = "Remove object";
+            RemoveBtn.TextImageRelation = TextImageRelation.TextBeforeImage;
+            RemoveBtn.UseVisualStyleBackColor = true;
+            RemoveBtn.Click += RemoveBtn_Click;
             // 
             // GraphBtn
             // 
             GraphBtn.Image = Properties.Resources.graph;
             GraphBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            GraphBtn.Location = new Point(465, 3);
+            GraphBtn.Location = new Point(501, 3);
             GraphBtn.Name = "GraphBtn";
             GraphBtn.Size = new Size(66, 23);
             GraphBtn.TabIndex = 6;
@@ -234,8 +234,8 @@
         private Button AddBtn;
         private Button ConnectBtn;
         private Button AlgorithmsBtn;
-        private Button SettingsBtn;
         private Button GraphBtn;
         private TableLayoutPanel LayoutPanel;
+        private Button RemoveBtn;
     }
 }
