@@ -173,13 +173,16 @@ namespace MultigraphEditor
             contextMenuStrip.Items.Add(distance);
 
             // Add event handlers for menu items
-            //newItem.Click += NewItem_Click;
-            //openItem.Click += OpenItem_Click;
-            //saveItem.Click += SaveItem_Click;
-            //exitItem.Click += ExitItem_Click;
+            adjacency.Click += (sender, e) => CreateMatrix(Layers, "adj");
 
             // Show the context menu strip at the location of the button
             contextMenuStrip.Show(GraphBtn, new System.Drawing.Point(0, GraphBtn.Height));
+        }
+
+        private void CreateMatrix(List<IMGraphLayer> layerList, string type)
+        {
+            MatrixForm matrixForm = new MatrixForm(layerList, type);
+            matrixForm.Show();
         }
 
         private void canvas_Paint(object sender, PaintEventArgs e)
