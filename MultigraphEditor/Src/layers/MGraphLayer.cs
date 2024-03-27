@@ -15,7 +15,9 @@ namespace MultigraphEditor.Src.layers
         public Font Font { get; set; } = new Font("Lato", 8);
         public Color Color { get; set; } = Color.Black;
         public int Width { get; set; } = 4;
+        [ExcludeFromForm]
         public List<IMGraphEditorNode> nodes { get; set; }
+        [ExcludeFromForm]
         public List<IMGraphEditorEdge> edges { get; set; }
         [ExcludeFromForm]
         public bool Active { get; set; } = true;

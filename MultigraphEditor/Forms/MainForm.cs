@@ -25,7 +25,7 @@ namespace MultigraphEditor
         private IMGraphEditorNode? selectedNode = null;
         private IMGraphEditorNode? selectedNodeForConnection = null;
         private List<IMGraphEditorEdge> selectedEdges = new List<IMGraphEditorEdge>();
-
+        private List<LayoutPreviewControl> previewControls = new List<LayoutPreviewControl>();
         private enum ApplicationMode
         {
             None,
@@ -86,9 +86,11 @@ namespace MultigraphEditor
             LayoutPanel.RowStyles.Clear();
             LayoutPanel.Controls.Clear();
 
-            LayoutPanel.RowStyles.Add(new RowStyle() { Height = 80, SizeType = SizeType.Absolute });
+            LayoutPanel.RowStyles.Add(new RowStyle() { Height = 90, SizeType = SizeType.Absolute });
             LayoutPanel.RowCount++;
             LayoutPanel.Controls.Add(prev, 0, 0);
+            previewControls.Add(prev);
+            prev.MouseDown += HandleMouseDown;
 
             Button newLayer = new Button();
             newLayer.Text = "New Layer";
@@ -97,8 +99,15 @@ namespace MultigraphEditor
             newLayer.Anchor = AnchorStyles.Right;
             newLayer.Anchor = AnchorStyles.Top;
             newLayer.Click += AddLayer;
-
             LayoutPanel.Controls.Add(newLayer, 0, LayoutPanel.RowCount - 1);
+
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(AddBtn, "Add vertex");
+            toolTip.SetToolTip(ViewBtn, "Move canvas around");
+            toolTip.SetToolTip(MoveBtn, "Move vertices");
+            toolTip.SetToolTip(ConnectBtn, "Connect vertices");
+            toolTip.SetToolTip(SettingsBtn, "Settings");
+            toolTip.SetToolTip(GraphBtn, "Graph options");
         }
 
 
@@ -109,6 +118,7 @@ namespace MultigraphEditor
             selectedNode = null;
             selectedNodeForConnection = null;
             amode = ApplicationMode.AddVertex;
+            UpdateLastClickedButton(sender);
         }
 
         private void ViewBtn_Click(object sender, EventArgs e)
@@ -117,6 +127,7 @@ namespace MultigraphEditor
             selectedNode = null;
             selectedNodeForConnection = null;
             amode = ApplicationMode.View;
+            UpdateLastClickedButton(sender);
         }
 
         private void MoveBtn_Click(object sender, EventArgs e)
@@ -125,6 +136,7 @@ namespace MultigraphEditor
             selectedNode = null;
             selectedNodeForConnection = null;
             amode = ApplicationMode.Default;
+            UpdateLastClickedButton(sender);
         }
 
         private void ConnectBtn_Click(object sender, EventArgs e)
@@ -133,6 +145,41 @@ namespace MultigraphEditor
             selectedNode = null;
             selectedNodeForConnection = null;
             amode = ApplicationMode.Connect;
+            UpdateLastClickedButton(sender);
+        }
+
+        private void SettingsBtn_Click(object sender, EventArgs e)
+        {
+            UpdateLastClickedButton(sender);
+            Console.WriteLine("Settings button clicked");
+        }
+
+        private void GraphBtn_Click(object sender, EventArgs e)
+        {
+            ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
+
+            ToolStripMenuItem save = new ToolStripMenuItem("Save");
+            ToolStripMenuItem export = new ToolStripMenuItem("Export");
+            ToolStripMenuItem import = new ToolStripMenuItem("Import");
+            ToolStripMenuItem adjacency = new ToolStripMenuItem("Adjacency matrix");
+            ToolStripMenuItem incidence = new ToolStripMenuItem("Incidence matrix");
+            ToolStripMenuItem distance = new ToolStripMenuItem("Distance matrix");
+
+            contextMenuStrip.Items.Add(save);
+            contextMenuStrip.Items.Add(export);
+            contextMenuStrip.Items.Add(import);
+            contextMenuStrip.Items.Add(adjacency);
+            contextMenuStrip.Items.Add(incidence);
+            contextMenuStrip.Items.Add(distance);
+
+            // Add event handlers for menu items
+            //newItem.Click += NewItem_Click;
+            //openItem.Click += OpenItem_Click;
+            //saveItem.Click += SaveItem_Click;
+            //exitItem.Click += ExitItem_Click;
+
+            // Show the context menu strip at the location of the button
+            contextMenuStrip.Show(GraphBtn, new System.Drawing.Point(0, GraphBtn.Height));
         }
 
         private void canvas_Paint(object sender, PaintEventArgs e)
@@ -270,7 +317,7 @@ namespace MultigraphEditor
                                         }
                                     }
                                     IMGraphEditorEdge edge = (IMGraphEditorEdge)Activator.CreateInstance(edgeType);
-                                    
+
                                     using (EditForm editform = new EditForm(edge))
                                     {
                                         editform.OnOk += (s, e) =>
@@ -452,15 +499,11 @@ namespace MultigraphEditor
 
             LayoutPanel.RowCount--;
             LayoutPanel.RowCount++;
-            LayoutPanel.RowStyles.Add(new RowStyle() { Height = 80, SizeType = SizeType.Absolute });
-            LayoutPanel.Controls.Add(prev, LayoutPanel.RowCount-1, 0);
-
+            LayoutPanel.RowStyles.Add(new RowStyle() { Height = 90, SizeType = SizeType.Absolute });
+            LayoutPanel.Controls.Add(prev, LayoutPanel.RowCount - 1, 0);
+            previewControls.Add(prev);
+            prev.MouseDown += HandleMouseDown;
             LayoutPanel.RowCount++;
-        }
-
-        private void SettingsBtn_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Settings button clicked");
         }
 
         private Control? GetControlByTag(string tag)
@@ -482,7 +525,7 @@ namespace MultigraphEditor
 
         private void LayoutPanel_Scroll(object? sender, MouseEventArgs e)
         {
-           UpdatePreviewPanels();
+            UpdatePreviewPanels();
         }
 
         private void UpdatePreviewPanels()
@@ -524,7 +567,29 @@ namespace MultigraphEditor
             }
             Layers.Remove(Layers[Layers.IndexOf(e)]);
             LayoutPanel.Controls.Remove((Control)sender);
+            previewControls.Remove((LayoutPreviewControl)sender);
             LayoutPanel.RowCount--;
+        }
+
+
+
+        private void UpdateLastClickedButton(object sender)
+        {
+            foreach (Control b in ButtonPanel.Controls)
+            {
+                if (b is Button)
+                {
+                    Button button = (Button)b;
+                    if (button == sender)
+                    {
+                        button.BackColor = Color.FromArgb(204, 218, 229);
+                    }
+                    else
+                    {
+                        button.BackColor = Color.White;
+                    }
+                }
+            }
         }
     }
 }

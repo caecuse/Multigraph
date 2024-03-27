@@ -1,8 +1,6 @@
 Zrobiæ matrycê powi¹zañ (mo¿e byæ ciê¿kie bo multigraf)
-Dorobiæ customowe ruszanie krawêdzi
 Dorobiæ zapisywanie grafu do pliku
 Dorobiæ wczytywanie grafu z pliku
 Dorobiæ testy
 Dorobiæ dokumentacjê
-1. Dorbiæ warstwy
 Dorbiæ algo
