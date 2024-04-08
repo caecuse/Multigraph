@@ -1,6 +1,4 @@
-Zrobiæ matrycê powi¹zañ (mo¿e byæ ciê¿kie bo multigraf)
 Dorobiæ zapisywanie grafu do pliku
 Dorobiæ wczytywanie grafu z pliku
 Dorobiæ testy
 Dorobiæ dokumentacjê
-Dorbiæ algo
