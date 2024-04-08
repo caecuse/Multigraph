@@ -106,6 +106,7 @@ namespace MultigraphEditor
                 LayoutPreviewControl prev = new LayoutPreviewControl(l, canvasBitmap);
                 prev.CanvasInvalidated += (sender, e) =>
                 {
+                    InitializeLayers();
                     canvas.Invalidate();
                 };
                 prev.LayerDeleted += (sender, e) =>
