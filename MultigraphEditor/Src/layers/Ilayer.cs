@@ -10,7 +10,8 @@ namespace MultigraphEditor.src.layers
     {
         Font Font { get; set; }
         Color Color { get; set; }
-        int Width { get; set; }
+        int nodeWidth { get; set; }
+        int edgeWidth { get; set; }
         bool Active { get; set; }
         int Identifier { get; set; }
         String Name { get; set; }

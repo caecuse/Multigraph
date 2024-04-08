@@ -3,11 +3,13 @@ using MultigraphEditor.src.layers;
 using MultigraphEditor.Src.graph;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 
 namespace MultigraphEditor.src.graph
 {
@@ -63,7 +65,7 @@ namespace MultigraphEditor.src.graph
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            Pen pen = new Pen(l.Color, l.Width);
+            Pen pen = new Pen(l.Color, l.edgeWidth);
             Brush brush = new SolidBrush(l.Color);
             if (SourceDrawable != null && TargetDrawable != null)
             {
@@ -84,15 +86,18 @@ namespace MultigraphEditor.src.graph
                     controlPointX = (sourceX + targetX) / 2;
                     controlPointY = (sourceY + targetY) / 2;
 
-                    // Draw control point
                     g.FillEllipse(brush, controlPointX - 5, controlPointY - 5, 10, 10);
 
-                    // Draw the edge
                     g.DrawLine(pen, sourceX, sourceY, targetX, targetY);
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    int width = (int)(SourceDrawable.Diameter);
+                    int height = (int)(SourceDrawable.Diameter);
+                    int startX = (int)(SourceDrawable.X + (SourceDrawable.Diameter / 2) - (width / 2));
+                    int startY = (int)(SourceDrawable.Y + (SourceDrawable.Diameter / 2));
+
+                    g.DrawEllipse(pen, startX, startY, width, height);
                 }
                 DrawArrow(g, l);
                 DrawLabel(g, l);
@@ -101,73 +106,130 @@ namespace MultigraphEditor.src.graph
 
         public void DrawArrow(Graphics g, IEdgeLayer l)
         {
-            float dx = TargetDrawable.X - SourceDrawable.X;
-            float dy = TargetDrawable.Y - SourceDrawable.Y;
-            float length = (float)Math.Sqrt(dx * dx + dy * dy);
-            float unitDx = dx / length;
-            float unitDy = dy / length;
-            float sourceRadius = SourceDrawable.Diameter / 2;
-            float targetRadius = TargetDrawable.Diameter / 2;
-
-            int arrowSize = l.arrowSize;
-
-            float arrowHeadX = TargetDrawable.X - (unitDx * targetRadius);
-            float arrowHeadY = TargetDrawable.Y - (unitDy * targetRadius);
-            float arrowHeadAngle = (float)Math.Atan2(dy, dx);
-
-            using (SolidBrush brush = new SolidBrush(l.Color))
+            if (SourceDrawable == TargetDrawable)
             {
-                PointF[] points = new PointF[3];
-                points[0] = new PointF(arrowHeadX, arrowHeadY);
-                points[1] = new PointF(arrowHeadX - (arrowSize * (float)Math.Cos(arrowHeadAngle - (Math.PI / 6))), arrowHeadY - (arrowSize * (float)Math.Sin(arrowHeadAngle - (Math.PI / 6))));
-                points[2] = new PointF(arrowHeadX - (arrowSize * (float)Math.Cos(arrowHeadAngle + (Math.PI / 6))), arrowHeadY - (arrowSize * (float)Math.Sin(arrowHeadAngle + (Math.PI / 6))));
-                g.FillPolygon(brush, points);
+                int width = (int)(SourceDrawable.Diameter);
+                int height = (int)(SourceDrawable.Diameter);
+                int startX = (int)(SourceDrawable.X + (SourceDrawable.Diameter / 2) - (width / 2));
+                int startY = (int)(SourceDrawable.Y + (SourceDrawable.Diameter / 2));
+                float arrowAngle = (float)Math.Atan2(height * (l.arrowSize / 2), width);
+                float arrowheadX = startX + width + (l.arrowSize * (float)Math.Cos(arrowAngle));
+                float arrowheadY = startY + (height / 2) + (l.arrowSize * (float)Math.Sin(arrowAngle));
+                using (SolidBrush brush = new SolidBrush(l.Color))
+                {
+                    PointF[] arrowhead = new PointF[]
+                    {
+                                        new PointF(arrowheadX, arrowheadY),
+                                        new PointF(arrowheadX - (l.arrowSize * (float)Math.Cos(arrowAngle - (Math.PI / 6))), arrowheadY - (l.arrowSize * (float)Math.Sin(arrowAngle - (Math.PI / 6)))),
+                                        new PointF(arrowheadX - (l.arrowSize * (float)Math.Cos(arrowAngle + (Math.PI / 6))), arrowheadY - (l.arrowSize * (float)Math.Sin(arrowAngle + (Math.PI / 6))))
+                    };
+                    g.FillPolygon(brush, arrowhead);
+                }
+                if (Bidirectional)
+                {
+                    float arrowAngle2 = (float)Math.Atan2(-height * (l.arrowSize / 2), -width);
+                    float arrowheadX2 = startX + (l.arrowSize * (float)Math.Cos(arrowAngle2));
+                    float arrowheadY2 = startY + (height / 2) + (l.arrowSize * (float)Math.Sin(arrowAngle2));
+                    using (SolidBrush brush = new SolidBrush(l.Color))
+                    {
+                        PointF[] arrowhead2 = new PointF[]
+                        {
+                                            new PointF(arrowheadX2, arrowheadY2),
+                                            new PointF(arrowheadX2 - (l.arrowSize * (float)Math.Cos(arrowAngle2 - (Math.PI / 6))), arrowheadY2 - (l.arrowSize * (float)Math.Sin(arrowAngle2 - (Math.PI / 6)))),
+                                            new PointF(arrowheadX2 - (l.arrowSize * (float)Math.Cos(arrowAngle2 + (Math.PI / 6))), arrowheadY2 - (l.arrowSize * (float)Math.Sin(arrowAngle2 + (Math.PI / 6))))
+                        };
+                        g.FillPolygon(brush, arrowhead2);
+                    }
+                }
             }
-
-            if (Bidirectional)
+            else
             {
-                float arrowHeadX2 = SourceDrawable.X + (unitDx * sourceRadius);
-                float arrowHeadY2 = SourceDrawable.Y + (unitDy * sourceRadius);
-                float arrowHeadAngle2 = (float)Math.Atan2(-dy, -dx);
+                float dx = TargetDrawable.X - SourceDrawable.X;
+                float dy = TargetDrawable.Y - SourceDrawable.Y;
+                float length = (float)Math.Sqrt(dx * dx + dy * dy);
+                float unitDx = dx / length;
+                float unitDy = dy / length;
+                float sourceRadius = SourceDrawable.Diameter / 2;
+                float targetRadius = TargetDrawable.Diameter / 2;
+
+                int arrowSize = l.arrowSize;
+
+                float arrowHeadX = TargetDrawable.X - (unitDx * targetRadius);
+                float arrowHeadY = TargetDrawable.Y - (unitDy * targetRadius);
+                float arrowHeadAngle = (float)Math.Atan2(dy, dx);
 
                 using (SolidBrush brush = new SolidBrush(l.Color))
                 {
                     PointF[] points = new PointF[3];
-                    points[0] = new PointF(arrowHeadX2, arrowHeadY2);
-                    points[1] = new PointF(arrowHeadX2 - (arrowSize * (float)Math.Cos(arrowHeadAngle2 - (Math.PI / 6))), arrowHeadY2 - (arrowSize * (float)Math.Sin(arrowHeadAngle2 - (Math.PI / 6))));
-                    points[2] = new PointF(arrowHeadX2 - (arrowSize * (float)Math.Cos(arrowHeadAngle2 + (Math.PI / 6))), arrowHeadY2 - (arrowSize * (float)Math.Sin(arrowHeadAngle2 + (Math.PI / 6))));
+                    points[0] = new PointF(arrowHeadX, arrowHeadY);
+                    points[1] = new PointF(arrowHeadX - (arrowSize * (float)Math.Cos(arrowHeadAngle - (Math.PI / 6))), arrowHeadY - (arrowSize * (float)Math.Sin(arrowHeadAngle - (Math.PI / 6))));
+                    points[2] = new PointF(arrowHeadX - (arrowSize * (float)Math.Cos(arrowHeadAngle + (Math.PI / 6))), arrowHeadY - (arrowSize * (float)Math.Sin(arrowHeadAngle + (Math.PI / 6))));
                     g.FillPolygon(brush, points);
+                }
+
+                if (Bidirectional)
+                {
+                    float arrowHeadX2 = SourceDrawable.X + (unitDx * sourceRadius);
+                    float arrowHeadY2 = SourceDrawable.Y + (unitDy * sourceRadius);
+                    float arrowHeadAngle2 = (float)Math.Atan2(-dy, -dx);
+
+                    using (SolidBrush brush = new SolidBrush(l.Color))
+                    {
+                        PointF[] points = new PointF[3];
+                        points[0] = new PointF(arrowHeadX2, arrowHeadY2);
+                        points[1] = new PointF(arrowHeadX2 - (arrowSize * (float)Math.Cos(arrowHeadAngle2 - (Math.PI / 6))), arrowHeadY2 - (arrowSize * (float)Math.Sin(arrowHeadAngle2 - (Math.PI / 6))));
+                        points[2] = new PointF(arrowHeadX2 - (arrowSize * (float)Math.Cos(arrowHeadAngle2 + (Math.PI / 6))), arrowHeadY2 - (arrowSize * (float)Math.Sin(arrowHeadAngle2 + (Math.PI / 6))));
+                        g.FillPolygon(brush, points);
+                    }
                 }
             }
         }
 
         public void DrawLabel(Graphics g, IEdgeLayer l)
         {
-            float dx = TargetDrawable.X - SourceDrawable.X;
-            float dy = TargetDrawable.Y - SourceDrawable.Y;
-            float length = (float)Math.Sqrt(dx * dx + dy * dy);
-            float unitDx = dx / length;
-            float unitDy = dy / length;
-            float sourceRadius = SourceDrawable.Diameter / 2;
-            float targetRadius = TargetDrawable.Diameter / 2;
-            float sourceX = SourceDrawable.X + sourceRadius * unitDx;
-            float sourceY = SourceDrawable.Y + sourceRadius * unitDy;
-            float targetX = TargetDrawable.X - targetRadius * unitDx;
-            float targetY = TargetDrawable.Y - targetRadius * unitDy;
-
-            float labelX = (sourceX + targetX) / 2;
-            float labelY = (sourceY + targetY) / 2 - 5;
-            if (!string.IsNullOrEmpty(Label))
+            if (SourceDrawable == TargetDrawable)
             {
-                labelY -= 10;
+                using (SolidBrush brush = new SolidBrush(l.Color))
+                {
+                    SizeF textSize = g.MeasureString(Weight.ToString() + "\n" + Label, l.Font);
+                    int width = (int)(SourceDrawable.Diameter);
+                    int height = (int)(SourceDrawable.Diameter);
+                    int startX = (int)(SourceDrawable.X + (SourceDrawable.Diameter / 2) - (width / 2));
+                    int startY = (int)(SourceDrawable.Y + (SourceDrawable.Diameter / 2));
+                    float labelX = startX + (width / 2) - (textSize.Width / 2);
+                    float labelY = startY + height - textSize.Height - 2;
+
+                    g.DrawString(Weight.ToString() + "\n" + Label, l.Font, brush, labelX, labelY);
+                }
             }
-
-            using (SolidBrush brush = new SolidBrush(l.Color))
+            else
             {
-                SizeF textSize = g.MeasureString(Label + "\n" + Weight.ToString(), l.Font);
-                PointF labelPosition = new PointF(labelX - textSize.Width / 2, labelY - textSize.Height / 2);
+                float dx = TargetDrawable.X - SourceDrawable.X;
+                float dy = TargetDrawable.Y - SourceDrawable.Y;
+                float length = (float)Math.Sqrt(dx * dx + dy * dy);
+                float unitDx = dx / length;
+                float unitDy = dy / length;
+                float sourceRadius = SourceDrawable.Diameter / 2;
+                float targetRadius = TargetDrawable.Diameter / 2;
+                float sourceX = SourceDrawable.X + sourceRadius * unitDx;
+                float sourceY = SourceDrawable.Y + sourceRadius * unitDy;
+                float targetX = TargetDrawable.X - targetRadius * unitDx;
+                float targetY = TargetDrawable.Y - targetRadius * unitDy;
 
-                g.DrawString(Weight.ToString() + "\n" + Label, l.Font, brush, labelPosition);
+                float labelX = (sourceX + targetX) / 2;
+                float labelY = (sourceY + targetY) / 2 - 5;
+                if (!string.IsNullOrEmpty(Label))
+                {
+                    labelY -= 10;
+                }
+
+                using (SolidBrush brush = new SolidBrush(l.Color))
+                {
+                    SizeF textSize = g.MeasureString(Label + "\n" + Weight.ToString(), l.Font);
+                    PointF labelPosition = new PointF(labelX - textSize.Width / 2, labelY - textSize.Height / 2);
+
+                    g.DrawString(Weight.ToString() + "\n" + Label, l.Font, brush, labelPosition);
+                }
             }
         }
 

@@ -62,7 +62,7 @@ namespace MultigraphEditor.src.graph
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            Pen p = new Pen(l.Color, l.Width);
+            Pen p = new Pen(l.Color, l.nodeWidth);
             using (p)
             {
                 float x = GetDrawingCoordinates().Item1;

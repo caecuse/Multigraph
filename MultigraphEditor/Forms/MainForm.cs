@@ -129,6 +129,7 @@ namespace MultigraphEditor
             LayoutPanel.RowCount++;
             LayoutPanel.RowStyles.Add(new RowStyle() { Height = 90, SizeType = SizeType.Absolute });
             LayoutPanel.Controls.Add(newLayer, 0, LayoutPanel.RowCount - 1);
+            UpdatePreviewPanels();
         }
 
         private void AddBtn_Click(object sender, EventArgs e)
@@ -152,6 +153,7 @@ namespace MultigraphEditor
                 InitializeLayers();
                 canvas.Invalidate();
             }
+            UpdatePreviewPanels();
             UpdateLastClickedButton(sender);
         }
 
@@ -365,7 +367,7 @@ namespace MultigraphEditor
                 {
                     foreach (IMGraphEditorEdge edge in edgeList.ToList())
                     {
-                        if (edge.IsInsideControlPoint(e.X, e.Y))
+                        if (edge.IsInside(e.X, e.Y))
                         {
                             foreach (IMGraphLayer layer in Layers)
                             {
