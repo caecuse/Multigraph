@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MultigraphEditor.src.graph
 {
+    [Serializable]
     public class MGraphEditorNode : IMGraphEditorNode
     {
         [ExcludeFromForm]
@@ -17,8 +19,6 @@ namespace MultigraphEditor.src.graph
         public string? Label { get; set; }
         [ExcludeFromForm]
         public List<IEdge> Edges { get; set; } = new List<IEdge>();
-        [ExcludeFromForm]
-        public List<INode> Neighbours { get; set; } = new List<INode>();
         [ExcludeFromForm]
         public float X { get; set; }
         [ExcludeFromForm]
@@ -46,16 +46,6 @@ namespace MultigraphEditor.src.graph
         public void RemoveEdge(IEdge e)
         {
             Edges.Remove(e);
-        }
-
-        public void AddNeighbour(INode n)
-        {
-            Neighbours.Add(n);
-        }
-
-        public void RemoveNeighbour(INode n)
-        {
-            Neighbours.Remove(n);
         }
 
         public (float, float) GetCoordinates()
@@ -103,6 +93,36 @@ namespace MultigraphEditor.src.graph
             bool a = x >= GetDrawingCoordinates().Item1 && x <= GetDrawingCoordinates().Item1 + Diameter &&
                                y >= GetDrawingCoordinates().Item2 && y <= GetDrawingCoordinates().Item2 + Diameter;
             return a;
+        }
+
+#pragma warning disable SYSLIB0011
+        public IMGraphEditorNode Clone()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (MemoryStream stream = new MemoryStream())
+            {
+                formatter.Serialize(stream, this);
+                stream.Seek(0, SeekOrigin.Begin);
+                return (IMGraphEditorNode)formatter.Deserialize(stream);
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                MGraphEditorNode other = (MGraphEditorNode)obj;
+                return Identifier == other.Identifier; // Consider them equal if their Ids are the same
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return Identifier.GetHashCode(); // Return the hash code of the Id
         }
     }
 }

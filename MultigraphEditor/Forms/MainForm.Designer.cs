@@ -37,6 +37,7 @@
             ConnectBtn = new Button();
             AlgorithmsBtn = new Button();
             RemoveBtn = new Button();
+            UndoBtn = new Button();
             GraphBtn = new Button();
             canvas = new Src.design.DoubleBufferedPanel();
             LayoutPanel = new TableLayoutPanel();
@@ -73,11 +74,12 @@
             ButtonPanel.Controls.Add(ConnectBtn);
             ButtonPanel.Controls.Add(AlgorithmsBtn);
             ButtonPanel.Controls.Add(RemoveBtn);
+            ButtonPanel.Controls.Add(UndoBtn);
             ButtonPanel.Controls.Add(GraphBtn);
-            ButtonPanel.Location = new Point(111, 407);
+            ButtonPanel.Location = new Point(76, 407);
             ButtonPanel.Margin = new Padding(0);
             ButtonPanel.Name = "ButtonPanel";
-            ButtonPanel.Size = new Size(577, 40);
+            ButtonPanel.Size = new Size(647, 40);
             ButtonPanel.TabIndex = 0;
             // 
             // button1
@@ -172,11 +174,24 @@
             RemoveBtn.UseVisualStyleBackColor = true;
             RemoveBtn.Click += RemoveBtn_Click;
             // 
+            // UndoBtn
+            // 
+            UndoBtn.Image = Properties.Resources.undo;
+            UndoBtn.ImageAlign = ContentAlignment.MiddleRight;
+            UndoBtn.Location = new Point(501, 3);
+            UndoBtn.Name = "UndoBtn";
+            UndoBtn.Size = new Size(61, 23);
+            UndoBtn.TabIndex = 8;
+            UndoBtn.Text = "Undo";
+            UndoBtn.TextImageRelation = TextImageRelation.TextBeforeImage;
+            UndoBtn.UseVisualStyleBackColor = true;
+            UndoBtn.Click += UndoBtn_Click;
+            // 
             // GraphBtn
             // 
             GraphBtn.Image = Properties.Resources.graph;
             GraphBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            GraphBtn.Location = new Point(501, 3);
+            GraphBtn.Location = new Point(568, 3);
             GraphBtn.Name = "GraphBtn";
             GraphBtn.Size = new Size(66, 23);
             GraphBtn.TabIndex = 6;
@@ -188,6 +203,7 @@
             // 
             // canvas
             // 
+            canvas.BackColor = Color.White;
             canvas.Dock = DockStyle.Fill;
             canvas.Location = new Point(6, 6);
             canvas.Name = "canvas";
@@ -237,5 +253,6 @@
         private Button GraphBtn;
         private TableLayoutPanel LayoutPanel;
         private Button RemoveBtn;
+        private Button UndoBtn;
     }
 }

@@ -29,7 +29,6 @@ namespace MultigraphEditor.Src.design
             Layer = layer;
             bmp = new Bitmap(bmp);
             TableLayoutPanel optionsPanel = new TableLayoutPanel();
-            //optionsPanel.AutoSize = true;
             optionsPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             optionsPanel.ColumnCount = 1;
             optionsPanel.ColumnStyles.Add(new ColumnStyle() { Width = 100, SizeType = SizeType.Percent });
@@ -52,7 +51,6 @@ namespace MultigraphEditor.Src.design
                 CanvasInvalidated?.Invoke(this, EventArgs.Empty);
             };
 
-            // Create a button for delete
             Button deleteButton = new Button();
             deleteButton.Image = Resources.trash;
             deleteButton.AutoSize = true;
@@ -66,7 +64,6 @@ namespace MultigraphEditor.Src.design
                 CanvasInvalidated?.Invoke(this, EventArgs.Empty);
             }; 
 
-            // Create a Button for preview
             Button previewButton = new Button();
             previewButton.Image = Resources.view;
             previewButton.AutoSize = true;
@@ -74,7 +71,6 @@ namespace MultigraphEditor.Src.design
             previewButton.Margin = new Padding(0, 0, 0, 0);
             ToolTip tipBtnLayer = new ToolTip();
             tipBtnLayer.SetToolTip(previewButton, "Make layer inactive");
-            //previewButton.Height = 55;
             previewButton.Click += (sender, e) =>
             {
                 layer.changeActive();
@@ -90,12 +86,12 @@ namespace MultigraphEditor.Src.design
                 CanvasInvalidated?.Invoke(this, EventArgs.Empty);
             };
 
-            // Create a Label to display the name of the MGraphLayer
             Label layName = new Label();
             layName.Text = layer.Name;
             layName.AutoSize = true;
+            layName.BackColor = Color.White;
+            previewPanel.BackColor = Color.White;
 
-            // Create a TableLayoutPanel for layout
             TableLayoutPanel previewTable = new TableLayoutPanel();
             previewTable.AutoSize = true;
             previewTable.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -106,7 +102,6 @@ namespace MultigraphEditor.Src.design
             previewTable.RowCount = 1;
             previewTable.RowStyles.Add(new RowStyle() { Height = 70, SizeType = SizeType.Percent });
 
-            // Add controls to the TableLayoutPanel
             previewTable.Controls.Add(previewPanel, 0, 0);
             optionsPanel.Controls.Add(deleteButton, 0, 0);
             optionsPanel.Controls.Add(previewButton, 0, 1);
@@ -116,7 +111,6 @@ namespace MultigraphEditor.Src.design
             previewTable.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
             previewTable.Dock = DockStyle.Fill;
 
-            // Add the TableLayoutPanel to the LayoutPreviewControl
             this.Controls.Add(previewTable);
             this.Dock = DockStyle.Fill;
             this.Tag = layer.Identifier;
@@ -147,8 +141,6 @@ namespace MultigraphEditor.Src.design
         private void LayoutPreviewControl_MouseDown(object sender, MouseEventArgs e)
         {
             return;
-            // Handle the mouse down event here
-            // You can access the mouse coordinates using e.X and e.Y
         }
     }
 }
