@@ -1,11 +1,11 @@
 ﻿using MultigraphEditor.src.graph;
-using MultigraphEditor.Src.alghoritm;
+using MultigraphEditor.Src.algorithm;
 using MultigraphEditor.Src.graph;
 using MultigraphEditor.Src.layers;
 
 namespace MultigraphEditor.Forms
 {
-    public partial class AlghoritmForm : Form
+    public partial class AlgorithmForm : Form
     {
         private string? selectedAlgorithm = null;
         private IMGraphLayer? selectedLayer = null;
@@ -19,7 +19,7 @@ namespace MultigraphEditor.Forms
         private INode? end = null;
         ListBox pathListBox = new ListBox();
 
-        internal AlghoritmForm(List<IMGraphLayer> layerList, List<Type> algorithmList)
+        internal AlgorithmForm(List<IMGraphLayer> layerList, List<Type> algorithmList)
         {
             InitializeComponent();
             orginized.RowCount = 3;

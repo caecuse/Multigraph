@@ -279,7 +279,7 @@ namespace MultigraphEditor
             selectedNode = null;
             selectedNodeForConnection = null;
             UpdateLastClickedButton(sender);
-            AlghoritmForm alghorimtForm = new AlghoritmForm(Layers, algoList);
+            AlgorithmForm alghorimtForm = new AlgorithmForm(Layers, algoList);
             alghorimtForm.Show();
         }
 
