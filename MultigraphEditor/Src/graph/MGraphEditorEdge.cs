@@ -69,15 +69,15 @@ namespace MultigraphEditor.src.graph
                 {
                     float dx = TargetDrawable.X - SourceDrawable.X;
                     float dy = TargetDrawable.Y - SourceDrawable.Y;
-                    float length = (float)Math.Sqrt(dx * dx + dy * dy);
+                    float length = (float)Math.Sqrt((dx * dx) + (dy * dy));
                     float unitDx = dx / length;
                     float unitDy = dy / length;
                     float sourceRadius = SourceDrawable.Diameter / 2;
                     float targetRadius = TargetDrawable.Diameter / 2;
-                    float sourceX = SourceDrawable.X + sourceRadius * unitDx;
-                    float sourceY = SourceDrawable.Y + sourceRadius * unitDy;
-                    float targetX = TargetDrawable.X - targetRadius * unitDx;
-                    float targetY = TargetDrawable.Y - targetRadius * unitDy;
+                    float sourceX = SourceDrawable.X + (sourceRadius * unitDx);
+                    float sourceY = SourceDrawable.Y + (sourceRadius * unitDy);
+                    float targetX = TargetDrawable.X - (targetRadius * unitDx);
+                    float targetY = TargetDrawable.Y - (targetRadius * unitDy);
 
                     controlPointX = (sourceX + targetX) / 2;
                     controlPointY = (sourceY + targetY) / 2;
@@ -88,8 +88,8 @@ namespace MultigraphEditor.src.graph
                 }
                 else
                 {
-                    int width = (int)(SourceDrawable.Diameter);
-                    int height = (int)(SourceDrawable.Diameter);
+                    int width = (int)SourceDrawable.Diameter;
+                    int height = (int)SourceDrawable.Diameter;
                     int startX = (int)(SourceDrawable.X + (SourceDrawable.Diameter / 2) - (width / 2));
                     int startY = (int)(SourceDrawable.Y + (SourceDrawable.Diameter / 2));
 
@@ -104,8 +104,8 @@ namespace MultigraphEditor.src.graph
         {
             if (SourceDrawable == TargetDrawable)
             {
-                int width = (int)(SourceDrawable.Diameter);
-                int height = (int)(SourceDrawable.Diameter);
+                int width = (int)SourceDrawable.Diameter;
+                int height = (int)SourceDrawable.Diameter;
                 int startX = (int)(SourceDrawable.X + (SourceDrawable.Diameter / 2) - (width / 2));
                 int startY = (int)(SourceDrawable.Y + (SourceDrawable.Diameter / 2));
                 float arrowAngle = (float)Math.Atan2(height * (l.arrowSize / 2), width);
@@ -126,23 +126,21 @@ namespace MultigraphEditor.src.graph
                     float arrowAngle2 = (float)Math.Atan2(-height * (l.arrowSize / 2), -width);
                     float arrowheadX2 = startX + (l.arrowSize * (float)Math.Cos(arrowAngle2));
                     float arrowheadY2 = startY + (height / 2) + (l.arrowSize * (float)Math.Sin(arrowAngle2));
-                    using (SolidBrush brush = new SolidBrush(l.Color))
+                    using SolidBrush brush = new SolidBrush(l.Color);
+                    PointF[] arrowhead2 = new PointF[]
                     {
-                        PointF[] arrowhead2 = new PointF[]
-                        {
                                             new PointF(arrowheadX2, arrowheadY2),
                                             new PointF(arrowheadX2 - (l.arrowSize * (float)Math.Cos(arrowAngle2 - (Math.PI / 6))), arrowheadY2 - (l.arrowSize * (float)Math.Sin(arrowAngle2 - (Math.PI / 6)))),
                                             new PointF(arrowheadX2 - (l.arrowSize * (float)Math.Cos(arrowAngle2 + (Math.PI / 6))), arrowheadY2 - (l.arrowSize * (float)Math.Sin(arrowAngle2 + (Math.PI / 6))))
-                        };
-                        g.FillPolygon(brush, arrowhead2);
-                    }
+                    };
+                    g.FillPolygon(brush, arrowhead2);
                 }
             }
             else
             {
                 float dx = TargetDrawable.X - SourceDrawable.X;
                 float dy = TargetDrawable.Y - SourceDrawable.Y;
-                float length = (float)Math.Sqrt(dx * dx + dy * dy);
+                float length = (float)Math.Sqrt((dx * dx) + (dy * dy));
                 float unitDx = dx / length;
                 float unitDy = dy / length;
                 float sourceRadius = SourceDrawable.Diameter / 2;
@@ -169,14 +167,12 @@ namespace MultigraphEditor.src.graph
                     float arrowHeadY2 = SourceDrawable.Y + (unitDy * sourceRadius);
                     float arrowHeadAngle2 = (float)Math.Atan2(-dy, -dx);
 
-                    using (SolidBrush brush = new SolidBrush(l.Color))
-                    {
-                        PointF[] points = new PointF[3];
-                        points[0] = new PointF(arrowHeadX2, arrowHeadY2);
-                        points[1] = new PointF(arrowHeadX2 - (arrowSize * (float)Math.Cos(arrowHeadAngle2 - (Math.PI / 6))), arrowHeadY2 - (arrowSize * (float)Math.Sin(arrowHeadAngle2 - (Math.PI / 6))));
-                        points[2] = new PointF(arrowHeadX2 - (arrowSize * (float)Math.Cos(arrowHeadAngle2 + (Math.PI / 6))), arrowHeadY2 - (arrowSize * (float)Math.Sin(arrowHeadAngle2 + (Math.PI / 6))));
-                        g.FillPolygon(brush, points);
-                    }
+                    using SolidBrush brush = new SolidBrush(l.Color);
+                    PointF[] points = new PointF[3];
+                    points[0] = new PointF(arrowHeadX2, arrowHeadY2);
+                    points[1] = new PointF(arrowHeadX2 - (arrowSize * (float)Math.Cos(arrowHeadAngle2 - (Math.PI / 6))), arrowHeadY2 - (arrowSize * (float)Math.Sin(arrowHeadAngle2 - (Math.PI / 6))));
+                    points[2] = new PointF(arrowHeadX2 - (arrowSize * (float)Math.Cos(arrowHeadAngle2 + (Math.PI / 6))), arrowHeadY2 - (arrowSize * (float)Math.Sin(arrowHeadAngle2 + (Math.PI / 6))));
+                    g.FillPolygon(brush, points);
                 }
             }
         }
@@ -185,47 +181,43 @@ namespace MultigraphEditor.src.graph
         {
             if (SourceDrawable == TargetDrawable)
             {
-                using (SolidBrush brush = new SolidBrush(l.Color))
-                {
-                    SizeF textSize = g.MeasureString(Weight.ToString() + "\n" + Label, l.Font);
-                    int width = (int)(SourceDrawable.Diameter);
-                    int height = (int)(SourceDrawable.Diameter);
-                    int startX = (int)(SourceDrawable.X + (SourceDrawable.Diameter / 2) - (width / 2));
-                    int startY = (int)(SourceDrawable.Y + (SourceDrawable.Diameter / 2));
-                    float labelX = startX + (width / 2) - (textSize.Width / 2);
-                    float labelY = startY + height - textSize.Height - 2;
+                using SolidBrush brush = new SolidBrush(l.Color);
+                SizeF textSize = g.MeasureString(Weight.ToString() + "\n" + Label, l.Font);
+                int width = (int)SourceDrawable.Diameter;
+                int height = (int)SourceDrawable.Diameter;
+                int startX = (int)(SourceDrawable.X + (SourceDrawable.Diameter / 2) - (width / 2));
+                int startY = (int)(SourceDrawable.Y + (SourceDrawable.Diameter / 2));
+                float labelX = startX + (width / 2) - (textSize.Width / 2);
+                float labelY = startY + height - textSize.Height - 2;
 
-                    g.DrawString(Weight.ToString() + "\n" + Label, l.Font, brush, labelX, labelY);
-                }
+                g.DrawString(Weight.ToString() + "\n" + Label, l.Font, brush, labelX, labelY);
             }
             else
             {
                 float dx = TargetDrawable.X - SourceDrawable.X;
                 float dy = TargetDrawable.Y - SourceDrawable.Y;
-                float length = (float)Math.Sqrt(dx * dx + dy * dy);
+                float length = (float)Math.Sqrt((dx * dx) + (dy * dy));
                 float unitDx = dx / length;
                 float unitDy = dy / length;
                 float sourceRadius = SourceDrawable.Diameter / 2;
                 float targetRadius = TargetDrawable.Diameter / 2;
-                float sourceX = SourceDrawable.X + sourceRadius * unitDx;
-                float sourceY = SourceDrawable.Y + sourceRadius * unitDy;
-                float targetX = TargetDrawable.X - targetRadius * unitDx;
-                float targetY = TargetDrawable.Y - targetRadius * unitDy;
+                float sourceX = SourceDrawable.X + (sourceRadius * unitDx);
+                float sourceY = SourceDrawable.Y + (sourceRadius * unitDy);
+                float targetX = TargetDrawable.X - (targetRadius * unitDx);
+                float targetY = TargetDrawable.Y - (targetRadius * unitDy);
 
                 float labelX = (sourceX + targetX) / 2;
-                float labelY = (sourceY + targetY) / 2 - 5;
+                float labelY = ((sourceY + targetY) / 2) - 5;
                 if (!string.IsNullOrEmpty(Label))
                 {
                     labelY -= 10;
                 }
 
-                using (SolidBrush brush = new SolidBrush(l.Color))
-                {
-                    SizeF textSize = g.MeasureString(Label + "\n" + Weight.ToString(), l.Font);
-                    PointF labelPosition = new PointF(labelX - textSize.Width / 2, labelY - textSize.Height / 2);
+                using SolidBrush brush = new SolidBrush(l.Color);
+                SizeF textSize = g.MeasureString(Label + "\n" + Weight.ToString(), l.Font);
+                PointF labelPosition = new PointF(labelX - (textSize.Width / 2), labelY - (textSize.Height / 2));
 
-                    g.DrawString(Weight.ToString() + "\n" + Label, l.Font, brush, labelPosition);
-                }
+                g.DrawString(Weight.ToString() + "\n" + Label, l.Font, brush, labelPosition);
             }
         }
 
@@ -260,15 +252,15 @@ namespace MultigraphEditor.src.graph
         {
             float dx = TargetDrawable.X - SourceDrawable.X;
             float dy = TargetDrawable.Y - SourceDrawable.Y;
-            float length = (float)Math.Sqrt(dx * dx + dy * dy);
+            float length = (float)Math.Sqrt((dx * dx) + (dy * dy));
             float unitDx = dx / length;
             float unitDy = dy / length;
             float sourceRadius = SourceDrawable.Diameter / 2;
             float targetRadius = TargetDrawable.Diameter / 2;
-            float sourceX = SourceDrawable.X + sourceRadius * unitDx;
-            float sourceY = SourceDrawable.Y + sourceRadius * unitDy;
-            float targetX = TargetDrawable.X - targetRadius * unitDx;
-            float targetY = TargetDrawable.Y - targetRadius * unitDy;
+            float sourceX = SourceDrawable.X + (sourceRadius * unitDx);
+            float sourceY = SourceDrawable.Y + (sourceRadius * unitDy);
+            float targetX = TargetDrawable.X - (targetRadius * unitDx);
+            float targetY = TargetDrawable.Y - (targetRadius * unitDy);
 
             float lineX1 = sourceX;
             float lineY1 = sourceY;
@@ -312,17 +304,15 @@ namespace MultigraphEditor.src.graph
         public IMGraphEditorEdge Clone()
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                formatter.Serialize(stream, this);
-                stream.Seek(0, SeekOrigin.Begin);
-                return (IMGraphEditorEdge)formatter.Deserialize(stream);
-            }
+            using MemoryStream stream = new MemoryStream();
+            formatter.Serialize(stream, this);
+            stream.Seek(0, SeekOrigin.Begin);
+            return (IMGraphEditorEdge)formatter.Deserialize(stream);
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !this.GetType().Equals(obj.GetType()))
+            if (obj == null || !GetType().Equals(obj.GetType()))
             {
                 return false;
             }

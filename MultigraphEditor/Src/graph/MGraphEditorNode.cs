@@ -53,7 +53,7 @@ namespace MultigraphEditor.src.graph
 
         public (float, float) GetDrawingCoordinates()
         {
-            return (X - Diameter / 2, Y - Diameter / 2);
+            return (X - (Diameter / 2), Y - (Diameter / 2));
         }
 
         public void Draw(Graphics g, INodeLayer l)
@@ -78,8 +78,8 @@ namespace MultigraphEditor.src.graph
         {
             // Calculate label position and size
             SizeF textSize = g.MeasureString(Label, l.Font);
-            float labelX = GetDrawingCoordinates().Item1 + (Diameter - textSize.Width) / 2;     // Center horizontally
-            float labelY = GetDrawingCoordinates().Item2 + (Diameter - textSize.Height) / 2;    // Center vertically
+            float labelX = GetDrawingCoordinates().Item1 + ((Diameter - textSize.Width) / 2);     // Center horizontally
+            float labelY = GetDrawingCoordinates().Item2 + ((Diameter - textSize.Height) / 2);    // Center vertically
 
             // Draw label
             Color textColor = l.Color;
@@ -97,17 +97,15 @@ namespace MultigraphEditor.src.graph
         public IMGraphEditorNode Clone()
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                formatter.Serialize(stream, this);
-                stream.Seek(0, SeekOrigin.Begin);
-                return (IMGraphEditorNode)formatter.Deserialize(stream);
-            }
+            using MemoryStream stream = new MemoryStream();
+            formatter.Serialize(stream, this);
+            stream.Seek(0, SeekOrigin.Begin);
+            return (IMGraphEditorNode)formatter.Deserialize(stream);
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !this.GetType().Equals(obj.GetType()))
+            if (obj == null || !GetType().Equals(obj.GetType()))
             {
                 return false;
             }

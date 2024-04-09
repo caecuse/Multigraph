@@ -99,20 +99,18 @@ namespace MultigraphEditor.Src.design
             previewTable.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
             previewTable.Dock = DockStyle.Fill;
 
-            this.Controls.Add(previewTable);
-            this.Dock = DockStyle.Fill;
-            this.Tag = layer.Identifier;
-            this.MouseDown += LayoutPreviewControl_MouseDown;
+            Controls.Add(previewTable);
+            Dock = DockStyle.Fill;
+            Tag = layer.Identifier;
+            MouseDown += LayoutPreviewControl_MouseDown;
         }
 
         public void PaintPreviewPanel(Bitmap bmp)
         {
             Bitmap scaledBitmap = new Bitmap(bmp, new Size(previewPanel.Width, previewPanel.Height));
-            using (Graphics g = previewPanel.CreateGraphics())
-            {
-                g.Clear(Color.White);
-                g.DrawImage(scaledBitmap, 0, 0);
-            }
+            using Graphics g = previewPanel.CreateGraphics();
+            g.Clear(Color.White);
+            g.DrawImage(scaledBitmap, 0, 0);
         }
 
         protected override void OnPaint(PaintEventArgs pe)
@@ -123,7 +121,7 @@ namespace MultigraphEditor.Src.design
         public bool IsInside(float x, float y)
         {
             Point p = new Point((int)x, (int)y);
-            return this.Bounds.Contains(p);
+            return Bounds.Contains(p);
         }
 
         private void LayoutPreviewControl_MouseDown(object sender, MouseEventArgs e)

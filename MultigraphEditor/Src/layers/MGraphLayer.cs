@@ -39,12 +39,10 @@ namespace MultigraphEditor.Src.layers
         public IMGraphLayer Clone()
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                formatter.Serialize(stream, this);
-                stream.Seek(0, SeekOrigin.Begin);
-                return (IMGraphLayer)formatter.Deserialize(stream);
-            }
+            using MemoryStream stream = new MemoryStream();
+            formatter.Serialize(stream, this);
+            stream.Seek(0, SeekOrigin.Begin);
+            return (IMGraphLayer)formatter.Deserialize(stream);
         }
 #pragma warning restore SYSLIB0011
 
@@ -60,7 +58,7 @@ namespace MultigraphEditor.Src.layers
 
         public override bool Equals(object? obj)
         {
-            if (obj == null || !this.GetType().Equals(obj.GetType()))
+            if (obj == null || !GetType().Equals(obj.GetType()))
             {
                 return false;
             }

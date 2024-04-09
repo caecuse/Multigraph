@@ -13,16 +13,16 @@ namespace MultigraphEditor.Src.design
 
         internal ApplicationState(List<IMGraphEditorEdge> edge, List<IMGraphEditorNode> node, List<IMGraphLayer> layers)
         {
-            var edgeMap = edge.ToDictionary(e => e, e => e.Clone());
-            var nodeMap = node.ToDictionary(n => n, n => n.Clone());
+            Dictionary<IMGraphEditorEdge, IMGraphEditorEdge> edgeMap = edge.ToDictionary(e => e, e => e.Clone());
+            Dictionary<IMGraphEditorNode, IMGraphEditorNode> nodeMap = node.ToDictionary(n => n, n => n.Clone());
 
             _edges.AddRange(edgeMap.Values);
             _nodes.AddRange(nodeMap.Values);
 
-            foreach (var kvp in edgeMap)
+            foreach (KeyValuePair<IMGraphEditorEdge, IMGraphEditorEdge> kvp in edgeMap)
             {
-                var originalEdge = kvp.Key;
-                var clonedEdge = kvp.Value;
+                IMGraphEditorEdge originalEdge = kvp.Key;
+                IMGraphEditorEdge clonedEdge = kvp.Value;
 
                 IMGraphEditorNode sourceNode = (IMGraphEditorNode)originalEdge.SourceDrawable;
                 IMGraphEditorNode targetNode = (IMGraphEditorNode)originalEdge.TargetDrawable;
@@ -31,9 +31,9 @@ namespace MultigraphEditor.Src.design
                 clonedEdge.TargetDrawable = nodeMap[targetNode];
             }
 
-            foreach (var layer in layers)
+            foreach (IMGraphLayer layer in layers)
             {
-                var clonedLayer = layer.Clone();
+                IMGraphLayer clonedLayer = layer.Clone();
                 clonedLayer.UpdateNodeReferences(nodeMap);
                 clonedLayer.UpdateEdgeReferences(edgeMap);
                 _layers.Add(clonedLayer);
@@ -52,20 +52,16 @@ namespace MultigraphEditor.Src.design
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
-            using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-                formatter.Serialize(stream, state);
-            }
+            using FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, state);
         }
 
         internal static ApplicationState DeserializeData(string path)
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
-            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                return (ApplicationState)formatter.Deserialize(stream);
-            }
+            using FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            return (ApplicationState)formatter.Deserialize(stream);
         }
 #pragma warning restore SYSLIB0011
     }

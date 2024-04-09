@@ -10,10 +10,10 @@ namespace MultigraphEditor.Src.algorithm
 
         public List<INode> FindPath(INode start, INode target, IMGraphLayer targetLayer)
         {
-            var openSet = new PriorityQueue<INode, double>();
-            var cameFrom = new Dictionary<INode, INode>();
-            var gScore = new Dictionary<INode, double>();
-            foreach (var node in targetLayer.nodes)
+            PriorityQueue<INode, double> openSet = new PriorityQueue<INode, double>();
+            Dictionary<INode, INode> cameFrom = new Dictionary<INode, INode>();
+            Dictionary<INode, double> gScore = new Dictionary<INode, double>();
+            foreach (graph.IMGraphEditorNode node in targetLayer.nodes)
             {
                 gScore[node] = double.PositiveInfinity;
             }
@@ -23,17 +23,17 @@ namespace MultigraphEditor.Src.algorithm
 
             while (openSet.Count > 0)
             {
-                var current = openSet.Dequeue();
+                INode current = openSet.Dequeue();
 
                 if (current.Equals(target))
                 {
-                    var res = ReconstructPath(cameFrom, target);
+                    List<INode> res = ReconstructPath(cameFrom, target);
                     res.Insert(0, start);
                     res.Reverse();
                     return res;
                 }
 
-                foreach (var edge in current.Edges)
+                foreach (IEdge edge in current.Edges)
                 {
                     if (targetLayer.edges.Contains(edge) && targetLayer.nodes.Contains(edge.Target))
                     {

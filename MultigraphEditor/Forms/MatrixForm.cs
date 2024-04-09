@@ -82,8 +82,8 @@ namespace MultigraphEditor.Forms
         {
             ClearControlsExceptComboBox();
 
-            var nodes = layer.nodes;
-            var edges = layer.edges;
+            List<Src.graph.IMGraphEditorNode> nodes = layer.nodes;
+            List<Src.graph.IMGraphEditorEdge> edges = layer.edges;
 
             int[,] adjacencyMatrix = new int[nodes.Count, nodes.Count];
 
@@ -95,7 +95,7 @@ namespace MultigraphEditor.Forms
                 }
             }
 
-            foreach (var edge in edges)
+            foreach (Src.graph.IMGraphEditorEdge edge in edges)
             {
                 int startIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Source);
                 int endIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Target);
@@ -133,8 +133,8 @@ namespace MultigraphEditor.Forms
         {
             ClearControlsExceptComboBox();
 
-            var nodes = layer.nodes;
-            var edges = layer.edges;
+            List<Src.graph.IMGraphEditorNode> nodes = layer.nodes;
+            List<Src.graph.IMGraphEditorEdge> edges = layer.edges;
 
             int[,] incidenceMatrix = new int[nodes.Count, edges.Count];
 
@@ -148,7 +148,7 @@ namespace MultigraphEditor.Forms
 
             for (int j = 0; j < edges.Count; j++)
             {
-                var edge = edges[j];
+                Src.graph.IMGraphEditorEdge edge = edges[j];
                 int nodeUIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Source);
                 int nodeVIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Target);
                 int weight = edge.Weight;
@@ -194,8 +194,8 @@ namespace MultigraphEditor.Forms
         {
             ClearControlsExceptComboBox();
 
-            var nodes = layer.nodes;
-            var edges = layer.edges;
+            List<Src.graph.IMGraphEditorNode> nodes = layer.nodes;
+            List<Src.graph.IMGraphEditorEdge> edges = layer.edges;
 
             double[,] distanceMatrix = new double[nodes.Count, nodes.Count];
             for (int i = 0; i < nodes.Count; i++)
@@ -209,7 +209,7 @@ namespace MultigraphEditor.Forms
                 }
             }
 
-            foreach (var edge in edges)
+            foreach (Src.graph.IMGraphEditorEdge edge in edges)
             {
                 int nodeUIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Source);
                 int nodeVIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Target);
@@ -264,11 +264,11 @@ namespace MultigraphEditor.Forms
 
         private void ClearControlsExceptComboBox()
         {
-            var controlsToRemove = orginized.Controls.Cast<Control>()
+            List<Control> controlsToRemove = orginized.Controls.Cast<Control>()
                                          .Where(ctrl => ctrl != layerComboBox)
                                          .ToList();
 
-            foreach (var ctrl in controlsToRemove)
+            foreach (Control? ctrl in controlsToRemove)
             {
                 orginized.Controls.Remove(ctrl);
                 ctrl.Dispose();

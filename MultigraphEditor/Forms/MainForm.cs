@@ -327,27 +327,25 @@ namespace MultigraphEditor
             {
                 IMGraphEditorNode node = (IMGraphEditorNode)Activator.CreateInstance(nodeType);
 
-                using (EditForm editform = new EditForm(node))
+                using EditForm editform = new EditForm(node);
+                editform.OnOk += (s, n) =>
                 {
-                    editform.OnOk += (s, n) =>
+                    editform.Close();
+                    node.X = e.X;
+                    node.Y = e.Y;
+                    nodeList.Add(node);
+
+                    foreach (IMGraphLayer layer in Layers)
                     {
-                        editform.Close();
-                        node.X = e.X;
-                        node.Y = e.Y;
-                        nodeList.Add(node);
-
-                        foreach (IMGraphLayer layer in Layers)
+                        if (layer.Active)
                         {
-                            if (layer.Active)
-                            {
-                                layer.nodes.Add(node);
-                            }
+                            layer.nodes.Add(node);
                         }
+                    }
 
-                        canvas.Invalidate();
-                    };
-                    editform.ShowDialog();
-                }
+                    canvas.Invalidate();
+                };
+                editform.ShowDialog();
             }
 
             if (amode == ApplicationMode.View)
@@ -399,14 +397,14 @@ namespace MultigraphEditor
                 {
                     if (node.IsInside(e.X, e.Y))
                     {
-                        var connectedEdges = edgeList.Where(edge => edge.SourceDrawable == node || edge.TargetDrawable == node).ToList();
+                        List<IMGraphEditorEdge> connectedEdges = edgeList.Where(edge => edge.SourceDrawable == node || edge.TargetDrawable == node).ToList();
 
                         foreach (IMGraphLayer layer in Layers)
                         {
                             if (layer.Active)
                             {
                                 layer.nodes.Remove(node);
-                                foreach (var edge in connectedEdges)
+                                foreach (IMGraphEditorEdge? edge in connectedEdges)
                                 {
                                     layer.edges.Remove(edge);
                                 }
@@ -458,7 +456,7 @@ namespace MultigraphEditor
                         }
                         else
                         {
-                            var commonActiveLayers = Layers.Where(layer => layer.Active && layer.nodes.Contains(node) && layer.nodes.Contains(selectedNodeForConnection)).ToList();
+                            List<IMGraphLayer> commonActiveLayers = Layers.Where(layer => layer.Active && layer.nodes.Contains(node) && layer.nodes.Contains(selectedNodeForConnection)).ToList();
 
                             if (commonActiveLayers.Any())
                             {
@@ -523,7 +521,7 @@ namespace MultigraphEditor
 
                     HashSet<IMGraphEditorNode> movedNodes = new HashSet<IMGraphEditorNode>();
 
-                    foreach (var edge in selectedEdges)
+                    foreach (IMGraphEditorEdge edge in selectedEdges)
                     {
                         foreach (IMGraphEditorNode node in nodeList)
                         {
@@ -586,17 +584,15 @@ namespace MultigraphEditor
                 {
                     if (layer.Active && edge.IsInside(e.X, e.Y))
                     {
-                        using (EditForm editform = new EditForm(edge))
+                        using EditForm editform = new EditForm(edge);
+                        editform.OnOk += (s, ea) =>
                         {
-                            editform.OnOk += (s, ea) =>
-                            {
-                                editform.Close();
-                                canvas.Invalidate();
-                            };
-                            editform.ShowDialog();
-                            formShown = true;
-                            break;
-                        }
+                            editform.Close();
+                            canvas.Invalidate();
+                        };
+                        editform.ShowDialog();
+                        formShown = true;
+                        break;
                     }
                 }
             }
@@ -611,17 +607,15 @@ namespace MultigraphEditor
                 {
                     if (layer.Active && node.IsInside(e.X, e.Y))
                     {
-                        using (EditForm editform = new EditForm(node))
+                        using EditForm editform = new EditForm(node);
+                        editform.OnOk += (s, ea) =>
                         {
-                            editform.OnOk += (s, ea) =>
-                            {
-                                editform.Close();
-                                canvas.Invalidate();
-                            };
-                            editform.ShowDialog();
-                            formShown = true;
-                            break;
-                        }
+                            editform.Close();
+                            canvas.Invalidate();
+                        };
+                        editform.ShowDialog();
+                        formShown = true;
+                        break;
                     }
                 }
             }

@@ -152,7 +152,7 @@ namespace MultigraphEditor.Forms
 
                 if (algo != null)
                 {
-                    var path = algo.FindPath(start, end, selectedLayer);
+                    List<INode> path = algo.FindPath(start, end, selectedLayer);
                     path.Reverse();
                     pathListBox = new ListBox
                     {
@@ -164,7 +164,7 @@ namespace MultigraphEditor.Forms
                     pathListBox.Items.Clear();
                     if (path.Count() > 0)
                     {
-                        foreach (var node in path)
+                        foreach (INode node in path)
                         {
                             pathListBox.Items.Add(node.Label ?? "Unnamed Node");
                         }
