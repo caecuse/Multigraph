@@ -1,13 +1,6 @@
-﻿using MultigraphEditor.src.graph;
-using MultigraphEditor.Src.graph;
+﻿using MultigraphEditor.Src.graph;
 using MultigraphEditor.Src.layers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms.VisualStyles;
 
 namespace MultigraphEditor.Src.design
 {

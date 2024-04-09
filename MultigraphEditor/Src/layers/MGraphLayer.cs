@@ -1,19 +1,12 @@
 ﻿using MultigraphEditor.Forms;
-using MultigraphEditor.src.graph;
-using MultigraphEditor.src.layers;
 using MultigraphEditor.Src.graph;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MultigraphEditor.Src.layers
 {
     [Serializable]
     internal class MGraphLayer : IMGraphLayer
-    { 
+    {
         public Font Font { get; set; } = new Font("Lato", 8);
         public Color Color { get; set; } = Color.Black;
         public int nodeWidth { get; set; } = 4;

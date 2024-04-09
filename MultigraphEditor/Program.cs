@@ -1,6 +1,4 @@
 using MultigraphEditor.src.graph;
-using MultigraphEditor.src.layers;
-using MultigraphEditor.Src.alghoritm;
 using MultigraphEditor.Src.algorithm;
 using MultigraphEditor.Src.layers;
 

@@ -1,12 +1,8 @@
 using MultigraphEditor.Forms;
 using MultigraphEditor.src.graph;
-using MultigraphEditor.src.layers;
 using MultigraphEditor.Src.design;
 using MultigraphEditor.Src.graph;
 using MultigraphEditor.Src.layers;
-using System.Drawing.Printing;
-using System.Net.NetworkInformation;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace MultigraphEditor
 {
@@ -46,7 +42,7 @@ namespace MultigraphEditor
             edgeType = edget;
             layerType = layert;
             algoList = alist;
-            
+
             canvas.MouseDown += HandleMouseDown;
             canvas.MouseMove += HandleMouseMove;
             canvas.MouseUp += HandleMouseUp;
@@ -119,7 +115,7 @@ namespace MultigraphEditor
                 previewControls.Add(prev);
                 prev.MouseDown += HandleMouseDown;
             }
-            
+
             Button newLayer = new Button();
             newLayer.Text = "New Layer";
             newLayer.AutoSize = true;

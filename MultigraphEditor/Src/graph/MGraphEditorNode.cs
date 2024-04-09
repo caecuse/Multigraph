@@ -1,13 +1,8 @@
 ﻿using MultigraphEditor.Forms;
 using MultigraphEditor.src.layers;
 using MultigraphEditor.Src.graph;
-using System;
-using System.Collections.Generic;
 using System.Drawing.Drawing2D;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MultigraphEditor.src.graph
 {

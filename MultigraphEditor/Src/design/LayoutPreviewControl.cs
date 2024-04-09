@@ -1,18 +1,6 @@
-﻿using MultigraphEditor.Properties;
-using MultigraphEditor.src.graph;
-using MultigraphEditor.Src.graph;
-using MultigraphEditor.src.layers;
+﻿using MultigraphEditor.Forms;
+using MultigraphEditor.Properties;
 using MultigraphEditor.Src.layers;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MultigraphEditor.Forms;
 
 namespace MultigraphEditor.Src.design
 {
@@ -62,7 +50,7 @@ namespace MultigraphEditor.Src.design
             {
                 LayerDeleted?.Invoke(this, layer);
                 CanvasInvalidated?.Invoke(this, EventArgs.Empty);
-            }; 
+            };
 
             Button previewButton = new Button();
             previewButton.Image = Resources.view;

@@ -1,20 +1,13 @@
 ﻿using MultigraphEditor.Forms;
 using MultigraphEditor.src.layers;
 using MultigraphEditor.Src.graph;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Windows.Forms.AxHost;
 
 namespace MultigraphEditor.src.graph
 {
     [Serializable]
-    public class MGraphEditorEdge: IMGraphEditorEdge
+    public class MGraphEditorEdge : IMGraphEditorEdge
     {
         [ExcludeFromForm]
         public int Identifier { get; set; }
