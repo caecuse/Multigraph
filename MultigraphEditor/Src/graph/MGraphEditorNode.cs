@@ -38,7 +38,10 @@ namespace MultigraphEditor.src.graph
 
         public void AddEdge(IEdge e)
         {
-            Edges.Add(e);
+            if (!Edges.Contains(e))
+            {
+                Edges.Add(e);
+            }
         }
 
         public void RemoveEdge(IEdge e)
