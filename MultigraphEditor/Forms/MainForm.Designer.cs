@@ -233,6 +233,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(MainLayout);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MinimumSize = new Size(700, 300);
             Name = "MainForm";
             Text = "Multigraph Editor";
             Load += MainForm_Load;
