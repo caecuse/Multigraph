@@ -27,6 +27,8 @@ namespace MultigraphEditor.Src.layers
         public int arrowSize { get; set; } = 10;
         [ExcludeFromForm]
         public int Identifier { get; set; }
+        [ExcludeFromForm]
+        private Guid _guid { get; set; }
         public String Name { get; set; }
         public void changeActive()
         {
@@ -37,6 +39,7 @@ namespace MultigraphEditor.Src.layers
         {
             Identifier = id++;
             Name = "Layer " + Identifier;
+            _guid = Guid.NewGuid();
         }
 
 #pragma warning disable SYSLIB0011
@@ -50,6 +53,7 @@ namespace MultigraphEditor.Src.layers
                 return (IMGraphLayer)formatter.Deserialize(stream);
             }
         }
+#pragma warning restore SYSLIB0011
 
         public void UpdateNodeReferences(Dictionary<IMGraphEditorNode, IMGraphEditorNode> nodeMap)
         {
@@ -59,6 +63,24 @@ namespace MultigraphEditor.Src.layers
         public void UpdateEdgeReferences(Dictionary<IMGraphEditorEdge, IMGraphEditorEdge> edgeMap)
         {
             edges = edges.Select(e => edgeMap[e]).ToList();
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                MGraphLayer other = (MGraphLayer)obj;
+                return _guid == other._guid;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return _guid.GetHashCode();
         }
     }
 }

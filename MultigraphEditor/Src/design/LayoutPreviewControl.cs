@@ -69,20 +69,20 @@ namespace MultigraphEditor.Src.design
             previewButton.AutoSize = true;
             previewButton.Dock = DockStyle.Fill;
             previewButton.Margin = new Padding(0, 0, 0, 0);
+            previewButton.Image = layer.Active ? Resources.view : Resources.invisible;
+
             ToolTip tipBtnLayer = new ToolTip();
-            tipBtnLayer.SetToolTip(previewButton, "Make layer inactive");
+            if (layer.Active)
+            {
+                tipBtnLayer.SetToolTip(previewButton, "Make layer active");
+            }
+            else
+            {
+                tipBtnLayer.SetToolTip(previewButton, "Make layer inactive");
+            }
             previewButton.Click += (sender, e) =>
             {
                 layer.changeActive();
-                previewButton.Image = layer.Active ? Resources.view : Resources.invisible;
-                if (layer.Active)
-                {
-                    tipBtnLayer.SetToolTip(previewButton, "Make layer active");
-                }
-                else
-                {
-                    tipBtnLayer.SetToolTip(previewButton, "Make layer inactive");
-                }
                 CanvasInvalidated?.Invoke(this, EventArgs.Empty);
             };
 

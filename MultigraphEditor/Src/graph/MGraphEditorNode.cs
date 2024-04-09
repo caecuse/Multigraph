@@ -16,6 +16,8 @@ namespace MultigraphEditor.src.graph
     {
         [ExcludeFromForm]
         public int Identifier { get; set; }
+        [ExcludeFromForm]
+        private Guid _guid { get; set; }
         public string? Label { get; set; }
         [ExcludeFromForm]
         public List<IEdge> Edges { get; set; } = new List<IEdge>();
@@ -31,6 +33,7 @@ namespace MultigraphEditor.src.graph
         {
             Identifier = GetIdentifier();
             Label = Identifier.ToString();
+            _guid = Guid.NewGuid();
         }
 
         public int GetIdentifier()
@@ -116,13 +119,13 @@ namespace MultigraphEditor.src.graph
             else
             {
                 MGraphEditorNode other = (MGraphEditorNode)obj;
-                return Identifier == other.Identifier; // Consider them equal if their Ids are the same
+                return _guid == other._guid;
             }
         }
 
         public override int GetHashCode()
         {
-            return Identifier.GetHashCode(); // Return the hash code of the Id
+            return _guid.GetHashCode();
         }
     }
 }

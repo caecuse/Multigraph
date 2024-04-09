@@ -34,9 +34,9 @@ namespace MultigraphEditor
         {
             None,
             AddVertex,
-            Default, // Serves for moving objects
+            Default,
             Connect,
-            View, // Serves for moving canvas
+            View,
             Delete,
         }
         public MainForm(Type nodet, Type edget, Type layert, List<Type> alist)
@@ -195,8 +195,9 @@ namespace MultigraphEditor
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
 
             ToolStripMenuItem save = new ToolStripMenuItem("Save");
+            ToolStripMenuItem import = new ToolStripMenuItem("Open");
+
             ToolStripMenuItem export = new ToolStripMenuItem("Export");
-            ToolStripMenuItem import = new ToolStripMenuItem("Import");
             ToolStripMenuItem adjacency = new ToolStripMenuItem("Adjacency matrix");
             ToolStripMenuItem incidence = new ToolStripMenuItem("Incidence matrix");
             ToolStripMenuItem distance = new ToolStripMenuItem("Distance matrix");
@@ -211,6 +212,67 @@ namespace MultigraphEditor
             adjacency.Click += (sender, e) => CreateMatrixForm(Layers, "adj");
             incidence.Click += (sender, e) => CreateMatrixForm(Layers, "inc");
             distance.Click += (sender, e) => CreateMatrixForm(Layers, "dis");
+
+            save.Click += (sender, e) =>
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Multigraph files (*.mg)|*.mg";
+                saveFileDialog.Title = "Save a Multigraph File";
+                saveFileDialog.ShowDialog();
+
+                if (saveFileDialog.FileName != "")
+                {
+                    ApplicationState state = new ApplicationState(edgeList, nodeList, Layers);
+                    ApplicationState.SerializeData(state, saveFileDialog.FileName);
+                }
+            };
+
+            export.Click += (sender, e) =>
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "PNG files (*.png)|*.png";
+                saveFileDialog.Title = "Export to PNG";
+                saveFileDialog.ShowDialog();
+
+                if (saveFileDialog.FileName != "")
+                {
+                    Bitmap bitmap = new Bitmap(canvas.Width, canvas.Height);
+                    using (Graphics g = Graphics.FromImage(bitmap))
+                    {
+                        foreach (IMGraphLayer layer in Layers)
+                        {
+                            if (layer.Active)
+                            {
+                                foreach (IMGraphEditorNode node in layer.nodes)
+                                {
+                                    node.Draw(g, layer);
+                                }
+                                foreach (IMGraphEditorEdge edge in layer.edges)
+                                {
+                                    edge.Draw(g, layer);
+                                }
+                            }
+                        }
+                    }
+                    bitmap.Save(saveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                }
+            };
+
+            import.Click += (sender, e) =>
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Multigraph files (*.mg)|*.mg";
+                openFileDialog.Title = "Open a Multigraph File";
+                openFileDialog.ShowDialog();
+
+                if (openFileDialog.FileName != "")
+                {
+                    ApplicationState state = ApplicationState.DeserializeData(openFileDialog.FileName);
+                    state.LoadState(out nodeList, out edgeList, out Layers);
+                    InitializeLayers();
+                    canvas.Invalidate();
+                }
+            };
 
             contextMenuStrip.Show(GraphBtn, new System.Drawing.Point(0, GraphBtn.Height));
         }
@@ -637,7 +699,7 @@ namespace MultigraphEditor
         {
             if (Layers.Count == 1)
             {
-                MessageBox.Show("Cannot delete the last layer");
+                MessageBox.Show("There must be at least one layer");
                 return;
             }
             Layers.Remove(Layers[Layers.IndexOf(e)]);

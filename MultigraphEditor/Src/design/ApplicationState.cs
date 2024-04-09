@@ -4,12 +4,14 @@ using MultigraphEditor.Src.layers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
 
 namespace MultigraphEditor.Src.design
 {
+    [Serializable]
     internal class ApplicationState
     {
         private List<IMGraphEditorNode> _nodes = new List<IMGraphEditorNode>();
@@ -52,10 +54,26 @@ namespace MultigraphEditor.Src.design
             layers = _layers;
         }
 
-        internal void SerializeState()
+#pragma warning disable SYSLIB0011
+        internal static void SerializeData(ApplicationState state, string path)
         {
-            // Serialize the state
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                formatter.Serialize(stream, state);
+            }
         }
 
+        internal static ApplicationState DeserializeData(string path)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                return (ApplicationState)formatter.Deserialize(stream);
+            }
+        }
+#pragma warning restore SYSLIB0011
     }
 }
