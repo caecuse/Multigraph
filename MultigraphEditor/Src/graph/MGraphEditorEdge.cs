@@ -12,7 +12,7 @@ namespace MultigraphEditor.src.graph
         [ExcludeFromForm]
         public int Identifier { get; set; }
         [ExcludeFromForm]
-        private Guid _guid { get; set; }
+        public Guid _guid { get; set; }
         public string Label { get; set; }
         [ExcludeFromForm]
         public INode Source { get; set; }
@@ -21,13 +21,13 @@ namespace MultigraphEditor.src.graph
         public bool Bidirectional { get; set; }
         public int Weight { get; set; } = 1;
         [ExcludeFromForm]
-        public required INodeDrawable SourceDrawable { get; set; }
+        public INodeDrawable SourceDrawable { get; set; }
         [ExcludeFromForm]
-        public required INodeDrawable TargetDrawable { get; set; }
+        public INodeDrawable TargetDrawable { get; set; }
         [ExcludeFromForm]
-        public required float controlPointX { get; set; }
+        public float controlPointX { get; set; }
         [ExcludeFromForm]
-        public required float controlPointY { get; set; }
+        public float controlPointY { get; set; }
 
         public static int EdgeCounter = 0;
 

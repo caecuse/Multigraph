@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace MultigraphEditor.Src.layers
 {
     [Serializable]
-    internal class MGraphLayer : IMGraphLayer
+    public class MGraphLayer : IMGraphLayer
     {
         public Font Font { get; set; } = new Font("Lato", 8);
         public Color Color { get; set; } = Color.Black;
