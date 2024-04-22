@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="MultigraphEditor.src.graph.IDrawable" Collapsed="true">
+    <Position X="9.75" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAEAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Src\graph\IDrawable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MultigraphEditor.src.graph.IEdge" Collapsed="true">
+    <Position X="7.25" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQAEgAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Src\graph\IEdge.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MultigraphEditor.src.graph.IEdgeDrawable" Collapsed="true">
+    <Position X="7.25" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAQAAAAAAAEAAIAAAAAAAQAAAIIAAA=</HashCode>
+      <FileName>Src\graph\IEdgeDrawable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MultigraphEditor.Src.graph.IMGraphEditorEdge" Collapsed="true">
+    <Position X="7.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Src\graph\IMGraphEditorEdge.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MultigraphEditor.Src.graph.IMGraphEditorNode" Collapsed="true">
+    <Position X="9.75" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Src\graph\IMGraphEditorNode.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MultigraphEditor.src.graph.INode" Collapsed="true">
+    <Position X="12.25" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAAAEAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Src\graph\INode.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MultigraphEditor.src.graph.INodeDrawable" Collapsed="true">
+    <Position X="9.75" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAgAAAAAAAAAAgAAAAQBAAAAYAA=</HashCode>
+      <FileName>Src\graph\INodeDrawable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

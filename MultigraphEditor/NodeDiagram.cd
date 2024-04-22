@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MultigraphEditor.src.graph.MGraphEditorNode" Collapsed="true">
+    <Position X="10.25" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAAAEAAAAgAAiMgAAEAAAAAAAoAAAAQBQAAAYBA=</HashCode>
+      <FileName>Src\graph\MGraphEditorNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="MultigraphEditor.src.graph.INode" Collapsed="true">
+    <Position X="11.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAAAEAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Src\graph\INode.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MultigraphEditor.Src.graph.IMGraphEditorNode" Collapsed="true">
+    <Position X="9" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Src\graph\IMGraphEditorNode.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MultigraphEditor.src.graph.INodeDrawable" Collapsed="true">
+    <Position X="9" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAgAAAAAAAAAAgAAAAQBAAAAYAA=</HashCode>
+      <FileName>Src\graph\INodeDrawable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MultigraphEditor.src.graph.IDrawable" Collapsed="true">
+    <Position X="11.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAEAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Src\graph\IDrawable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

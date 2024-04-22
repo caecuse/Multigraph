@@ -6,5 +6,6 @@ namespace MultigraphEditor.src.layers
     {
         public int arrowSize { get; set; }
         public List<IMGraphEditorEdge> edges { get; set; }
+        int edgeWidth { get; set; }
     }
 }
