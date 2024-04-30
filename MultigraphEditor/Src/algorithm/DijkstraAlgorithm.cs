@@ -8,6 +8,31 @@ namespace MultigraphEditor.Src.algorithm
     {
         public string Name { get; } = "Dijkstra's Algorithm";
 
+        public List<String> Output(INode start, INode target, IMGraphLayer targetLayer)
+        {
+            List<INode> path = FindPath(start, target, targetLayer);
+            List<string> output = new List<String>();
+            foreach (INode node in path)
+            {
+                if (node.Label != null)
+                {
+                    output.Add(node.Label);
+                }
+                else
+                {
+                    output.Add("Unnamed node");
+                }
+            }
+            if (path.Count == 0)
+            {
+                List<string> error = new List<String>();
+                error.Add("No path found");
+                return error;
+            }
+            output.Reverse();
+            return output;
+        }
+
         public List<INode> FindPath(INode start, INode target, IMGraphLayer targetLayer)
         {
             PriorityQueue<INode, double> openSet = new PriorityQueue<INode, double>();
@@ -38,6 +63,11 @@ namespace MultigraphEditor.Src.algorithm
                     if (targetLayer.edges.Contains(edge) && targetLayer.nodes.Contains(edge.Target))
                     {
                         INode neighbor = edge.Target;
+                        if (edge.Weight < 0)
+                        {
+                            MessageBox.Show("Dijkstra's algorithm does not work with edges that have negative weight", "Bad edge weight", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return new List<INode>();
+                        }
                         double tentativeGScore = gScore[current] + edge.Weight;
 
                         if (tentativeGScore < gScore[neighbor])

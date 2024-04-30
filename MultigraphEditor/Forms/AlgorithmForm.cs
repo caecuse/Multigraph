@@ -152,8 +152,7 @@ namespace MultigraphEditor.Forms
 
                 if (algo != null)
                 {
-                    List<INode> path = algo.FindPath(start, end, selectedLayer);
-                    path.Reverse();
+                    List<String> output = algo.Output(start, end, selectedLayer);
                     pathListBox = new ListBox
                     {
                         Width = 200,
@@ -162,16 +161,16 @@ namespace MultigraphEditor.Forms
                     };
 
                     pathListBox.Items.Clear();
-                    if (path.Count() > 0)
+                    if (output.Count() > 0)
                     {
-                        foreach (INode node in path)
+                        foreach (String word in output)
                         {
-                            pathListBox.Items.Add(node.Label ?? "Unnamed Node");
+                            pathListBox.Items.Add(word ?? "???");
                         }
                     }
                     else
                     {
-                        pathListBox.Items.Add("No path found.");
+                        pathListBox.Items.Add("No output.");
                     }
                     orginized.RowCount = 4;
                     orginized.Controls.Add(pathListBox, 0, 3);

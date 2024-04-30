@@ -5,7 +5,8 @@ namespace MultigraphEditor.Src.algorithm
 {
     internal interface IMGraphAlgorithm
     {
-        List<INode> FindPath(INode startNode, INode endNode, IMGraphLayer targetLayer);
-        String Name { get; }
+        // Generic output method for all algorithms, elements of the list will be displayed in the listbox
+        List<string> Output(INode startNode, INode endNode, IMGraphLayer targetLayer);
+        string Name { get; }
     }
 }

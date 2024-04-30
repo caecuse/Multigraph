@@ -1,36 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="MultigraphEditor.Src.layers.MGraphLayer" Collapsed="true">
-    <Position X="9.75" Y="3.5" Width="2.25" />
+  <Class Name="MultigraphEditor.Src.layers.MGraphLayer">
+    <Position X="13.5" Y="1" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAIAAAAAAgIAACAQCAAAAAIAwAAAAwAAKI1A=</HashCode>
       <FileName>Src\layers\MGraphLayer.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.152" />
   </Class>
-  <Interface Name="MultigraphEditor.src.layers.ILayer" Collapsed="true">
+  <Interface Name="MultigraphEditor.src.layers.ILayer">
     <Position X="11" Y="1" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAACAQAAAAAAAAgAAAAwAACAAA=</HashCode>
       <FileName>Src\layers\Ilayer.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="MultigraphEditor.src.layers.IEdgeLayer" Collapsed="true">
-    <Position X="8.5" Y="1" Width="1.75" />
+  <Interface Name="MultigraphEditor.src.layers.IEdgeLayer">
+    <Position X="6.75" Y="0.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAQAAAAAAAIAAA=</HashCode>
       <FileName>Src\layers\IEdgeLayer.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="MultigraphEditor.Src.layers.IMGraphLayer" Collapsed="true">
-    <Position X="8.5" Y="2.25" Width="1.75" />
+  <Interface Name="MultigraphEditor.Src.layers.IMGraphLayer">
+    <Position X="6.75" Y="4" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVA=</HashCode>
       <FileName>Src\layers\IMGraphLayer.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="MultigraphEditor.src.layers.INodeLayer" Collapsed="true">
-    <Position X="11" Y="2.25" Width="1.75" />
+  <Interface Name="MultigraphEditor.src.layers.INodeLayer">
+    <Position X="11" Y="4" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAIAA=</HashCode>
       <FileName>Src\layers\INodeLayer.cs</FileName>
