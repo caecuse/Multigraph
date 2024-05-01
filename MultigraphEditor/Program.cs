@@ -17,6 +17,7 @@ namespace MultigraphEditor
             Type LayerType = typeof(MGraphLayer);
             List<Type> mGraphAlgorithms = new List<Type>();
             mGraphAlgorithms.Add(typeof(DijkstraAlgorithm));
+            mGraphAlgorithms.Add(typeof(CheckHamiltonCycle));
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.

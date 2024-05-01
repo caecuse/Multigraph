@@ -7,10 +7,10 @@ namespace MultigraphEditor.Forms
 {
     public partial class AlgorithmForm : Form
     {
-        private string? selectedAlgorithm = null;
+        private IMGraphAlgorithm? selectedAlgorithm = null;
         private IMGraphLayer? selectedLayer = null;
         private Dictionary<string, Type> algorithmNameToTypeMap = new Dictionary<string, Type>();
-        TableLayoutPanel orginized = new TableLayoutPanel();
+        TableLayoutPanel organized = new TableLayoutPanel();
         private ComboBox layerComboBox;
         private ComboBox algorithmComboBox;
         private ComboBox startNode;
@@ -22,14 +22,14 @@ namespace MultigraphEditor.Forms
         internal AlgorithmForm(List<IMGraphLayer> layerList, List<Type> algorithmList)
         {
             InitializeComponent();
-            orginized.RowCount = 3;
-            orginized.ColumnCount = 1;
-            orginized.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            orginized.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            orginized.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            orginized.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            orginized.Dock = DockStyle.Fill;
-            orginized.AutoSize = true;
+            organized.RowCount = 3;
+            organized.ColumnCount = 1;
+            organized.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            organized.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            organized.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            organized.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            organized.Dock = DockStyle.Fill;
+            organized.AutoSize = true;
 
             AutoSize = true;
             layerComboBox = new ComboBox
@@ -67,7 +67,7 @@ namespace MultigraphEditor.Forms
             };
             nodePanel.Controls.Add(startNode, 0, 0);
             nodePanel.Controls.Add(endNode, 1, 0);
-            orginized.Controls.Add(nodePanel, 0, 2);
+            organized.Controls.Add(nodePanel, 0, 2);
 
             foreach (IMGraphLayer l in layerList)
             {
@@ -82,16 +82,11 @@ namespace MultigraphEditor.Forms
                 {
                     string displayName = algo.Name ?? "";
                     algorithmComboBox.Items.Add(displayName);
+                    algorithmComboBox.SelectedIndexChanged += SetNodes;
                     algorithmNameToTypeMap[displayName] = t;
                 }
             }
 
-            selectedLayer = layerList[0];
-            foreach (IMGraphEditorNode n in layerList[0].nodes)
-            {
-                startNode.Items.Add(n.Label);
-                endNode.Items.Add(n.Label);
-            }
             startNode.SelectedValueChanged += (sender, e) =>
             {
                 start = selectedLayer.nodes.Find(n => n.Label == startNode.SelectedItem.ToString());
@@ -115,25 +110,31 @@ namespace MultigraphEditor.Forms
 
             layerComboBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             algorithmComboBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-            orginized.Controls.Add(layerComboBox, 0, 0);
-            orginized.Controls.Add(algorithmComboBox, 0, 1);
+            organized.Controls.Add(algorithmComboBox, 0, 0);
+            organized.Controls.Add(layerComboBox, 0, 1);
 
-            Controls.Add(orginized);
+            Button runButton = new Button
+            {
+                Text = "Run selected alghoritm",
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom
+            };
+            organized.RowCount = 4;
+            organized.Controls.Add(runButton, 0, 3);
+
+            Controls.Add(organized);
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
             layerComboBox.SelectedIndexChanged += SetNodes;
-            startNode.SelectedIndexChanged += FindPath;
-            endNode.SelectedIndexChanged += FindPath;
-
+            runButton.Click += RunAlgorithm;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
         }
 
-        private void FindPath(object? sender, EventArgs e)
+        private void RunAlgorithm(object? sender, EventArgs e)
         {
-            if (start == null || end == null)
+            if ((selectedAlgorithm.requiresEndNode == true && end == null) || (selectedAlgorithm.requiresStartNode == true && start == null))
             {
                 return;
             }
@@ -141,23 +142,16 @@ namespace MultigraphEditor.Forms
 
             if (layerComboBox.SelectedItem is IMGraphLayer layer && algorithmComboBox.SelectedItem is string algoName)
             {
-                IMGraphAlgorithm? algo = null;
-                if (algorithmComboBox.SelectedItem is string selectedDisplayName)
-                {
-                    if (algorithmNameToTypeMap.TryGetValue(selectedDisplayName, out Type selectedAlgorithmType))
-                    {
-                        algo = Activator.CreateInstance(selectedAlgorithmType) as IMGraphAlgorithm;
-                    }
-                }
 
-                if (algo != null)
+                if (selectedAlgorithm != null)
                 {
-                    List<String> output = algo.Output(start, end, selectedLayer);
+                    List<String> output = selectedAlgorithm.Output(start, end, selectedLayer);
                     pathListBox = new ListBox
                     {
                         Width = 200,
                         Height = 100,
-                        Location = new Point(10, 10)
+                        Location = new Point(10, 10),
+                        HorizontalScrollbar = true,
                     };
 
                     pathListBox.Items.Clear();
@@ -172,14 +166,45 @@ namespace MultigraphEditor.Forms
                     {
                         pathListBox.Items.Add("No output.");
                     }
-                    orginized.RowCount = 4;
-                    orginized.Controls.Add(pathListBox, 0, 3);
+                    organized.RowCount = 5;
+                    organized.Controls.Add(pathListBox, 0, 3);
                 }
             }
         }
 
         private void SetNodes(object? sender, EventArgs e)
         {
+            if (algorithmComboBox.SelectedItem is string selectedDisplayName)
+            {
+                if (algorithmNameToTypeMap.TryGetValue(selectedDisplayName, out Type selectedAlgorithmType))
+                {
+                    selectedAlgorithm = Activator.CreateInstance(selectedAlgorithmType) as IMGraphAlgorithm;
+                }
+                else
+                {
+                    selectedAlgorithm = null;
+                }
+            }
+            if (selectedAlgorithm != null)
+            {
+                if (selectedAlgorithm.requiresStartNode)
+                {
+                    startNode.Enabled = true;
+                }
+                else
+                {
+                    startNode.Enabled = false;
+                }
+                if (selectedAlgorithm.requiresEndNode)
+                {
+                    endNode.Enabled = true;
+                }
+                else
+                {
+                    endNode.Enabled = false;
+                }
+            }
+
             if (layerComboBox.SelectedItem is IMGraphLayer layer)
             {
                 selectedLayer = layer;
@@ -197,7 +222,7 @@ namespace MultigraphEditor.Forms
         {
             if (pathListBox != null)
             {
-                orginized.Controls.Remove(pathListBox);
+                organized.Controls.Remove(pathListBox);
             }
         }
     }
