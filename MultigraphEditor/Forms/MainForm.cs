@@ -50,8 +50,6 @@ namespace MultigraphEditor
             LayoutPanel.MouseWheel += LayoutPanel_Scroll;
         }
 
-
-
         private void HandleMouseDown(object sender, MouseEventArgs e)
         {
             stateStack.Push(new ApplicationState(edgeList, nodeList, Layers));

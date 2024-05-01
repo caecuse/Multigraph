@@ -7,7 +7,8 @@ namespace MultigraphEditor.Src.algorithm
     internal class DijkstraAlgorithm : IMGraphAlgorithm
     {
         public string Name { get; } = "Dijkstra's Algorithm";
-
+        public bool requiresStartNode { get; } = true;
+        public bool requiresEndNode { get; } = true;
         public List<String> Output(INode start, INode target, IMGraphLayer targetLayer)
         {
             List<INode> path = FindPath(start, target, targetLayer);
