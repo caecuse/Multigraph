@@ -1,4 +1,0 @@
-Dorobiæ zapisywanie grafu do pliku
-Dorobiæ wczytywanie grafu z pliku
-Dorobiæ testy
-Dorobiæ dokumentacjê

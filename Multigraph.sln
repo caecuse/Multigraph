@@ -7,10 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultigraphEditor", "Multigr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4CB2591E-0DA6-4D84-802A-7E20B389AB7E}"
 	ProjectSection(SolutionItems) = preProject
-		TODO.txt = TODO.txt
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultigraphTest", "MultigraphTest\MultigraphTest.csproj", "{549263CD-CCD6-4677-918B-2B387A13A026}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultigraphTest", "MultigraphTest\MultigraphTest.csproj", "{549263CD-CCD6-4677-918B-2B387A13A026}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
