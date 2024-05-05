@@ -6,6 +6,7 @@ namespace MultigraphEditor.src.graph
     {
         internal INodeDrawable SourceDrawable { get; set; }
         internal INodeDrawable TargetDrawable { get; set; }
+        public static int EdgeCounter;
         public void PopulateDrawing(INodeDrawable srcDrw, INodeDrawable tgtDrw);
         public void Draw(Graphics g, IEdgeLayer l);
         public void DrawLabel(Graphics g, IEdgeLayer l);
