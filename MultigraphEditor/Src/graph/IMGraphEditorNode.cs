@@ -5,6 +5,5 @@ namespace MultigraphEditor.Src.graph
     public interface IMGraphEditorNode : INode, INodeDrawable
     {
         IMGraphEditorNode Clone();
-
     }
 }
