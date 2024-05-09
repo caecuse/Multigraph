@@ -6,7 +6,7 @@
         Color Color { get; set; }
         bool Active { get; set; }
         int Identifier { get; set; }
-        String Name { get; set; }
+        string Name { get; set; }
         void changeActive();
     }
 }
