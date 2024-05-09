@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MultigraphEditor.MainForm">
+    <Position X="4.25" Y="1.25" Width="4.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="MultigraphEditor.MainForm.ApplicationMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Forms\MainForm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IGAAAAAQCjESKYGEAwDMcCACBIEoKAgAkAIESMiAIgA=</HashCode>
+      <FileName>Forms\MainForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

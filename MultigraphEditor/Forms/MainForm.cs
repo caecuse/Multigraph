@@ -11,13 +11,13 @@ namespace MultigraphEditor
         private ApplicationMode amode = ApplicationMode.None;
         public List<IMGraphEditorNode> nodeList = new List<IMGraphEditorNode>();
         public List<IMGraphEditorEdge> edgeList = new List<IMGraphEditorEdge>();
-        public List<IMGraphLayer> Layers = new List<IMGraphLayer>();
+        public List<IMGraphLayer> layerList = new List<IMGraphLayer>();
         Type nodeType;
         Type edgeType;
         Type layerType;
         List<Type> algoList;
 
-        bool isPanning = false;
+        private bool isPanning = false;
         private Point lastMouseLocation = Point.Empty;
         private IMGraphEditorNode? selectedNode = null;
         private IMGraphEditorNode? selectedNodeForConnection = null;
@@ -52,7 +52,7 @@ namespace MultigraphEditor
 
         private void HandleMouseDown(object sender, MouseEventArgs e)
         {
-            stateStack.Push(new ApplicationState(edgeList, nodeList, Layers));
+            stateStack.Push(new ApplicationState(edgeList, nodeList, layerList));
             if (e.Button == MouseButtons.Left)
             {
                 LeftMouseDown(sender, e);
@@ -79,12 +79,12 @@ namespace MultigraphEditor
 
         private void InitializeLayers()
         {
-            if (Layers.Count == 0)
+            if (layerList.Count == 0)
             {
                 IMGraphLayer layer = (IMGraphLayer)Activator.CreateInstance(layerType);
                 layer.nodes = new List<IMGraphEditorNode>();
                 layer.edges = new List<IMGraphEditorEdge>();
-                Layers.Add(layer);
+                layerList.Add(layer);
             }
             LayoutPanel.Controls.Clear();
             LayoutPanel.RowStyles.Clear();
@@ -93,7 +93,7 @@ namespace MultigraphEditor
             LayoutPanel.ColumnCount = 1;
             LayoutPanel.ColumnStyles.Add(new ColumnStyle() { Width = 100, SizeType = SizeType.Percent });
 
-            foreach (IMGraphLayer l in Layers)
+            foreach (IMGraphLayer l in layerList)
             {
                 Bitmap canvasBitmap = new Bitmap(canvas.Width, canvas.Height);
                 canvas.DrawToBitmap(canvasBitmap, new Rectangle(0, 0, canvas.Width, canvas.Height));
@@ -144,7 +144,7 @@ namespace MultigraphEditor
             if (stateStack.Count > 0)
             {
                 ApplicationState state = stateStack.Pop();
-                state.LoadState(out nodeList, out edgeList, out Layers);
+                state.LoadState(out nodeList, out edgeList, out layerList);
                 InitializeLayers();
                 canvas.Invalidate();
             }
@@ -203,9 +203,9 @@ namespace MultigraphEditor
             contextMenuStrip.Items.Add(incidence);
             contextMenuStrip.Items.Add(distance);
 
-            adjacency.Click += (sender, e) => CreateMatrixForm(Layers, "adj");
-            incidence.Click += (sender, e) => CreateMatrixForm(Layers, "inc");
-            distance.Click += (sender, e) => CreateMatrixForm(Layers, "dis");
+            adjacency.Click += (sender, e) => CreateMatrixForm(layerList, "adj");
+            incidence.Click += (sender, e) => CreateMatrixForm(layerList, "inc");
+            distance.Click += (sender, e) => CreateMatrixForm(layerList, "dis");
 
             save.Click += (sender, e) =>
             {
@@ -216,7 +216,7 @@ namespace MultigraphEditor
 
                 if (saveFileDialog.FileName != "")
                 {
-                    ApplicationState state = new ApplicationState(edgeList, nodeList, Layers);
+                    ApplicationState state = new ApplicationState(edgeList, nodeList, layerList);
                     ApplicationState.SerializeData(state, saveFileDialog.FileName);
                 }
             };
@@ -233,7 +233,7 @@ namespace MultigraphEditor
                     Bitmap bitmap = new Bitmap(canvas.Width, canvas.Height);
                     using (Graphics g = Graphics.FromImage(bitmap))
                     {
-                        foreach (IMGraphLayer layer in Layers)
+                        foreach (IMGraphLayer layer in layerList)
                         {
                             if (layer.Active)
                             {
@@ -262,7 +262,7 @@ namespace MultigraphEditor
                 if (openFileDialog.FileName != "")
                 {
                     ApplicationState state = ApplicationState.DeserializeData(openFileDialog.FileName);
-                    state.LoadState(out nodeList, out edgeList, out Layers);
+                    state.LoadState(out nodeList, out edgeList, out layerList);
                     InitializeLayers();
                     canvas.Invalidate();
                 }
@@ -277,7 +277,7 @@ namespace MultigraphEditor
             selectedNode = null;
             selectedNodeForConnection = null;
             UpdateLastClickedButton(sender);
-            AlgorithmForm alghorimtForm = new AlgorithmForm(Layers, algoList);
+            AlgorithmForm alghorimtForm = new AlgorithmForm(layerList, algoList);
             alghorimtForm.Show();
         }
 
@@ -300,7 +300,7 @@ namespace MultigraphEditor
         {
             Graphics g = e.Graphics;
 
-            foreach (IMGraphLayer layer in Layers)
+            foreach (IMGraphLayer layer in layerList)
             {
                 if (layer.Active)
                 {
@@ -333,7 +333,7 @@ namespace MultigraphEditor
                     node.Y = e.Y;
                     nodeList.Add(node);
 
-                    foreach (IMGraphLayer layer in Layers)
+                    foreach (IMGraphLayer layer in layerList)
                     {
                         if (layer.Active)
                         {
@@ -356,7 +356,7 @@ namespace MultigraphEditor
             {
                 foreach (IMGraphEditorNode node in nodeList)
                 {
-                    foreach (IMGraphLayer layer in Layers)
+                    foreach (IMGraphLayer layer in layerList)
                     {
                         if (layer.Active)
                         {
@@ -372,7 +372,7 @@ namespace MultigraphEditor
 
                 foreach (IMGraphEditorEdge edge in edgeList)
                 {
-                    foreach (IMGraphLayer layer in Layers)
+                    foreach (IMGraphLayer layer in layerList)
                     {
                         if (layer.Active)
                         {
@@ -397,7 +397,7 @@ namespace MultigraphEditor
                     {
                         List<IMGraphEditorEdge> connectedEdges = edgeList.Where(edge => edge.SourceDrawable == node || edge.TargetDrawable == node).ToList();
 
-                        foreach (IMGraphLayer layer in Layers)
+                        foreach (IMGraphLayer layer in layerList)
                         {
                             if (layer.Active)
                             {
@@ -424,7 +424,7 @@ namespace MultigraphEditor
                     {
                         if (edge.IsInside(e.X, e.Y))
                         {
-                            foreach (IMGraphLayer layer in Layers)
+                            foreach (IMGraphLayer layer in layerList)
                             {
                                 if (layer.Active)
                                 {
@@ -445,7 +445,7 @@ namespace MultigraphEditor
             {
                 foreach (IMGraphEditorNode node in nodeList)
                 {
-                    if (node.IsInside(e.X, e.Y) && Layers.Any(layer => layer.Active && layer.nodes.Contains(node)))
+                    if (node.IsInside(e.X, e.Y) && layerList.Any(layer => layer.Active && layer.nodes.Contains(node)))
                     {
                         if (selectedNodeForConnection == null)
                         {
@@ -454,7 +454,7 @@ namespace MultigraphEditor
                         }
                         else
                         {
-                            List<IMGraphLayer> commonActiveLayers = Layers.Where(layer => layer.Active && layer.nodes.Contains(node) && layer.nodes.Contains(selectedNodeForConnection)).ToList();
+                            List<IMGraphLayer> commonActiveLayers = layerList.Where(layer => layer.Active && layer.nodes.Contains(node) && layer.nodes.Contains(selectedNodeForConnection)).ToList();
 
                             if (commonActiveLayers.Any())
                             {
@@ -578,7 +578,7 @@ namespace MultigraphEditor
             {
                 if (formShown) break;
 
-                foreach (IMGraphLayer layer in Layers)
+                foreach (IMGraphLayer layer in layerList)
                 {
                     if (layer.Active && edge.IsInside(e.X, e.Y))
                     {
@@ -601,7 +601,7 @@ namespace MultigraphEditor
             {
                 if (formShown) break;
 
-                foreach (IMGraphLayer layer in Layers)
+                foreach (IMGraphLayer layer in layerList)
                 {
                     if (layer.Active && node.IsInside(e.X, e.Y))
                     {
@@ -621,12 +621,12 @@ namespace MultigraphEditor
 
         private void AddLayer(object? sender, EventArgs e)
         {
-            stateStack.Push(new ApplicationState(edgeList, nodeList, Layers));
+            stateStack.Push(new ApplicationState(edgeList, nodeList, layerList));
 
             IMGraphLayer layer = (IMGraphLayer)Activator.CreateInstance(layerType);
             layer.nodes = new List<IMGraphEditorNode>();
             layer.edges = new List<IMGraphEditorEdge>();
-            Layers.Add(layer);
+            layerList.Add(layer);
 
             InitializeLayers();
         }
@@ -655,7 +655,7 @@ namespace MultigraphEditor
 
         private void UpdatePreviewPanels()
         {
-            foreach (IMGraphLayer l in Layers)
+            foreach (IMGraphLayer l in layerList)
             {
                 foreach (Control c in LayoutPanel.Controls)
                 {
@@ -685,12 +685,12 @@ namespace MultigraphEditor
 
         private void LayerDeletedHandler(object sender, IMGraphLayer e)
         {
-            if (Layers.Count == 1)
+            if (layerList.Count == 1)
             {
                 MessageBox.Show("There must be at least one layer");
                 return;
             }
-            Layers.Remove(Layers[Layers.IndexOf(e)]);
+            layerList.Remove(layerList[layerList.IndexOf(e)]);
             InitializeLayers();
         }
 
