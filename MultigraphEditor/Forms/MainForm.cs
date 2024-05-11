@@ -1,8 +1,7 @@
 using MultigraphEditor.Forms;
 using MultigraphEditor.src.graph;
-using MultigraphEditor.Src.design;
-using MultigraphEditor.Src.graph;
-using MultigraphEditor.Src.layers;
+using MultigraphEditor.src.design;
+using MultigraphEditor.src.layers;
 
 namespace MultigraphEditor
 {

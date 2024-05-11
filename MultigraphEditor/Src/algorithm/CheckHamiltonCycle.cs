@@ -1,12 +1,12 @@
 ﻿using MultigraphEditor.src.graph;
-using MultigraphEditor.Src.layers;
+using MultigraphEditor.src.layers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultigraphEditor.Src.algorithm
+namespace MultigraphEditor.src.algorithm
 {
     internal class CheckHamiltonCycle : IMGraphAlgorithm
     {

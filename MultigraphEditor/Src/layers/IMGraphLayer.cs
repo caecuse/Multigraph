@@ -1,7 +1,6 @@
-﻿using MultigraphEditor.src.layers;
-using MultigraphEditor.Src.graph;
+﻿using MultigraphEditor.src.graph;
 
-namespace MultigraphEditor.Src.layers
+namespace MultigraphEditor.src.layers
 {
     public interface IMGraphLayer : INodeLayer, IEdgeLayer
     {

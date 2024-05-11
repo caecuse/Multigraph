@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace MultigraphEditor.Src.design
+namespace MultigraphEditor.src.design
 {
     [ToolboxItem(true)]
     [Designer(typeof(DoubleBufferedPanelDesigner))]

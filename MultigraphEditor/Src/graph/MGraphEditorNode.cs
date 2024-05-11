@@ -1,6 +1,5 @@
 ﻿using MultigraphEditor.Forms;
 using MultigraphEditor.src.layers;
-using MultigraphEditor.Src.graph;
 using System.Drawing.Drawing2D;
 using System.Runtime.Serialization.Formatters.Binary;
 

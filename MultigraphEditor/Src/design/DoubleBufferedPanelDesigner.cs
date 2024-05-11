@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms.Design;
 
-namespace MultigraphEditor.Src.design
+namespace MultigraphEditor.src.design
 {
     internal class DoubleBufferedPanelDesigner : ControlDesigner
     {

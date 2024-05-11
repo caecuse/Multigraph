@@ -1,4 +1,6 @@
-﻿namespace MultigraphEditor
+﻿using MultigraphEditor.src.design;
+
+namespace MultigraphEditor
 {
     partial class MainForm
     {
@@ -40,7 +42,7 @@
             RemoveBtn = new Button();
             UndoBtn = new Button();
             GraphBtn = new Button();
-            canvas = new Src.design.DoubleBufferedPanel();
+            canvas = new DoubleBufferedPanel();
             LayoutPanel = new TableLayoutPanel();
             MainLayout.SuspendLayout();
             ButtonPanel.SuspendLayout();
@@ -257,7 +259,7 @@
         #endregion
 
         private TableLayoutPanel MainLayout;
-        private Src.design.DoubleBufferedPanel canvas;
+        private DoubleBufferedPanel canvas;
         private FlowLayoutPanel ButtonPanel;
         private Button button1;
         private Button ViewBtn;

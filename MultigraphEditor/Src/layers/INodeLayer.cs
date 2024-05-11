@@ -1,4 +1,4 @@
-﻿using MultigraphEditor.Src.graph;
+﻿using MultigraphEditor.src.graph;
 
 namespace MultigraphEditor.src.layers
 {

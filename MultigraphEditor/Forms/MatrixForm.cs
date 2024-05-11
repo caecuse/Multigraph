@@ -1,4 +1,4 @@
-﻿using MultigraphEditor.Src.layers;
+﻿using MultigraphEditor.src.layers;
 using System.Data;
 using System.Text;
 
@@ -82,8 +82,8 @@ namespace MultigraphEditor.Forms
         {
             ClearControlsExceptComboBox();
 
-            List<Src.graph.IMGraphEditorNode> nodes = layer.nodes;
-            List<Src.graph.IMGraphEditorEdge> edges = layer.edges;
+            List<IMGraphEditorNode> nodes = layer.nodes;
+            List<IMGraphEditorEdge> edges = layer.edges;
 
             int[,] adjacencyMatrix = new int[nodes.Count, nodes.Count];
 
@@ -95,10 +95,10 @@ namespace MultigraphEditor.Forms
                 }
             }
 
-            foreach (Src.graph.IMGraphEditorEdge edge in edges)
+            foreach (IMGraphEditorEdge edge in edges)
             {
-                int startIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Source);
-                int endIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Target);
+                int startIndex = nodes.IndexOf((IMGraphEditorNode)edge.Source);
+                int endIndex = nodes.IndexOf((IMGraphEditorNode)edge.Target);
                 adjacencyMatrix[startIndex, endIndex] = 1;
                 if (edge.Bidirectional)
                 {
@@ -133,8 +133,8 @@ namespace MultigraphEditor.Forms
         {
             ClearControlsExceptComboBox();
 
-            List<Src.graph.IMGraphEditorNode> nodes = layer.nodes;
-            List<Src.graph.IMGraphEditorEdge> edges = layer.edges;
+            List<IMGraphEditorNode> nodes = layer.nodes;
+            List<IMGraphEditorEdge> edges = layer.edges;
 
             int[,] incidenceMatrix = new int[nodes.Count, edges.Count];
 
@@ -148,9 +148,9 @@ namespace MultigraphEditor.Forms
 
             for (int j = 0; j < edges.Count; j++)
             {
-                Src.graph.IMGraphEditorEdge edge = edges[j];
-                int nodeUIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Source);
-                int nodeVIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Target);
+                IMGraphEditorEdge edge = edges[j];
+                int nodeUIndex = nodes.IndexOf((IMGraphEditorNode)edge.Source);
+                int nodeVIndex = nodes.IndexOf((IMGraphEditorNode)edge.Target);
                 int weight = edge.Weight;
 
                 if (edge.Bidirectional)
@@ -194,8 +194,8 @@ namespace MultigraphEditor.Forms
         {
             ClearControlsExceptComboBox();
 
-            List<Src.graph.IMGraphEditorNode> nodes = layer.nodes;
-            List<Src.graph.IMGraphEditorEdge> edges = layer.edges;
+            List<IMGraphEditorNode> nodes = layer.nodes;
+            List<IMGraphEditorEdge> edges = layer.edges;
 
             double[,] distanceMatrix = new double[nodes.Count, nodes.Count];
             for (int i = 0; i < nodes.Count; i++)
@@ -209,10 +209,10 @@ namespace MultigraphEditor.Forms
                 }
             }
 
-            foreach (Src.graph.IMGraphEditorEdge edge in edges)
+            foreach (IMGraphEditorEdge edge in edges)
             {
-                int nodeUIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Source);
-                int nodeVIndex = nodes.IndexOf((Src.graph.IMGraphEditorNode)edge.Target);
+                int nodeUIndex = nodes.IndexOf((IMGraphEditorNode)edge.Source);
+                int nodeVIndex = nodes.IndexOf((IMGraphEditorNode)edge.Target);
                 double weight = edge.Weight;
 
                 distanceMatrix[nodeUIndex, nodeVIndex] = weight;

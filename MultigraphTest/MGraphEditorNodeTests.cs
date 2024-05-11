@@ -1,6 +1,5 @@
 using Moq;
 using MultigraphEditor.src.graph;
-using MultigraphEditor.Src.graph;
 
 namespace MultigraphTest
 {

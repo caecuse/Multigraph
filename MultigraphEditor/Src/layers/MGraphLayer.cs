@@ -1,8 +1,8 @@
 ﻿using MultigraphEditor.Forms;
-using MultigraphEditor.Src.graph;
+using MultigraphEditor.src.graph;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace MultigraphEditor.Src.layers
+namespace MultigraphEditor.src.layers
 {
     [Serializable]
     public class MGraphLayer : IMGraphLayer

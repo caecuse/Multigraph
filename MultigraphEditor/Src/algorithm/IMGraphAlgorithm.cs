@@ -1,7 +1,7 @@
 ﻿using MultigraphEditor.src.graph;
-using MultigraphEditor.Src.layers;
+using MultigraphEditor.src.layers;
 
-namespace MultigraphEditor.Src.algorithm
+namespace MultigraphEditor.src.algorithm
 {
     internal interface IMGraphAlgorithm
     {

@@ -1,8 +1,6 @@
 ﻿using Moq;
 using MultigraphEditor.src.graph;
 using MultigraphEditor.src.layers;
-using MultigraphEditor.Src.graph;
-using MultigraphEditor.Src.layers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

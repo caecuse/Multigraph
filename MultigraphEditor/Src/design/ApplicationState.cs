@@ -1,8 +1,8 @@
-﻿using MultigraphEditor.Src.graph;
-using MultigraphEditor.Src.layers;
+﻿using MultigraphEditor.src.graph;
+using MultigraphEditor.src.layers;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace MultigraphEditor.Src.design
+namespace MultigraphEditor.src.design
 {
     [Serializable]
     internal class ApplicationState

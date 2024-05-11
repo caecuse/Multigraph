@@ -1,4 +1,4 @@
-﻿namespace MultigraphEditor.Src.design
+﻿namespace MultigraphEditor.src.design
 {
     partial class LayoutPreviewControl
     {

@@ -1,10 +1,9 @@
 ﻿using MultigraphEditor.src.graph;
-using MultigraphEditor.Src.algorithm;
-using MultigraphEditor.Src.layers;
+using MultigraphEditor.src.layers;
 
-namespace MultigraphEditor.Src.algorithm
+namespace MultigraphEditor.src.algorithm
 {
-    internal class DijkstraAlgorithm : IMGraphAlgorithm
+    public class DijkstraAlgorithm : IMGraphAlgorithm
     {
         public string Name { get; } = "Dijkstra's Algorithm";
         public bool requiresStartNode { get; } = true;

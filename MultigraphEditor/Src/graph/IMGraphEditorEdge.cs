@@ -1,6 +1,4 @@
-﻿using MultigraphEditor.src.graph;
-
-namespace MultigraphEditor.Src.graph
+﻿namespace MultigraphEditor.src.graph
 {
     public interface IMGraphEditorEdge : IEdge, IEdgeDrawable
     {

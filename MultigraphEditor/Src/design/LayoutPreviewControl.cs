@@ -1,8 +1,8 @@
 ﻿using MultigraphEditor.Forms;
 using MultigraphEditor.Properties;
-using MultigraphEditor.Src.layers;
+using MultigraphEditor.src.layers;
 
-namespace MultigraphEditor.Src.design
+namespace MultigraphEditor.src.design
 {
     public partial class LayoutPreviewControl : Control
     {
