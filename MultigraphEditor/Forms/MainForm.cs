@@ -464,7 +464,7 @@ namespace MultigraphEditor
                                 {
                                     editform.OnOk += (s, ea) =>
                                     {
-                                        edge.PopulateNode(selectedNodeForConnection, node, edge.Bidirectional, edge.Weight);
+                                        edge.PopulateEdge(selectedNodeForConnection, node, edge.Bidirectional, edge.Weight);
                                         edge.PopulateDrawing(selectedNodeForConnection, node);
                                         edge.SourceDrawable = selectedNodeForConnection;
                                         edge.TargetDrawable = node;

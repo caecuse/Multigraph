@@ -46,7 +46,7 @@ namespace MultigraphTest
             var srcMock = new Mock<INode>();
             var tgtMock = new Mock<INode>();
 
-            edge.PopulateNode(srcMock.Object, tgtMock.Object, true, 5);
+            edge.PopulateEdge(srcMock.Object, tgtMock.Object, true, 5);
 
             Assert.AreEqual(srcMock.Object, edge.Source);
             Assert.AreEqual(tgtMock.Object, edge.Target);
@@ -125,7 +125,7 @@ namespace MultigraphTest
             var sourceMock = new Mock<INode>();
             var targetMock = new Mock<INode>();
 
-            edge.PopulateNode(sourceMock.Object, targetMock.Object, true, 10);
+            edge.PopulateEdge(sourceMock.Object, targetMock.Object, true, 10);
 
             Assert.AreEqual(sourceMock.Object, edge.Source);
             Assert.AreEqual(targetMock.Object, edge.Target);

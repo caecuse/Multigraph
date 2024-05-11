@@ -49,7 +49,7 @@ namespace MultigraphEditor.src.graph
             controlPointY = (srcDrw.Y + tgtDrw.Y) / 2;
         }
 
-        public void PopulateNode(INode src, INode tgt, bool bidir, int w)
+        public void PopulateEdge(INode src, INode tgt, bool bidir, int w)
         {
             Source = src;
             Target = tgt;
