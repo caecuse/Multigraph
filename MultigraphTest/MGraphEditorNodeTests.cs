@@ -195,5 +195,175 @@ namespace MultigraphTest
             Assert.IsFalse(node.IsInside(30, 50), "Point just outside the boundary should be considered outside.");
             Assert.IsTrue(node.IsInside(60, 50), "Point on the opposite boundary should be considered inside.");
         }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValuesForDifferentNodes()
+        {
+            var node1 = new MGraphEditorNode();
+            var node2 = new MGraphEditorNode();
+
+            Assert.AreNotEqual(node1.GetHashCode(), node2.GetHashCode(), "Hash codes should be different for different nodes.");
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsSameValueForSameNode()
+        {
+            var node1 = new MGraphEditorNode();
+            var node2 = node1;
+
+            Assert.AreEqual(node1.GetHashCode(), node2.GetHashCode(), "Hash codes should be the same for the same node.");
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsExpectedValue()
+        {
+            var node = new MGraphEditorNode();
+            var expectedHashCode = node.Identifier.GetHashCode();
+
+            Assert.AreNotEqual(expectedHashCode, node.GetHashCode(), "Hash code is not as expected.");
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsTrueForSameNode()
+        {
+            var node = new MGraphEditorNode();
+
+            Assert.IsTrue(node.Equals(node), "Node should be equal to itself.");
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalseForDifferentType()
+        {
+            var node = new MGraphEditorNode();
+            var edge = new MGraphEditorEdge();
+
+            Assert.IsFalse(node.Equals(edge), "Node should not be equal to an edge.");
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalseForNull()
+        {
+            var node = new MGraphEditorNode();
+
+            Assert.IsFalse(node.Equals(null), "Node should not be equal to null.");
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalseForDifferentNode()
+        {
+            var node1 = new MGraphEditorNode();
+            var node2 = new MGraphEditorNode();
+
+            Assert.IsFalse(node1.Equals(node2), "Different nodes should not be equal.");
+        }
+
+        [TestMethod]
+        public void Clone_CreatesNewInstance()
+        {
+            var node = new MGraphEditorNode();
+            var clonedNode = node.Clone();
+
+            Assert.AreEqual(node, clonedNode, "Cloned node should be a new instance.");
+        }
+
+        [TestMethod]
+        public void Clone_CopiesProperties()
+        {
+            var node = new MGraphEditorNode();
+            var clonedNode = node.Clone();
+
+            Assert.AreEqual(node.Label, clonedNode.Label, "Label is not copied correctly.");
+            Assert.AreEqual(node.X, clonedNode.X, "X coordinate is not copied correctly.");
+            Assert.AreEqual(node.Y, clonedNode.Y, "Y coordinate is not copied correctly.");
+            Assert.AreEqual(node.Diameter, clonedNode.Diameter, "Diameter is not copied correctly.");
+        }
+
+        [TestMethod]
+        public void Clone_CopiesEdges()
+        {
+            var node = new MGraphEditorNode();
+            var edge = new MGraphEditorEdge();
+            node.AddEdge(edge);
+
+            var clonedNode = node.Clone();
+
+            Assert.IsTrue(clonedNode.Edges.Contains(edge), "Edges are not copied correctly.");
+        }
+
+        [TestMethod]
+        public void Clone_CopiesIdentifier()
+        {
+            var node = new MGraphEditorNode();
+            var clonedNode = node.Clone();
+
+            Assert.AreEqual(node.Identifier, clonedNode.Identifier, "Identifier is not copied correctly.");
+        }
+
+        [TestMethod]
+        public void Clone_CopiesCoordinates()
+        {
+            var node = new MGraphEditorNode { X = 50, Y = 100 };
+            var clonedNode = node.Clone();
+
+            Assert.AreEqual(node.X, clonedNode.X, "X coordinate is not copied correctly.");
+            Assert.AreEqual(node.Y, clonedNode.Y, "Y coordinate is not copied correctly.");
+        }
+
+        [TestMethod]
+        public void Clone_CopiesDiameter()
+        {
+            var node = new MGraphEditorNode { Diameter = 20 };
+            var clonedNode = node.Clone();
+
+            Assert.AreEqual(node.Diameter, clonedNode.Diameter, "Diameter is not copied correctly.");
+        }
+
+        [TestMethod]
+        public void Clone_CopiesEdgesCorrectly()
+        {
+            var node = new MGraphEditorNode();
+            var edge = new MGraphEditorEdge();
+            node.AddEdge(edge);
+
+            var clonedNode = node.Clone();
+
+            Assert.IsTrue(clonedNode.Edges.Contains(edge), "Edges are not copied correctly.");
+        }
+
+        [TestMethod]
+        public void Clone_CopiesEdgesButNotSameInstance()
+        {
+            var node = new MGraphEditorNode();
+            var edge = new MGraphEditorEdge();
+            node.AddEdge(edge);
+
+            var clonedNode = node.Clone();
+
+            Assert.AreNotSame(node.Edges, clonedNode.Edges, "Cloned edges should be a new instance.");
+        }
+
+        [TestMethod]
+        public void Clone_CopiesEdgesButNotSameEdgeInstance()
+        {
+            var node = new MGraphEditorNode();
+            var edge = new MGraphEditorEdge();
+            node.AddEdge(edge);
+
+            var clonedNode = node.Clone();
+
+            Assert.AreNotSame(node.Edges[0], clonedNode.Edges[0], "Cloned edge should be a new instance.");
+        }
+
+        [TestMethod]
+        public void Clone_CopiesEdgesButNotSameEdgeInstance2()
+        {
+            var node = new MGraphEditorNode();
+            var edge = new MGraphEditorEdge();
+            node.AddEdge(edge);
+
+            var clonedNode = node.Clone();
+
+            Assert.AreNotSame(node.Edges[0], clonedNode.Edges[0], "Cloned edge should be a new instance.");
+        }
     }
 }

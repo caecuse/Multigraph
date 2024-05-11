@@ -132,5 +132,81 @@ namespace MultigraphTest
             Assert.IsTrue(edge.Bidirectional);
             Assert.AreEqual(10, edge.Weight);
         }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentInstance()
+        {
+            var edge1 = new MGraphEditorEdge();
+            var edge2 = new MGraphEditorEdge();
+
+            Assert.AreNotEqual(edge1.GetHashCode(), edge2.GetHashCode());
+        }
+
+        [TestMethod]
+        public void IsInside_ReturnsFalseForPointOutsideEdge()
+        {
+            var edge = new MGraphEditorEdge();
+            var srcDrawable = new Mock<INodeDrawable>();
+            var tgtDrawable = new Mock<INodeDrawable>();
+
+            // Mock source and target to form a straight horizontal line from (0, 0) to (100, 0)
+            srcDrawable.SetupGet(s => s.X).Returns(0f);
+            srcDrawable.SetupGet(s => s.Y).Returns(0f);
+            srcDrawable.SetupGet(s => s.Diameter).Returns(0f); // Assuming no diameter for simplicity
+            tgtDrawable.SetupGet(t => t.X).Returns(100f);
+            tgtDrawable.SetupGet(t => t.Y).Returns(0f);
+            tgtDrawable.SetupGet(t => t.Diameter).Returns(0f);
+
+            edge.PopulateDrawing(srcDrawable.Object, tgtDrawable.Object);
+
+            // Check a point outside the line
+            Assert.IsFalse(edge.IsInside(50, 10));
+        }
+
+        [TestMethod]
+        public void PopulateDrawing_SetsControlPointsCorrectly()
+        {
+            var edge = new MGraphEditorEdge();
+            var srcDrawable = new Mock<INodeDrawable>();
+            var tgtDrawable = new Mock<INodeDrawable>();
+
+            srcDrawable.SetupGet(s => s.X).Returns(0);
+            srcDrawable.SetupGet(s => s.Y).Returns(0);
+            tgtDrawable.SetupGet(t => t.X).Returns(100);
+            tgtDrawable.SetupGet(t => t.Y).Returns(100);
+
+            edge.PopulateDrawing(srcDrawable.Object, tgtDrawable.Object);
+
+            Assert.AreEqual(50, edge.controlPointX);
+            Assert.AreEqual(50, edge.controlPointY);
+        }
+
+        [TestMethod]
+        public void Clone_ReturnsEqualInstance()
+        {
+            var edge = new MGraphEditorEdge();
+            var clonedEdge = edge.Clone();
+
+            Assert.AreEqual(edge, clonedEdge);
+        }
+
+        [TestMethod]
+        public void Clone_ReturnsDifferentInstance()
+        {
+            var edge = new MGraphEditorEdge();
+            var clonedEdge = edge.Clone();
+
+            Assert.AreNotSame(edge, clonedEdge);
+        }
+
+        [TestMethod]
+        public void Clone_ReturnsEqualButNotSameInstance()
+        {
+            var edge = new MGraphEditorEdge();
+            var clonedEdge = edge.Clone();
+
+            Assert.AreEqual(edge, clonedEdge);
+            Assert.AreNotSame(edge, clonedEdge);
+        }
     }
 }

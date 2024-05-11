@@ -75,5 +75,171 @@ namespace MultigraphTest
 
             Assert.IsFalse(layer1.Equals(layer2));
         }
+
+        [TestMethod]
+        public void Equals_IdentifiesDifferentTypesAsNotEqual()
+        {
+            var layer = new MGraphLayer();
+            var node = new MGraphEditorNode();
+
+            Assert.IsFalse(layer.Equals(node));
+        }
+
+        [TestMethod]
+        public void Clone_CreatesNewInstance()
+        {
+            var layer = new MGraphLayer();
+            var clonedLayer = layer.Clone();
+
+            Assert.AreEqual(layer, clonedLayer);
+        }
+
+        [TestMethod]
+        public void Clone_CopiesProperties()
+        {
+            var layer = new MGraphLayer();
+            var clonedLayer = layer.Clone();
+
+            Assert.AreEqual(layer.Font, clonedLayer.Font);
+            Assert.AreEqual(layer.Color, clonedLayer.Color);
+            Assert.AreEqual(layer.nodeWidth, clonedLayer.nodeWidth);
+            Assert.AreEqual(layer.edgeWidth, clonedLayer.edgeWidth);
+            Assert.AreEqual(layer.Active, clonedLayer.Active);
+            Assert.AreEqual(layer.arrowSize, clonedLayer.arrowSize);
+            Assert.AreEqual(layer.Name, clonedLayer.Name);
+        }
+
+        [TestMethod]
+        public void Clone_CopiesNodes()
+        {
+            var layer = new MGraphLayer();
+            layer.nodes = new List<IMGraphEditorNode>();
+            var node = new MGraphEditorNode();
+            layer.nodes.Add(node);
+
+            var clonedLayer = layer.Clone();
+
+            Assert.IsTrue(clonedLayer.nodes.Contains(node));
+        }
+
+        [TestMethod]
+        public void Clone_CopiesEdges()
+        {
+            var layer = new MGraphLayer();
+            layer.edges = new List<IMGraphEditorEdge>();
+            var edge = new MGraphEditorEdge();
+            layer.edges.Add(edge);
+
+            var clonedLayer = layer.Clone();
+
+            Assert.IsTrue(clonedLayer.edges.Contains(edge));
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsSameValueForSameInstance()
+        {
+            var layer = new MGraphLayer();
+
+            Assert.AreEqual(layer.GetHashCode(), layer.GetHashCode());
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentInstance()
+        {
+            var layer1 = new MGraphLayer();
+            var layer2 = new MGraphLayer();
+
+            Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentProperties()
+        {
+            var layer1 = new MGraphLayer();
+            var layer2 = new MGraphLayer();
+            layer2.Name = "Test";
+
+            Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentNodes()
+        {
+            var layer1 = new MGraphLayer();
+            var layer2 = new MGraphLayer();
+            layer2.nodes = new List<IMGraphEditorNode> { new MGraphEditorNode() };
+
+            Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentEdges()
+        {
+            var layer1 = new MGraphLayer();
+            var layer2 = new MGraphLayer();
+            layer2.edges = new List<IMGraphEditorEdge> { new MGraphEditorEdge() };
+
+            Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentActiveState()
+        {
+            var layer1 = new MGraphLayer();
+            var layer2 = new MGraphLayer();
+            layer2.Active = false;
+
+            Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentArrowSize()
+        {
+            var layer1 = new MGraphLayer();
+            var layer2 = new MGraphLayer();
+            layer2.arrowSize = 20;
+
+            Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentNodeWidth()
+        {
+            var layer1 = new MGraphLayer();
+            var layer2 = new MGraphLayer();
+            layer2.nodeWidth = 20;
+
+            Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentEdgeWidth()
+        {
+            var layer1 = new MGraphLayer();
+            var layer2 = new MGraphLayer();
+            layer2.edgeWidth = 20;
+
+            Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentColor()
+        {
+            var layer1 = new MGraphLayer();
+            var layer2 = new MGraphLayer();
+            layer2.Color = Color.Red;
+
+            Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
+        }
+
+        [TestMethod]
+        public void GetHashCode_ReturnsDifferentValueForDifferentFont()
+        {
+            var layer1 = new MGraphLayer();
+            var layer2 = new MGraphLayer();
+            layer2.Font = new Font("Arial", 12);
+
+            Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
+        }
     }
 }
