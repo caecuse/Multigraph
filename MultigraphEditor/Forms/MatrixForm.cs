@@ -1,5 +1,5 @@
-﻿using MultigraphEditor.src.layers;
-using MultigraphEditor.src.graph;
+﻿using MultigraphEditor.src.graph;
+using MultigraphEditor.src.layers;
 using System.Data;
 using System.Text;
 

@@ -1,10 +1,5 @@
 ﻿using Moq;
 using MultigraphEditor.src.graph;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MultigraphTest
 {
@@ -14,8 +9,8 @@ namespace MultigraphTest
         [TestMethod]
         public void Constructor_SetsUniqueIdentifierAndGuid()
         {
-            var edge1 = new MGraphEditorEdge();
-            var edge2 = new MGraphEditorEdge();
+            MGraphEditorEdge edge1 = new MGraphEditorEdge();
+            MGraphEditorEdge edge2 = new MGraphEditorEdge();
 
             Assert.AreNotEqual(edge1.Identifier, edge2.Identifier);
             Assert.AreNotEqual(edge1._guid, edge2._guid);
@@ -24,9 +19,9 @@ namespace MultigraphTest
         [TestMethod]
         public void PopulateDrawing_SetsCorrectControlPoints()
         {
-            var edge = new MGraphEditorEdge();
-            var srcDrawableMock = new Mock<INodeDrawable>();
-            var tgtDrawableMock = new Mock<INodeDrawable>();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
+            Mock<INodeDrawable> srcDrawableMock = new Mock<INodeDrawable>();
+            Mock<INodeDrawable> tgtDrawableMock = new Mock<INodeDrawable>();
 
             srcDrawableMock.SetupGet(s => s.X).Returns(0);
             srcDrawableMock.SetupGet(s => s.Y).Returns(0);
@@ -42,9 +37,9 @@ namespace MultigraphTest
         [TestMethod]
         public void PopulateNode_SetsPropertiesCorrectly()
         {
-            var edge = new MGraphEditorEdge();
-            var srcMock = new Mock<INode>();
-            var tgtMock = new Mock<INode>();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
+            Mock<INode> srcMock = new Mock<INode>();
+            Mock<INode> tgtMock = new Mock<INode>();
 
             edge.PopulateEdge(srcMock.Object, tgtMock.Object, true, 5);
 
@@ -57,7 +52,7 @@ namespace MultigraphTest
         [TestMethod]
         public void Equals_IdentifiesSameInstanceAsEqual()
         {
-            var edge = new MGraphEditorEdge();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
 
             Assert.IsTrue(edge.Equals(edge));
         }
@@ -65,8 +60,8 @@ namespace MultigraphTest
         [TestMethod]
         public void Equals_IdentifiesDifferentInstancesAsNotEqual()
         {
-            var edge1 = new MGraphEditorEdge();
-            var edge2 = new MGraphEditorEdge();
+            MGraphEditorEdge edge1 = new MGraphEditorEdge();
+            MGraphEditorEdge edge2 = new MGraphEditorEdge();
 
             Assert.IsFalse(edge1.Equals(edge2));
         }
@@ -74,8 +69,8 @@ namespace MultigraphTest
         [TestMethod]
         public void Equals_IdentifiesDifferentTypesAsNotEqual()
         {
-            var edge = new MGraphEditorEdge();
-            var obj = new object();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
+            object obj = new object();
 
             Assert.IsFalse(edge.Equals(obj));
         }
@@ -83,7 +78,7 @@ namespace MultigraphTest
         [TestMethod]
         public void GetHashCode_ReturnsSameValueForSameInstance()
         {
-            var edge = new MGraphEditorEdge();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
 
             Assert.AreEqual(edge.GetHashCode(), edge.GetHashCode());
         }
@@ -91,9 +86,9 @@ namespace MultigraphTest
         [TestMethod]
         public void IsInside_ReturnsTrueForPointOnLine()
         {
-            var edge = new MGraphEditorEdge();
-            var srcDrawable = new Mock<INodeDrawable>();
-            var tgtDrawable = new Mock<INodeDrawable>();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
+            Mock<INodeDrawable> srcDrawable = new Mock<INodeDrawable>();
+            Mock<INodeDrawable> tgtDrawable = new Mock<INodeDrawable>();
 
             // Mock source and target to form a straight horizontal line from (0, 0) to (100, 0)
             srcDrawable.SetupGet(s => s.X).Returns(0f);
@@ -112,8 +107,8 @@ namespace MultigraphTest
         [TestMethod]
         public void Equals_CorrectlyIdentifiesEqualAndNonEqualInstances()
         {
-            var edge1 = new MGraphEditorEdge();
-            var edge3 = new MGraphEditorEdge();
+            MGraphEditorEdge edge1 = new MGraphEditorEdge();
+            MGraphEditorEdge edge3 = new MGraphEditorEdge();
 
             Assert.IsFalse(edge1.Equals(edge3)); // Different instances with different states
         }
@@ -121,9 +116,9 @@ namespace MultigraphTest
         [TestMethod]
         public void PopulateNode_AssignsNodesAndAttributesCorrectly()
         {
-            var edge = new MGraphEditorEdge();
-            var sourceMock = new Mock<INode>();
-            var targetMock = new Mock<INode>();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
+            Mock<INode> sourceMock = new Mock<INode>();
+            Mock<INode> targetMock = new Mock<INode>();
 
             edge.PopulateEdge(sourceMock.Object, targetMock.Object, true, 10);
 
@@ -136,8 +131,8 @@ namespace MultigraphTest
         [TestMethod]
         public void GetHashCode_ReturnsDifferentValueForDifferentInstance()
         {
-            var edge1 = new MGraphEditorEdge();
-            var edge2 = new MGraphEditorEdge();
+            MGraphEditorEdge edge1 = new MGraphEditorEdge();
+            MGraphEditorEdge edge2 = new MGraphEditorEdge();
 
             Assert.AreNotEqual(edge1.GetHashCode(), edge2.GetHashCode());
         }
@@ -145,9 +140,9 @@ namespace MultigraphTest
         [TestMethod]
         public void IsInside_ReturnsFalseForPointOutsideEdge()
         {
-            var edge = new MGraphEditorEdge();
-            var srcDrawable = new Mock<INodeDrawable>();
-            var tgtDrawable = new Mock<INodeDrawable>();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
+            Mock<INodeDrawable> srcDrawable = new Mock<INodeDrawable>();
+            Mock<INodeDrawable> tgtDrawable = new Mock<INodeDrawable>();
 
             // Mock source and target to form a straight horizontal line from (0, 0) to (100, 0)
             srcDrawable.SetupGet(s => s.X).Returns(0f);
@@ -166,9 +161,9 @@ namespace MultigraphTest
         [TestMethod]
         public void PopulateDrawing_SetsControlPointsCorrectly()
         {
-            var edge = new MGraphEditorEdge();
-            var srcDrawable = new Mock<INodeDrawable>();
-            var tgtDrawable = new Mock<INodeDrawable>();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
+            Mock<INodeDrawable> srcDrawable = new Mock<INodeDrawable>();
+            Mock<INodeDrawable> tgtDrawable = new Mock<INodeDrawable>();
 
             srcDrawable.SetupGet(s => s.X).Returns(0);
             srcDrawable.SetupGet(s => s.Y).Returns(0);
@@ -184,8 +179,8 @@ namespace MultigraphTest
         [TestMethod]
         public void Clone_ReturnsEqualInstance()
         {
-            var edge = new MGraphEditorEdge();
-            var clonedEdge = edge.Clone();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
+            IMGraphEditorEdge clonedEdge = edge.Clone();
 
             Assert.AreEqual(edge, clonedEdge);
         }
@@ -193,8 +188,8 @@ namespace MultigraphTest
         [TestMethod]
         public void Clone_ReturnsDifferentInstance()
         {
-            var edge = new MGraphEditorEdge();
-            var clonedEdge = edge.Clone();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
+            IMGraphEditorEdge clonedEdge = edge.Clone();
 
             Assert.AreNotSame(edge, clonedEdge);
         }
@@ -202,8 +197,8 @@ namespace MultigraphTest
         [TestMethod]
         public void Clone_ReturnsEqualButNotSameInstance()
         {
-            var edge = new MGraphEditorEdge();
-            var clonedEdge = edge.Clone();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
+            IMGraphEditorEdge clonedEdge = edge.Clone();
 
             Assert.AreEqual(edge, clonedEdge);
             Assert.AreNotSame(edge, clonedEdge);

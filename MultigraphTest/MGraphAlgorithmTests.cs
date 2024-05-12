@@ -1,11 +1,5 @@
-﻿using Moq;
+﻿using MultigraphEditor.src.algorithm;
 using MultigraphEditor.src.graph;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MultigraphEditor.src.algorithm;
 using MultigraphEditor.src.layers;
 
 
@@ -17,14 +11,14 @@ namespace MultigraphTest
         [TestMethod]
         public void DjikstraTest_simpleCase_1()
         {
-            var algorithm = new DijkstraAlgorithm();
+            DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
 
-            var startNode = new MGraphEditorNode();
-            var endNode = new MGraphEditorNode();
-            var targetLayer = new MGraphLayer();
+            MGraphEditorNode startNode = new MGraphEditorNode();
+            MGraphEditorNode endNode = new MGraphEditorNode();
+            MGraphLayer targetLayer = new MGraphLayer();
             targetLayer.nodes = new List<IMGraphEditorNode>();
             targetLayer.edges = new List<IMGraphEditorEdge>();
-            var edge = new MGraphEditorEdge();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
 
             edge.PopulateEdge(startNode, endNode, true, 5);
             startNode.Edges.Add(edge);
@@ -33,21 +27,21 @@ namespace MultigraphTest
             targetLayer.nodes.Add(startNode);
             targetLayer.nodes.Add(endNode);
 
-            var path = algorithm.Output(startNode, endNode, targetLayer);
+            List<string> path = algorithm.Output(startNode, endNode, targetLayer);
             Assert.AreEqual(2, path.Count);
         }
 
         [TestMethod]
         public void DjikstraTest_simpleCase_2()
         {
-            var algorithm = new DijkstraAlgorithm();
+            DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
 
-            var startNode = new MGraphEditorNode();
-            var endNode = new MGraphEditorNode();
-            var targetLayer = new MGraphLayer();
+            MGraphEditorNode startNode = new MGraphEditorNode();
+            MGraphEditorNode endNode = new MGraphEditorNode();
+            MGraphLayer targetLayer = new MGraphLayer();
             targetLayer.nodes = new List<IMGraphEditorNode>();
             targetLayer.edges = new List<IMGraphEditorEdge>();
-            var edge = new MGraphEditorEdge();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
 
             edge.PopulateEdge(startNode, endNode, true, 5);
             startNode.Edges.Add(edge);
@@ -56,28 +50,28 @@ namespace MultigraphTest
             targetLayer.nodes.Add(startNode);
             targetLayer.nodes.Add(endNode);
 
-            var path = algorithm.Output(startNode, endNode, targetLayer);
+            List<string> path = algorithm.Output(startNode, endNode, targetLayer);
             Assert.AreEqual(2, path.Count);
         }
 
         [TestMethod]
         public void DjikstraTest_noPath()
         {
-            var algorithm = new DijkstraAlgorithm();
+            DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
 
-            var startNode = new MGraphEditorNode();
-            var endNode = new MGraphEditorNode();
-            var targetLayer = new MGraphLayer();
+            MGraphEditorNode startNode = new MGraphEditorNode();
+            MGraphEditorNode endNode = new MGraphEditorNode();
+            MGraphLayer targetLayer = new MGraphLayer();
             targetLayer.nodes = new List<IMGraphEditorNode>();
             targetLayer.edges = new List<IMGraphEditorEdge>();
-            var edge = new MGraphEditorEdge();
+            MGraphEditorEdge edge = new MGraphEditorEdge();
 
             edge.PopulateEdge(startNode, endNode, true, 5);
             targetLayer.edges.Add(edge);
             targetLayer.nodes.Add(startNode);
             targetLayer.nodes.Add(endNode);
 
-            var path = algorithm.Output(startNode, endNode, targetLayer);
+            List<string> path = algorithm.Output(startNode, endNode, targetLayer);
             Assert.AreEqual(1, path.Count);
             Assert.AreEqual("No path found", path[0]);
         }
@@ -85,25 +79,25 @@ namespace MultigraphTest
         [TestMethod]
         public void DjikstraTest_complexCase_1()
         {
-            var algorithm = new DijkstraAlgorithm();
+            DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
 
-            var startNode = new MGraphEditorNode();
-            var node1 = new MGraphEditorNode();
-            var node2 = new MGraphEditorNode();
-            var node3 = new MGraphEditorNode();
-            var endNode = new MGraphEditorNode();
+            MGraphEditorNode startNode = new MGraphEditorNode();
+            MGraphEditorNode node1 = new MGraphEditorNode();
+            MGraphEditorNode node2 = new MGraphEditorNode();
+            MGraphEditorNode node3 = new MGraphEditorNode();
+            MGraphEditorNode endNode = new MGraphEditorNode();
 
-            var targetLayer = new MGraphLayer();
+            MGraphLayer targetLayer = new MGraphLayer();
             targetLayer.nodes = new List<IMGraphEditorNode>();
             targetLayer.edges = new List<IMGraphEditorEdge>();
-            var edge1 = new MGraphEditorEdge();
-            var edge2 = new MGraphEditorEdge();
-            var edge3 = new MGraphEditorEdge();
-            var edge4 = new MGraphEditorEdge();
-            var edge5 = new MGraphEditorEdge();
-            var edge6 = new MGraphEditorEdge();
-            var edge7 = new MGraphEditorEdge();
-            var edge8 = new MGraphEditorEdge();
+            MGraphEditorEdge edge1 = new MGraphEditorEdge();
+            MGraphEditorEdge edge2 = new MGraphEditorEdge();
+            MGraphEditorEdge edge3 = new MGraphEditorEdge();
+            MGraphEditorEdge edge4 = new MGraphEditorEdge();
+            MGraphEditorEdge edge5 = new MGraphEditorEdge();
+            MGraphEditorEdge edge6 = new MGraphEditorEdge();
+            MGraphEditorEdge edge7 = new MGraphEditorEdge();
+            MGraphEditorEdge edge8 = new MGraphEditorEdge();
 
             edge1.PopulateEdge(startNode, node1, true, 5);
             edge2.PopulateEdge(startNode, node2, true, 5);
@@ -146,25 +140,25 @@ namespace MultigraphTest
             targetLayer.nodes.Add(node3);
             targetLayer.nodes.Add(endNode);
 
-            var path = algorithm.Output(startNode, endNode, targetLayer);
+            List<string> path = algorithm.Output(startNode, endNode, targetLayer);
             Assert.AreEqual(3, path.Count);
         }
 
         [TestMethod]
         public void CheckHamiltonCycleTest_simpleCase()
         {
-            var algorithm = new CheckHamiltonCycle();
+            CheckHamiltonCycle algorithm = new CheckHamiltonCycle();
 
-            var node1 = new MGraphEditorNode();
-            var node2 = new MGraphEditorNode();
-            var node3 = new MGraphEditorNode();
+            MGraphEditorNode node1 = new MGraphEditorNode();
+            MGraphEditorNode node2 = new MGraphEditorNode();
+            MGraphEditorNode node3 = new MGraphEditorNode();
 
-            var targetLayer = new MGraphLayer();
+            MGraphLayer targetLayer = new MGraphLayer();
             targetLayer.nodes = new List<IMGraphEditorNode>();
             targetLayer.edges = new List<IMGraphEditorEdge>();
-            var edge1 = new MGraphEditorEdge();
-            var edge2 = new MGraphEditorEdge();
-            var edge3 = new MGraphEditorEdge();
+            MGraphEditorEdge edge1 = new MGraphEditorEdge();
+            MGraphEditorEdge edge2 = new MGraphEditorEdge();
+            MGraphEditorEdge edge3 = new MGraphEditorEdge();
 
             edge1.PopulateEdge(node1, node2, true, 5);
             edge2.PopulateEdge(node2, node3, true, 5);
@@ -183,8 +177,8 @@ namespace MultigraphTest
             targetLayer.nodes.Add(node1);
             targetLayer.nodes.Add(node2);
             targetLayer.nodes.Add(node3);
-            
-            var output = algorithm.Output(node1, node1, targetLayer);
+
+            List<string> output = algorithm.Output(node1, node1, targetLayer);
             Assert.AreEqual(1, output.Count);
             Assert.AreEqual("Graph has a Hamilton cycle", output[0]);
         }
@@ -192,17 +186,17 @@ namespace MultigraphTest
         [TestMethod]
         public void CheckHamiltonCycleTest_moreNodesThanEdges()
         {
-            var algorithm = new CheckHamiltonCycle();
+            CheckHamiltonCycle algorithm = new CheckHamiltonCycle();
 
-            var node1 = new MGraphEditorNode();
-            var node2 = new MGraphEditorNode();
-            var node3 = new MGraphEditorNode();
+            MGraphEditorNode node1 = new MGraphEditorNode();
+            MGraphEditorNode node2 = new MGraphEditorNode();
+            MGraphEditorNode node3 = new MGraphEditorNode();
 
-            var targetLayer = new MGraphLayer();
+            MGraphLayer targetLayer = new MGraphLayer();
             targetLayer.nodes = new List<IMGraphEditorNode>();
             targetLayer.edges = new List<IMGraphEditorEdge>();
-            var edge1 = new MGraphEditorEdge();
-            var edge2 = new MGraphEditorEdge();
+            MGraphEditorEdge edge1 = new MGraphEditorEdge();
+            MGraphEditorEdge edge2 = new MGraphEditorEdge();
 
             edge1.PopulateEdge(node1, node2, true, 5);
             edge2.PopulateEdge(node2, node3, true, 5);
@@ -218,7 +212,7 @@ namespace MultigraphTest
             targetLayer.nodes.Add(node2);
             targetLayer.nodes.Add(node3);
 
-            var output = algorithm.Output(node1, node1, targetLayer);
+            List<string> output = algorithm.Output(node1, node1, targetLayer);
             Assert.AreEqual(1, output.Count);
             Assert.AreEqual("Graph has more nodes than edges, so it can't have a Hamilton cycle", output[0]);
         }
@@ -226,15 +220,15 @@ namespace MultigraphTest
         [TestMethod]
         public void CheckHamiltonCycleTest_lessThan3Nodes()
         {
-            var algorithm = new CheckHamiltonCycle();
+            CheckHamiltonCycle algorithm = new CheckHamiltonCycle();
 
-            var node1 = new MGraphEditorNode();
-            var node2 = new MGraphEditorNode();
+            MGraphEditorNode node1 = new MGraphEditorNode();
+            MGraphEditorNode node2 = new MGraphEditorNode();
 
-            var targetLayer = new MGraphLayer();
+            MGraphLayer targetLayer = new MGraphLayer();
             targetLayer.nodes = new List<IMGraphEditorNode>();
             targetLayer.edges = new List<IMGraphEditorEdge>();
-            var edge1 = new MGraphEditorEdge();
+            MGraphEditorEdge edge1 = new MGraphEditorEdge();
 
             edge1.PopulateEdge(node1, node2, true, 5);
 
@@ -245,7 +239,7 @@ namespace MultigraphTest
             targetLayer.nodes.Add(node1);
             targetLayer.nodes.Add(node2);
 
-            var output = algorithm.Output(node1, node1, targetLayer);
+            List<string> output = algorithm.Output(node1, node1, targetLayer);
             Assert.AreEqual(1, output.Count);
             Assert.AreEqual("Graph has less than 3 nodes, so it can't have a Hamilton cycle", output[0]);
         }
@@ -253,17 +247,17 @@ namespace MultigraphTest
         [TestMethod]
         public void CheckHamiltonCycleTest_nodeWithLessThan2Edges()
         {
-            var algorithm = new CheckHamiltonCycle();
+            CheckHamiltonCycle algorithm = new CheckHamiltonCycle();
 
-            var node1 = new MGraphEditorNode();
-            var node2 = new MGraphEditorNode();
-            var node3 = new MGraphEditorNode();
+            MGraphEditorNode node1 = new MGraphEditorNode();
+            MGraphEditorNode node2 = new MGraphEditorNode();
+            MGraphEditorNode node3 = new MGraphEditorNode();
 
-            var targetLayer = new MGraphLayer();
+            MGraphLayer targetLayer = new MGraphLayer();
             targetLayer.nodes = new List<IMGraphEditorNode>();
             targetLayer.edges = new List<IMGraphEditorEdge>();
-            var edge1 = new MGraphEditorEdge();
-            var edge2 = new MGraphEditorEdge();
+            MGraphEditorEdge edge1 = new MGraphEditorEdge();
+            MGraphEditorEdge edge2 = new MGraphEditorEdge();
 
             edge1.PopulateEdge(node1, node2, true, 5);
             edge2.PopulateEdge(node2, node3, true, 5);
@@ -279,7 +273,7 @@ namespace MultigraphTest
             targetLayer.nodes.Add(node2);
             targetLayer.nodes.Add(node3);
 
-            var output = algorithm.Output(node1, node1, targetLayer);
+            List<string> output = algorithm.Output(node1, node1, targetLayer);
             Assert.AreEqual(1, output.Count);
             Assert.AreEqual("Graph has more nodes than edges, so it can't have a Hamilton cycle", output[0]);
         }
@@ -287,18 +281,18 @@ namespace MultigraphTest
         [TestMethod]
         public void CheckHamiltonCycleTest_noHamiltonCycle()
         {
-            var algorithm = new CheckHamiltonCycle();
+            CheckHamiltonCycle algorithm = new CheckHamiltonCycle();
 
-            var node1 = new MGraphEditorNode();
-            var node2 = new MGraphEditorNode();
-            var node3 = new MGraphEditorNode();
+            MGraphEditorNode node1 = new MGraphEditorNode();
+            MGraphEditorNode node2 = new MGraphEditorNode();
+            MGraphEditorNode node3 = new MGraphEditorNode();
 
-            var targetLayer = new MGraphLayer();
+            MGraphLayer targetLayer = new MGraphLayer();
             targetLayer.nodes = new List<IMGraphEditorNode>();
             targetLayer.edges = new List<IMGraphEditorEdge>();
-            var edge1 = new MGraphEditorEdge();
-            var edge2 = new MGraphEditorEdge();
-            var edge3 = new MGraphEditorEdge();
+            MGraphEditorEdge edge1 = new MGraphEditorEdge();
+            MGraphEditorEdge edge2 = new MGraphEditorEdge();
+            MGraphEditorEdge edge3 = new MGraphEditorEdge();
 
             edge1.PopulateEdge(node1, node2, true, 5);
             edge2.PopulateEdge(node2, node3, true, 5);
@@ -317,9 +311,9 @@ namespace MultigraphTest
             targetLayer.nodes.Add(node2);
             targetLayer.nodes.Add(node3);
 
-            var output = algorithm.Output(node1, node2, targetLayer);
+            List<string> output = algorithm.Output(node1, node2, targetLayer);
             Assert.AreEqual(1, output.Count);
-            Assert.AreEqual("Node " + node3.Label +" has less than 2 edges, so it can't be part of a Hamilton cycle", output[0]);
+            Assert.AreEqual("Node " + node3.Label + " has less than 2 edges, so it can't be part of a Hamilton cycle", output[0]);
         }
     }
 }

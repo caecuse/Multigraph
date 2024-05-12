@@ -1,6 +1,6 @@
 using MultigraphEditor.Forms;
-using MultigraphEditor.src.graph;
 using MultigraphEditor.src.design;
+using MultigraphEditor.src.graph;
 using MultigraphEditor.src.layers;
 
 namespace MultigraphEditor

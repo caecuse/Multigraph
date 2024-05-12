@@ -1,5 +1,5 @@
-using MultigraphEditor.src.graph;
 using MultigraphEditor.src.algorithm;
+using MultigraphEditor.src.graph;
 using MultigraphEditor.src.layers;
 
 namespace MultigraphEditor
