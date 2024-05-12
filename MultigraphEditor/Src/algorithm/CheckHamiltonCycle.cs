@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MultigraphEditor.src.algorithm
 {
-    internal class CheckHamiltonCycle : IMGraphAlgorithm
+    public class CheckHamiltonCycle : IMGraphAlgorithm
     {
         public List<string> Output(INode startNode, INode endNode, IMGraphLayer targetLayer)
         {

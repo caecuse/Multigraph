@@ -239,5 +239,23 @@ namespace MultigraphTest
 
             Assert.AreNotEqual(layer1.GetHashCode(), layer2.GetHashCode());
         }
+
+        [TestMethod]
+        public void CompareLayers_Clone()
+        {
+            var layer = new MGraphLayer();
+            var node1 = new MGraphEditorNode();
+            var node2 = new MGraphEditorNode();
+            var edge1 = new MGraphEditorEdge();
+            var edge2 = new MGraphEditorEdge();
+
+            layer.nodes = new List<IMGraphEditorNode> { node1, node2 };
+            layer.edges = new List<IMGraphEditorEdge> { edge1, edge2 };
+
+            var clonedLayer = layer.Clone();
+
+            Assert.AreEqual(layer, clonedLayer);
+            Assert.AreNotSame(layer, clonedLayer);
+        }
     }
 }

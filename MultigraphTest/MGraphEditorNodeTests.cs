@@ -97,7 +97,7 @@ namespace MultigraphTest
         public void IsInside_ReturnsFalseForPointOutsideNode()
         {
             var node = new MGraphEditorNode { X = 100, Y = 100, Diameter = 20 };
-            Assert.IsFalse(node.IsInside(50, 50)); // Point outside the node
+            Assert.IsFalse(node.IsInside(50, 50), "Point outside the node"); 
         }
 
         [TestMethod]

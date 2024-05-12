@@ -8,10 +8,10 @@ namespace MultigraphEditor.src.algorithm
         public string Name { get; } = "Dijkstra's Algorithm";
         public bool requiresStartNode { get; } = true;
         public bool requiresEndNode { get; } = true;
-        public List<String> Output(INode start, INode target, IMGraphLayer targetLayer)
+        public List<string> Output(INode start, INode target, IMGraphLayer targetLayer)
         {
             List<INode> path = FindPath(start, target, targetLayer);
-            List<string> output = new List<String>();
+            List<string> output = new List<string>();
             foreach (INode node in path)
             {
                 if (node.Label != null)
@@ -25,7 +25,7 @@ namespace MultigraphEditor.src.algorithm
             }
             if (path.Count == 0)
             {
-                List<string> error = new List<String>();
+                List<string> error = new List<string>();
                 error.Add("No path found");
                 return error;
             }
@@ -38,7 +38,7 @@ namespace MultigraphEditor.src.algorithm
             PriorityQueue<INode, double> openSet = new PriorityQueue<INode, double>();
             Dictionary<INode, INode> cameFrom = new Dictionary<INode, INode>();
             Dictionary<INode, double> gScore = new Dictionary<INode, double>();
-            foreach (graph.IMGraphEditorNode node in targetLayer.nodes)
+            foreach (IMGraphEditorNode node in targetLayer.nodes)
             {
                 gScore[node] = double.PositiveInfinity;
             }
