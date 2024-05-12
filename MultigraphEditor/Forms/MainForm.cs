@@ -277,7 +277,7 @@ namespace MultigraphEditor
             selectedNodeForConnection = null;
             UpdateLastClickedButton(sender);
             AlgorithmForm alghorimtForm = new AlgorithmForm(layerList, algoList);
-            alghorimtForm.Show();
+            alghorimtForm.ShowDialog();
         }
 
         private void RemoveBtn_Click(object sender, EventArgs e)
@@ -292,7 +292,7 @@ namespace MultigraphEditor
         private void CreateMatrixForm(List<IMGraphLayer> layerList, string type)
         {
             MatrixForm matrixForm = new MatrixForm(layerList, type);
-            matrixForm.Show();
+            matrixForm.ShowDialog();
         }
 
         private void canvas_Paint(object sender, PaintEventArgs e)

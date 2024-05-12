@@ -113,7 +113,8 @@ namespace MultigraphEditor.Forms
                 Width = 400,
                 Height = 300,
                 ScrollBars = ScrollBars.Both,
-                ReadOnly = true
+                ReadOnly = true,
+                Name = "matrixDisplay",
             };
 
             for (int i = 0; i < nodes.Count; i++)
@@ -172,7 +173,8 @@ namespace MultigraphEditor.Forms
                 Width = 400,
                 Height = 300,
                 ScrollBars = ScrollBars.Both,
-                ReadOnly = true
+                ReadOnly = true,
+                Name = "matrixDisplay",
             };
 
             StringBuilder sb = new StringBuilder();
@@ -243,7 +245,8 @@ namespace MultigraphEditor.Forms
                 Width = 400,
                 Height = 300,
                 ScrollBars = ScrollBars.Both,
-                ReadOnly = true
+                ReadOnly = true,
+                Name = "matrixDisplay",
             };
 
             StringBuilder sb = new StringBuilder();

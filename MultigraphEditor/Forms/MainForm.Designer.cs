@@ -53,18 +53,17 @@ namespace MultigraphEditor
             MainLayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble;
             MainLayout.ColumnCount = 2;
             MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 229F));
+            MainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 200F));
             MainLayout.Controls.Add(ButtonPanel, 0, 1);
             MainLayout.Controls.Add(canvas, 0, 0);
             MainLayout.Controls.Add(LayoutPanel, 1, 0);
             MainLayout.Dock = DockStyle.Fill;
             MainLayout.Location = new Point(0, 0);
-            MainLayout.Margin = new Padding(3, 4, 3, 4);
             MainLayout.Name = "MainLayout";
             MainLayout.RowCount = 2;
             MainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 53F));
-            MainLayout.Size = new Size(914, 600);
+            MainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            MainLayout.Size = new Size(800, 450);
             MainLayout.TabIndex = 0;
             // 
             // ButtonPanel
@@ -80,16 +79,15 @@ namespace MultigraphEditor
             ButtonPanel.Controls.Add(RemoveBtn);
             ButtonPanel.Controls.Add(UndoBtn);
             ButtonPanel.Controls.Add(GraphBtn);
-            ButtonPanel.Location = new Point(80, 544);
+            ButtonPanel.Location = new Point(70, 407);
             ButtonPanel.Margin = new Padding(0);
             ButtonPanel.Name = "ButtonPanel";
-            ButtonPanel.Size = new Size(754, 53);
+            ButtonPanel.Size = new Size(660, 40);
             ButtonPanel.TabIndex = 0;
             // 
             // button1
             // 
-            button1.Location = new Point(3, 4);
-            button1.Margin = new Padding(3, 4, 3, 4);
+            button1.Location = new Point(3, 3);
             button1.Name = "button1";
             button1.Size = new Size(0, 0);
             button1.TabIndex = 0;
@@ -101,10 +99,9 @@ namespace MultigraphEditor
             ViewBtn.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             ViewBtn.Image = Properties.Resources.view;
             ViewBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            ViewBtn.Location = new Point(9, 4);
-            ViewBtn.Margin = new Padding(3, 4, 3, 4);
+            ViewBtn.Location = new Point(9, 3);
             ViewBtn.Name = "ViewBtn";
-            ViewBtn.Size = new Size(71, 31);
+            ViewBtn.Size = new Size(62, 23);
             ViewBtn.TabIndex = 1;
             ViewBtn.Text = "View";
             ViewBtn.TextAlign = ContentAlignment.MiddleRight;
@@ -116,10 +113,9 @@ namespace MultigraphEditor
             // 
             MoveBtn.Image = Properties.Resources.move;
             MoveBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            MoveBtn.Location = new Point(86, 4);
-            MoveBtn.Margin = new Padding(3, 4, 3, 4);
+            MoveBtn.Location = new Point(77, 3);
             MoveBtn.Name = "MoveBtn";
-            MoveBtn.Size = new Size(74, 31);
+            MoveBtn.Size = new Size(65, 23);
             MoveBtn.TabIndex = 2;
             MoveBtn.Text = "Move";
             MoveBtn.TextAlign = ContentAlignment.MiddleRight;
@@ -131,10 +127,9 @@ namespace MultigraphEditor
             // 
             AddBtn.Image = Properties.Resources.add;
             AddBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            AddBtn.Location = new Point(166, 4);
-            AddBtn.Margin = new Padding(3, 4, 3, 4);
+            AddBtn.Location = new Point(148, 3);
             AddBtn.Name = "AddBtn";
-            AddBtn.Size = new Size(63, 31);
+            AddBtn.Size = new Size(55, 23);
             AddBtn.TabIndex = 3;
             AddBtn.Text = "Add";
             AddBtn.TextAlign = ContentAlignment.MiddleRight;
@@ -145,10 +140,9 @@ namespace MultigraphEditor
             // 
             ConnectBtn.Image = Properties.Resources.connect;
             ConnectBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            ConnectBtn.Location = new Point(235, 4);
-            ConnectBtn.Margin = new Padding(3, 4, 3, 4);
+            ConnectBtn.Location = new Point(209, 3);
             ConnectBtn.Name = "ConnectBtn";
-            ConnectBtn.Size = new Size(91, 31);
+            ConnectBtn.Size = new Size(80, 23);
             ConnectBtn.TabIndex = 4;
             ConnectBtn.Text = "Connect";
             ConnectBtn.TextAlign = ContentAlignment.MiddleRight;
@@ -160,10 +154,9 @@ namespace MultigraphEditor
             // 
             AlgorithmsBtn.Image = Properties.Resources.algo;
             AlgorithmsBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            AlgorithmsBtn.Location = new Point(332, 4);
-            AlgorithmsBtn.Margin = new Padding(3, 4, 3, 4);
+            AlgorithmsBtn.Location = new Point(295, 3);
             AlgorithmsBtn.Name = "AlgorithmsBtn";
-            AlgorithmsBtn.Size = new Size(113, 31);
+            AlgorithmsBtn.Size = new Size(99, 23);
             AlgorithmsBtn.TabIndex = 5;
             AlgorithmsBtn.Text = "Algorithms";
             AlgorithmsBtn.TextAlign = ContentAlignment.MiddleRight;
@@ -174,10 +167,9 @@ namespace MultigraphEditor
             // RemoveBtn
             // 
             RemoveBtn.Image = Properties.Resources.remove;
-            RemoveBtn.Location = new Point(451, 4);
-            RemoveBtn.Margin = new Padding(3, 4, 3, 4);
+            RemoveBtn.Location = new Point(400, 3);
             RemoveBtn.Name = "RemoveBtn";
-            RemoveBtn.Size = new Size(133, 31);
+            RemoveBtn.Size = new Size(116, 23);
             RemoveBtn.TabIndex = 7;
             RemoveBtn.Text = "Remove object";
             RemoveBtn.TextImageRelation = TextImageRelation.TextBeforeImage;
@@ -188,10 +180,9 @@ namespace MultigraphEditor
             // 
             UndoBtn.Image = Properties.Resources.undo;
             UndoBtn.ImageAlign = ContentAlignment.MiddleRight;
-            UndoBtn.Location = new Point(590, 4);
-            UndoBtn.Margin = new Padding(3, 4, 3, 4);
+            UndoBtn.Location = new Point(522, 3);
             UndoBtn.Name = "UndoBtn";
-            UndoBtn.Size = new Size(70, 31);
+            UndoBtn.Size = new Size(61, 23);
             UndoBtn.TabIndex = 8;
             UndoBtn.Text = "Undo";
             UndoBtn.TextImageRelation = TextImageRelation.TextBeforeImage;
@@ -202,10 +193,9 @@ namespace MultigraphEditor
             // 
             GraphBtn.Image = Properties.Resources.graph;
             GraphBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            GraphBtn.Location = new Point(666, 4);
-            GraphBtn.Margin = new Padding(3, 4, 3, 4);
+            GraphBtn.Location = new Point(589, 3);
             GraphBtn.Name = "GraphBtn";
-            GraphBtn.Size = new Size(75, 31);
+            GraphBtn.Size = new Size(66, 23);
             GraphBtn.TabIndex = 6;
             GraphBtn.Text = "Graph";
             GraphBtn.TextAlign = ContentAlignment.MiddleRight;
@@ -217,11 +207,11 @@ namespace MultigraphEditor
             // 
             canvas.BackColor = Color.White;
             canvas.Dock = DockStyle.Fill;
-            canvas.Location = new Point(6, 7);
-            canvas.Margin = new Padding(3, 4, 3, 4);
+            canvas.Location = new Point(6, 6);
             canvas.Name = "canvas";
-            canvas.Size = new Size(670, 530);
+            canvas.Size = new Size(585, 395);
             canvas.TabIndex = 1;
+            canvas.Tag = "DoubleBufferedPanel";
             canvas.Paint += canvas_Paint;
             // 
             // LayoutPanel
@@ -231,23 +221,21 @@ namespace MultigraphEditor
             LayoutPanel.ColumnCount = 1;
             LayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             LayoutPanel.Dock = DockStyle.Fill;
-            LayoutPanel.Location = new Point(685, 7);
-            LayoutPanel.Margin = new Padding(3, 4, 3, 4);
+            LayoutPanel.Location = new Point(600, 6);
             LayoutPanel.Name = "LayoutPanel";
             LayoutPanel.RowCount = 1;
-            LayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 525F));
-            LayoutPanel.Size = new Size(223, 530);
+            LayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 397F));
+            LayoutPanel.Size = new Size(194, 395);
             LayoutPanel.TabIndex = 2;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(914, 600);
+            ClientSize = new Size(800, 450);
             Controls.Add(MainLayout);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(3, 4, 3, 4);
-            MinimumSize = new Size(797, 384);
+            MinimumSize = new Size(699, 298);
             Name = "MainForm";
             Text = "Multigraph Editor";
             Load += MainForm_Load;

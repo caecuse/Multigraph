@@ -31,6 +31,7 @@ namespace MultigraphEditor.Forms
                     CheckBox checkBox = new CheckBox();
                     checkBox.Name = property.Name;
                     checkBox.Checked = (bool)property.GetValue(DataObject);
+                    checkBox.Name = property.Name;
                     DataInput.Controls.Add(checkBox, 1, DataInput.RowCount - 1);
                 }
                 else if (property.PropertyType == typeof(Font))

@@ -144,11 +144,12 @@ namespace MultigraphEditor.Forms
 
                 if (selectedAlgorithm != null)
                 {
-                    List<String> output = selectedAlgorithm.Output(start, end, selectedLayer);
+                    List<string> output = selectedAlgorithm.Output(start, end, selectedLayer);
                     pathListBox = new ListBox
                     {
                         Width = 200,
                         Height = 100,
+                        Name = "pathListBox",
                         Location = new Point(10, 10),
                         HorizontalScrollbar = true,
                     };
