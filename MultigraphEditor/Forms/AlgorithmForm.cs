@@ -115,7 +115,9 @@ namespace MultigraphEditor.Forms
             Button runButton = new Button
             {
                 Text = "Run selected alghoritm",
-                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
             };
             organized.RowCount = 4;
             organized.Controls.Add(runButton, 0, 3);
