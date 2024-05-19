@@ -14,7 +14,9 @@ namespace MultigraphEditor
             Type LayerType = typeof(MGraphLayer);
             List<Type> mGraphAlgorithms = new List<Type>();
             mGraphAlgorithms.Add(typeof(DijkstraAlgorithm));
-            mGraphAlgorithms.Add(typeof(CheckHamiltonCycle));
+            mGraphAlgorithms.Add(typeof(HamiltonCycleAlgorithm));
+            //mGraphAlgorithms.Add(typeof(DijkstraAlgorithm));
+            //mGraphAlgorithms.Add(typeof(CheckHamiltonCycle));
 
             ApplicationConfiguration.Initialize();
             Application.Run(new MainForm(NodeType, EdgeType, LayerType, mGraphAlgorithms));
