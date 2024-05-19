@@ -16,7 +16,7 @@ namespace MultigraphEditor.src.algorithm
     {
         TableLayoutPanel organized = new TableLayoutPanel();
         private ComboBox layerComboBox;
-        RichTextBox label = new RichTextBox();
+        TextBox label = new TextBox();
         private IMGraphLayer? selectedLayer = null;
 
         public HamiltonCycleAlgorithm(List<IMGraphLayer> layerList)
@@ -24,6 +24,7 @@ namespace MultigraphEditor.src.algorithm
             InitializeComponent();
 
             // Set up form
+            Text = "Hamilton Cycle Algorithm";
             Controls.Add(organized);
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -62,7 +63,7 @@ namespace MultigraphEditor.src.algorithm
 
             Button runButton = new Button
             {
-                Text = "Find path",
+                Text = "Check Hamilton cycle",
                 Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom,
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink
@@ -83,7 +84,7 @@ namespace MultigraphEditor.src.algorithm
             {
                 selectedLayer = layer;
                 List<string> output = Output(selectedLayer);
-                label = new RichTextBox
+                label = new TextBox
                 {
                     Text = string.Join("\n", output),
                     ReadOnly = true,

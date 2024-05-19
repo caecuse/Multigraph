@@ -430,24 +430,28 @@ namespace MultigraphTest
             var algobox = algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("algorithmComboBox"));
             // If the combobox is not expanded it doesnt have "any" items
             algobox.Click();
-            algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("algorithmComboBox")).Select("Dijkstra's Algorithm");
-            var layerbox = algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("layerComboBox"));
+            algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("algorithmComboBox")).Select("DijkstraAlgorithm");
+            algoForm.Get<Button>(SearchCriteria.ByText("Run selected alghoritm")).Click();
+
+            Window DijWindow = algoForm.ModalWindow("Dijkstra's Algorithm");
+
+            var layerbox = DijWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("layerComboBox"));
             // Again if the combobox is not expanded it doesnt have "any" items
             layerbox.Click();
 
-            algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("layerComboBox")).Select("Layer 0");
+            DijWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("layerComboBox")).Select("Layer 0");
 
-            var startNode = algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("startNode"));
+            var startNode = DijWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("startNode"));
             startNode.Click();
-            algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("startNode")).Select("0");
+            DijWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("startNode")).Select("0");
 
-            var endNode = algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("endNode"));
+            var endNode = DijWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("endNode"));
             endNode.Click();
-            algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("endNode")).Select("5");
+            DijWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("endNode")).Select("5");
 
-            algoForm.Get<Button>(SearchCriteria.ByText("Run selected alghoritm")).Click();
+            DijWindow.Get<Button>(SearchCriteria.ByText("Find path")).Click();
 
-            var result = algoForm.Get<ListBox>(SearchCriteria.ByAutomationId("pathListBox"));
+            var result = DijWindow.Get<ListBox>(SearchCriteria.ByAutomationId("pathListBox"));
 
             Assert.AreEqual("0", result.Items[0].Text, "Dijkstra algorithm failed.");
             Assert.AreEqual("1", result.Items[1].Text, "Dijkstra algorithm failed.");
@@ -456,12 +460,24 @@ namespace MultigraphTest
             Assert.AreEqual("4", result.Items[4].Text, "Dijkstra algorithm failed.");
             Assert.AreEqual("5", result.Items[5].Text, "Dijkstra algorithm failed.");
 
+            DijWindow.Close();
+
             algobox.Click();
-            algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("algorithmComboBox")).Select("Check Hamilton Cycle");
+            algoForm.Get<ComboBox>(SearchCriteria.ByAutomationId("algorithmComboBox")).Select("HamiltonCycleAlgorithm");
             algoForm.Get<Button>(SearchCriteria.ByText("Run selected alghoritm")).Click();
 
-            result = algoForm.Get<ListBox>(SearchCriteria.ByAutomationId("pathListBox"));
-            Assert.AreEqual("Graph has a Hamilton cycle", result.Items[0].Text, "Hamilton cycle check failed.");
+            Window HamWindow = algoForm.ModalWindow("Hamilton Cycle Algorithm");
+            layerbox = HamWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("layerComboBox"));
+            // Again if the combobox is not expanded it doesnt have "any" items
+            layerbox.Click();
+
+            HamWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("layerComboBox")).Select("Layer 0");
+            HamWindow.Get<Button>(SearchCriteria.ByText("Check Hamilton cycle")).Click();
+
+            var resultHam = HamWindow.Get<TextBox>(SearchCriteria.ByAutomationId("outputLabel"));
+            Assert.AreEqual("Graph has a Hamilton cycle", resultHam.Text, "Hamilton cycle check failed.");
+
+            HamWindow.Close();
 
             algoForm.Close();
 

@@ -31,6 +31,7 @@ namespace MultigraphEditor.src.algorithm
             Controls.Add(organized);
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Text = "Dijkstra's Algorithm";
             // Set up the organized TableLayoutPanel
             organized.RowCount = 3;
             organized.ColumnCount = 1;

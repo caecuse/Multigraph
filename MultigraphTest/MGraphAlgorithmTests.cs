@@ -1,4 +1,5 @@
 ﻿using MultigraphEditor.src.algorithm;
+using MultigraphEditor.src.algorithm.code;
 using MultigraphEditor.src.graph;
 using MultigraphEditor.src.layers;
 
@@ -11,7 +12,7 @@ namespace MultigraphTest
         [TestMethod]
         public void DjikstraTest_simpleCase_1()
         {
-            DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
+            DijkstraAlgorithmNoForm algorithm = new DijkstraAlgorithmNoForm();
 
             MGraphEditorNode startNode = new MGraphEditorNode();
             MGraphEditorNode endNode = new MGraphEditorNode();
@@ -34,7 +35,7 @@ namespace MultigraphTest
         [TestMethod]
         public void DjikstraTest_simpleCase_2()
         {
-            DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
+            DijkstraAlgorithmNoForm algorithm = new DijkstraAlgorithmNoForm();
 
             MGraphEditorNode startNode = new MGraphEditorNode();
             MGraphEditorNode endNode = new MGraphEditorNode();
@@ -57,7 +58,7 @@ namespace MultigraphTest
         [TestMethod]
         public void DjikstraTest_noPath()
         {
-            DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
+            DijkstraAlgorithmNoForm algorithm = new DijkstraAlgorithmNoForm();
 
             MGraphEditorNode startNode = new MGraphEditorNode();
             MGraphEditorNode endNode = new MGraphEditorNode();
@@ -79,7 +80,7 @@ namespace MultigraphTest
         [TestMethod]
         public void DjikstraTest_complexCase_1()
         {
-            DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
+            DijkstraAlgorithmNoForm algorithm = new DijkstraAlgorithmNoForm();
 
             MGraphEditorNode startNode = new MGraphEditorNode();
             MGraphEditorNode node1 = new MGraphEditorNode();
@@ -147,7 +148,7 @@ namespace MultigraphTest
         [TestMethod]
         public void CheckHamiltonCycleTest_simpleCase()
         {
-            CheckHamiltonCycle algorithm = new CheckHamiltonCycle();
+            HamiltonCycleCheckNoForm algorithm = new HamiltonCycleCheckNoForm();
 
             MGraphEditorNode node1 = new MGraphEditorNode();
             MGraphEditorNode node2 = new MGraphEditorNode();
@@ -186,7 +187,7 @@ namespace MultigraphTest
         [TestMethod]
         public void CheckHamiltonCycleTest_moreNodesThanEdges()
         {
-            CheckHamiltonCycle algorithm = new CheckHamiltonCycle();
+            HamiltonCycleCheckNoForm algorithm = new HamiltonCycleCheckNoForm();
 
             MGraphEditorNode node1 = new MGraphEditorNode();
             MGraphEditorNode node2 = new MGraphEditorNode();
@@ -220,7 +221,7 @@ namespace MultigraphTest
         [TestMethod]
         public void CheckHamiltonCycleTest_lessThan3Nodes()
         {
-            CheckHamiltonCycle algorithm = new CheckHamiltonCycle();
+            HamiltonCycleCheckNoForm algorithm = new HamiltonCycleCheckNoForm();
 
             MGraphEditorNode node1 = new MGraphEditorNode();
             MGraphEditorNode node2 = new MGraphEditorNode();
@@ -247,7 +248,7 @@ namespace MultigraphTest
         [TestMethod]
         public void CheckHamiltonCycleTest_nodeWithLessThan2Edges()
         {
-            CheckHamiltonCycle algorithm = new CheckHamiltonCycle();
+            HamiltonCycleCheckNoForm algorithm = new HamiltonCycleCheckNoForm();
 
             MGraphEditorNode node1 = new MGraphEditorNode();
             MGraphEditorNode node2 = new MGraphEditorNode();
@@ -281,7 +282,7 @@ namespace MultigraphTest
         [TestMethod]
         public void CheckHamiltonCycleTest_noHamiltonCycle()
         {
-            CheckHamiltonCycle algorithm = new CheckHamiltonCycle();
+            HamiltonCycleCheckNoForm algorithm = new HamiltonCycleCheckNoForm();
 
             MGraphEditorNode node1 = new MGraphEditorNode();
             MGraphEditorNode node2 = new MGraphEditorNode();
