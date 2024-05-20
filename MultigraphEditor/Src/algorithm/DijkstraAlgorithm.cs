@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace MultigraphEditor.src.algorithm
 {
-    public partial class DijkstraAlgorithm : AlghoritmForm
+    public partial class DijkstraAlgorithm : Form
     {
         TableLayoutPanel organized = new TableLayoutPanel();
         private ComboBox layerComboBox;

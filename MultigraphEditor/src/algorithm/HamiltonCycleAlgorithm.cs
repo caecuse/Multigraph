@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace MultigraphEditor.src.algorithm
 {
-    public partial class HamiltonCycleAlgorithm : AlghoritmForm
+    public partial class HamiltonCycleAlgorithm : Form
     {
         TableLayoutPanel organized = new TableLayoutPanel();
         private ComboBox layerComboBox;

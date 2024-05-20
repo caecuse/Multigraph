@@ -6,7 +6,7 @@ namespace MultigraphEditor.Forms
 {
     public partial class AlgorithmForm : Form
     {
-        private AlghoritmForm? selectedAlgorithm = null;
+        private Form? selectedAlgorithm = null;
         private List<IMGraphLayer> layerList = new List<IMGraphLayer>();
         private Dictionary<string, Type> algorithmNameToTypeMap = new Dictionary<string, Type>();
         TableLayoutPanel organized = new TableLayoutPanel();
@@ -82,7 +82,7 @@ namespace MultigraphEditor.Forms
             {
                 if (algorithmNameToTypeMap.TryGetValue(selectedDisplayName, out Type selectedAlgorithmType))
                 {
-                    selectedAlgorithm = Activator.CreateInstance(selectedAlgorithmType, layerList) as AlghoritmForm;
+                    selectedAlgorithm = Activator.CreateInstance(selectedAlgorithmType, layerList) as Form;
                 }
                 else
                 {
