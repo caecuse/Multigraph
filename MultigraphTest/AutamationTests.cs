@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Drawing;
+using System.Globalization;
 using System.Security.Cryptography;
 using TestStack.White;
 using TestStack.White.UIItems;
@@ -7,6 +8,7 @@ using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.ListBoxItems;
 using TestStack.White.UIItems.MenuItems;
 using TestStack.White.UIItems.WindowItems;
+
 
 namespace MultigraphTest
 {
@@ -517,10 +519,20 @@ namespace MultigraphTest
                 stringChars[i] = (char)('a' + new Random().Next(0, 26));
             }
             string randomString = new String(stringChars) + ".mg";
+        
+            CultureInfo ci = CultureInfo.InstalledUICulture;
+            var lang = ci.Name.Substring(0, 2);
+            string fn = "Nazwa pliku:";
+            string sd = "Zapisz";
+            if (lang == "en")
+            {
+                fn = "File name:";
+                sd = "Save";
+            }
 
             // This will work in windows 11 with polish language
-            saveForm.Get<TextBox>(SearchCriteria.ByText("Nazwa pliku:")).Text = randomString;
-            saveForm.Get<Button>(SearchCriteria.ByText("Zapisz")).Click();
+            saveForm.Get<TextBox>(SearchCriteria.ByText(fn)).Text = randomString;
+            saveForm.Get<Button>(SearchCriteria.ByText(sd)).Click();
 
             app.Close();
             // Get Main Window
@@ -532,7 +544,7 @@ namespace MultigraphTest
             window.Get<Menu>(SearchCriteria.ByText("Open")).Click();
 
             Window openForm = window.ModalWindow("Open a Multigraph File");
-            openForm.Get<TextBox>(SearchCriteria.ByText("Nazwa pliku:")).Text = randomString;
+            openForm.Get<TextBox>(SearchCriteria.ByText(fn)).Text = randomString;
             openForm.Keyboard.PressSpecialKey(TestStack.White.WindowsAPI.KeyboardInput.SpecialKeys.RETURN);
             openForm.Keyboard.PressSpecialKey(TestStack.White.WindowsAPI.KeyboardInput.SpecialKeys.RETURN);
 
