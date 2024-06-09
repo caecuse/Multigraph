@@ -46,12 +46,12 @@ namespace MultigraphEditor.src.layers
         }
 #pragma warning restore SYSLIB0011
 
-        public void UpdateNodeReferences(Dictionary<IMGraphEditorNode, IMGraphEditorNode> nodeMap)
+        public virtual void UpdateNodeReferences(Dictionary<IMGraphEditorNode, IMGraphEditorNode> nodeMap)
         {
             nodes = nodes.Select(n => nodeMap[n]).ToList();
         }
 
-        public void UpdateEdgeReferences(Dictionary<IMGraphEditorEdge, IMGraphEditorEdge> edgeMap)
+        public virtual void UpdateEdgeReferences(Dictionary<IMGraphEditorEdge, IMGraphEditorEdge> edgeMap)
         {
             edges = edges.Select(e => edgeMap[e]).ToList();
         }

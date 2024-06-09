@@ -36,11 +36,11 @@ namespace MultigraphEditor.src.graph
             _guid = Guid.NewGuid();
         }
 
-        public int GetIdentifier()
+        public virtual int GetIdentifier()
         {
             return EdgeCounter++;
         }
-        public void PopulateDrawing(INodeDrawable srcDrw, INodeDrawable tgtDrw)
+        public virtual void PopulateDrawing(INodeDrawable srcDrw, INodeDrawable tgtDrw)
         {
             SourceDrawable = srcDrw;
             TargetDrawable = tgtDrw;
@@ -48,7 +48,7 @@ namespace MultigraphEditor.src.graph
             controlPointY = (srcDrw.Y + tgtDrw.Y) / 2;
         }
 
-        public void PopulateEdge(INode src, INode tgt, bool bidir, int w)
+        public virtual void PopulateEdge(INode src, INode tgt, bool bidir, int w)
         {
             Source = src;
             Target = tgt;
@@ -56,7 +56,7 @@ namespace MultigraphEditor.src.graph
             Weight = w;
         }
 
-        public void Draw(Graphics g, IEdgeLayer l)
+        public virtual void Draw(Graphics g, IEdgeLayer l)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -99,7 +99,7 @@ namespace MultigraphEditor.src.graph
             }
         }
 
-        public void DrawArrow(Graphics g, IEdgeLayer l)
+        public virtual void DrawArrow(Graphics g, IEdgeLayer l)
         {
             if (SourceDrawable == TargetDrawable)
             {
@@ -176,7 +176,7 @@ namespace MultigraphEditor.src.graph
             }
         }
 
-        public void DrawLabel(Graphics g, IEdgeLayer l)
+        public virtual void DrawLabel(Graphics g, IEdgeLayer l)
         {
             if (SourceDrawable == TargetDrawable)
             {
@@ -220,7 +220,7 @@ namespace MultigraphEditor.src.graph
             }
         }
 
-        public bool IsInside(float x, float y)
+        public virtual bool IsInside(float x, float y)
         {
             float tolerance = 5f;
             float lineDistance = PointToLineDistance(x, y);
@@ -234,12 +234,12 @@ namespace MultigraphEditor.src.graph
             return false;
         }
 
-        public bool IsInsideControlPoint(float x, float y)
+        public virtual bool IsInsideControlPoint(float x, float y)
         {
             return IsPointInsideEllipse(x, y, controlPointX, controlPointY, 10, 10);
         }
 
-        public bool IsPointInsideEllipse(float x, float y, float centerX, float centerY, float width, float height)
+        public virtual bool IsPointInsideEllipse(float x, float y, float centerX, float centerY, float width, float height)
         {
             float normalizedX = (x - centerX) / (width / 2);
             float normalizedY = (y - centerY) / (height / 2);
@@ -247,7 +247,7 @@ namespace MultigraphEditor.src.graph
             return (normalizedX * normalizedX) + (normalizedY * normalizedY) <= 1;
         }
 
-        private float PointToLineDistance(float x, float y)
+        public virtual float PointToLineDistance(float x, float y)
         {
             float dx = TargetDrawable.X - SourceDrawable.X;
             float dy = TargetDrawable.Y - SourceDrawable.Y;

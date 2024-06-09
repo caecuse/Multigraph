@@ -30,12 +30,12 @@ namespace MultigraphEditor.src.graph
             _guid = Guid.NewGuid();
         }
 
-        public int GetIdentifier()
+        public virtual int GetIdentifier()
         {
             return NodeCounter++;
         }
 
-        public void AddEdge(IEdge e)
+        public virtual void AddEdge(IEdge e)
         {
             if (!Edges.Contains(e))
             {
@@ -43,22 +43,22 @@ namespace MultigraphEditor.src.graph
             }
         }
 
-        public void RemoveEdge(IEdge e)
+        public virtual void RemoveEdge(IEdge e)
         {
             Edges.Remove(e);
         }
 
-        public (float, float) GetCoordinates()
+        public virtual (float, float) GetCoordinates()
         {
             return (X, Y);
         }
 
-        public (float, float) GetDrawingCoordinates()
+        public virtual (float, float) GetDrawingCoordinates()
         {
             return (X - (Diameter / 2), Y - (Diameter / 2));
         }
 
-        public void Draw(Graphics g, INodeLayer l)
+        public virtual void Draw(Graphics g, INodeLayer l)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -76,7 +76,7 @@ namespace MultigraphEditor.src.graph
             }
         }
 
-        public void DrawLabel(Graphics g, INodeLayer l)
+        public virtual void DrawLabel(Graphics g, INodeLayer l)
         {
             // Calculate label position and size
             SizeF textSize = g.MeasureString(Label, l.Font);

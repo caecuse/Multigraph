@@ -1,6 +1,8 @@
 using MultigraphEditor.src.algorithm;
 using MultigraphEditor.src.graph;
 using MultigraphEditor.src.layers;
+using MultigraphEditor.src.graph.example;
+
 
 namespace MultigraphEditor
 {
